@@ -38,6 +38,8 @@
   "hexcasting.action.oneironaut:getsoulprint": "灵魂印记之精思",
   "hexcasting.action.oneironaut:signitem": "签印物品",
   "hexcasting.action.oneironaut:checksignature": "签印之纯化",
+  "hexcasting.action.oneironaut:extradimensionaleval": "海姆达尔之策略",
+  "hexcasting.action.oneironaut:shiftsentinel": "挪移哨卫",
 
   "this.is.a.comment.2": "Block/Item names--------------------------------------------------------------------------------------------",
   "item.oneironaut.pseudoamethyst_shard": "伪紫水晶碎片",
@@ -59,6 +61,7 @@
   "item.oneironaut.mind_scalpel": "突触手术刀",
   "item.oneironaut.monkfruit": "修道果",
   "item.oneironaut.rending_thorns": "裂识荆棘",
+  "item.oneironaut.library_card": "阿卡夏借书证",
 
   "block.oneironaut.noosphere_gate": "神秘裂口",
   "block.oneironaut.pseudoamethyst_block": "伪紫水晶块",
@@ -108,6 +111,7 @@
   "oneironaut.entry.soulprints": "灵魂印记",
   "oneironaut.entry.hover_elevator": "悬浮桥链",
   "oneironaut.entry.flayrevival": "人工意识",
+  "oneironaut.entry.heimdall": "跨维度施法",
 
   "this.is.a.comment.4": "Book pages--------------------------------------------------------------------------------------------",
   "oneironaut.page.spaceswap.1": "接受均由两个向量组成的两个列表，用于定义两个长方体，以及一个空间印记。所定义的长方体必须保证尺寸与朝向一致。",
@@ -174,7 +178,7 @@
   "oneironaut.page.super_budding.3": "此外，在智识界中培育时，伪紫水晶母岩会产生伪紫水晶簇，而不是普通的紫水晶。自然，这些晶簇掉落的是伪紫水晶碎片，但同时也会掉落一种不甚稳定的伪紫水晶，其媒质含量是普通碎片的四倍。正是由于这种不稳定性，此类伪紫水晶无法直接转换为媒质。但把它和其他形态的媒质水晶放在一起，即可令其转变为那种形态。",
   "oneironaut.page.super_budding.4": "它似乎对我的凝视有了反应，就好像它有某种感知力一样。",
   "oneironaut.page.super_budding.5": "就算让伪紫水晶母岩浸没在思维浆液中，抑制晶体的形成，它的媒质生成率依然足够平常使用。尽管总供给量近乎无穷，但单个操作能使用的媒质量相当少；就像一片几十万几百万千米宽，但只有几厘米深的海洋。而由于其深度极为有限，在远距获取使用（如为物品充能等）时，其中的媒质会在抵达法杖前迅速消散殆尽。",
-  "oneironaut.page.super_budding.6": "常态提供大约与 1/10 个紫水晶粉相当的媒质。虽然我$(o)可以$()同时持有好多个来轻松获取媒质，但每个媒质瓶带来的增量会快速减少。",
+  "oneironaut.page.super_budding.6": "常态提供大约与 1/10 个紫水晶粉相当的媒质。虽然我$(o)可以$()同时持有好多个来获取媒质，但每个媒质瓶带来的增量会快速减少。$(br)合成时注意别用错试剂瓶了。",
   "oneironaut.page.super_budding.7": "还可以往缀品里塞一个，以让无穷媒质之瓶为其供应媒质。但是，如此操作后，缀品便不会再接受其他来源的媒质。",
   "oneironaut.page.super_budding.8": "向另一只手中的无底缀品写入咒术。消耗 10 个充能紫水晶。",
   "oneironaut.page.idea_inscription.1": "智识界是思维的领域，它能用来存储信息也就顺理成章。这些图案就能把 iota 刻印入智识界，并能读出它们（不论当前身处什么维度）。它们还能把 iota 存储到其他生物的意识中，当然它们的意识也需和我一样……$(o)无拘无束$()。在相关描述中，用于指代向量和有效实体的词是“键”/“key”。",
@@ -248,6 +252,11 @@
   "oneironaut.page.monkfruit.2": "它结出的果实相当甜，且能加工处理成糖。而且，这种果实在被消化的时候似乎能释放出些许媒质，又会进一步为我身上可以重新填充媒质的物品充入媒质。摘果子时务必要小心灌木中的刺。",
   "oneironaut.page.monkfruit.3": "成熟植株上剪下的枝条依然具有这些危险的性质，可以用来合成一把不祥的刀。$(br2)这把刀和附有低等级$(l:items/mindrender)意识撕裂$(/l)魔咒的剑类似，但它更为精确：撕裂意识时能把对形体的附带损伤降到最低。如果我有这个想法，当然可以把它用作普通的冷兵器，但确实要承担杀死目标的风险。",
   "oneironaut.page.monkfruit.4": "$(o)这又不是什么高端科技。$()",
+  "oneironaut.page.library_card.1": "在研究真正通用的数据存储方式时，我设计出了一个小设备，随身携带即可读取其他维度的阿卡夏记录。只需向该物品写入一个空间印记，便能将未来所有阿卡夏读取操作导向至对应维度。$(br)可惜的是，它不能用来$(o)写入$()，但有总比没有好。",
+  "oneironaut.page.library_card.2": "$(o)它似乎会渗出某种黏答答的凝浆。$()",
+  "oneironaut.page.heimdall.1": "奇怪的图案，似乎是赫尔墨斯之策略的变种。接受一个空间印记和一个可执行的 iota，并尝试在所给维度内施放所给 iota。",
+  "oneironaut.page.heimdall.2": "它确实能帮我跨维度施法，但还不够完美。首先，它似乎只会在我直接施法时起效，法术环和咒灵都行不通。其次，有消耗的图案会额外消耗 25%% 的媒质。最后，正因为我没有真的身处目标维度，所以需要借助卓越哨卫（或其他增大影响范围的手段）才能影响那一侧的事物。",
+  "oneironaut.page.heimdall.3": "接受一个空间印记，并将我的哨卫移动到对应维度，坐标相应缩放。消耗 1 个紫水晶碎片。如果我当前没有哨卫则招致事故。",
 
   "this.is.a.comment.5": "Advancements--------------------------------------------------------------------------------------------",
   "oneironaut.advancements.noosphere.enter": "思维与梦的领域",
@@ -291,6 +300,7 @@
   "hexcasting.mishap.oneironaut:norequirediota": "黏液需要%s",
   "hexcasting.mishap.oneironaut:requiresdifferententities": "一个与目标不同的实体",
   "hexcasting.mishap.oneironaut:nostaff": "%s本应由法杖施放。",
+  "hexcasting.mishap.oneironaut:nosentinel": "无法找到可挪移的哨卫。",
   "oneironaut.mishap.noitemframe": "一个物品展示框",
   "oneironaut.mishap.invalidideakey": "一个向量、玩家或灵魂印记",
   "oneironaut.mishap.unenlightenedtarget": "一个经过启迪的玩家",
