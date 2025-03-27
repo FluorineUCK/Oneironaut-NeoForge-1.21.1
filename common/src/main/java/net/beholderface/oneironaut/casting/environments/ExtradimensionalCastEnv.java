@@ -41,7 +41,7 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
 
     @Override
     protected long extractMediaEnvironment(long cost, boolean simulate) {
-        double multiplier = (this.world == this.caster.getWorld()) || (parentEnv instanceof ExtradimensionalCastEnv) ? 1.0 : 1.25;
+        double multiplier = 1.25;
         return ((GeneralCastEnvInvoker)parentEnv).extractFromEnv((long) (cost * multiplier), simulate);
     }
 
