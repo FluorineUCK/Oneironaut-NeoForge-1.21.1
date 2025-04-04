@@ -73,8 +73,8 @@ class OpSwapSpace : SpellAction {
         } else {
             boxVolume.toDouble() / 5 //yes all these values are magic numbers but I can't be arsed right now
         }
-        Oneironaut.LOGGER.info("box volume: $boxVolume")
-        Oneironaut.LOGGER.info("cost: $cost dust")
+        /*Oneironaut.LOGGER.info("box volume: $boxVolume")
+        Oneironaut.LOGGER.info("cost: $cost dust")*/
         val boxCorners = getBoxCorners(originBox)
         for (corner in boxCorners) {
             env.assertVecInRange(corner)

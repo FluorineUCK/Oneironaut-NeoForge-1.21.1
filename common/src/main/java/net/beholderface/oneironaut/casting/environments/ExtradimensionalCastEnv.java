@@ -6,6 +6,7 @@ import at.petrak.hexcasting.api.casting.eval.CastResult;
 import at.petrak.hexcasting.api.casting.eval.MishapEnvironment;
 import at.petrak.hexcasting.api.casting.eval.env.PlayerBasedCastEnv;
 import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect;
+import at.petrak.hexcasting.api.casting.eval.vm.CastingVM;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker;
 import net.beholderface.oneironaut.mixin.PlayerCastEnvInvoker;
@@ -22,11 +23,32 @@ import java.util.function.Predicate;
 
 public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
 
-    private final PlayerBasedCastEnv parentEnv;
+    public final PlayerBasedCastEnv parentEnv;
+    public final int depth;
+    public final CastingVM vm;
+
+    public ExtradimensionalCastEnv(ServerPlayerEntity caster, PlayerBasedCastEnv parent, ServerWorld target, CastingVM existingVM) {
+        super(caster, parent.getCastingHand());
+        this.parentEnv = parent;
+        ((GeneralCastEnvInvoker)this).setWorld(target);
+        if (parentEnv instanceof ExtradimensionalCastEnv extradimensionalCastEnv){
+            this.depth = extradimensionalCastEnv.depth + 1;
+        } else {
+            this.depth = 1;
+        }
+        this.vm = existingVM;
+    }
+
     public ExtradimensionalCastEnv(ServerPlayerEntity caster, PlayerBasedCastEnv parent, ServerWorld target) {
         super(caster, parent.getCastingHand());
         this.parentEnv = parent;
         ((GeneralCastEnvInvoker)this).setWorld(target);
+        if (parentEnv instanceof ExtradimensionalCastEnv extradimensionalCastEnv){
+            this.depth = extradimensionalCastEnv.depth + 1;
+        } else {
+            this.depth = 1;
+        }
+        this.vm = CastingVM.empty(this);
     }
 
     @Override

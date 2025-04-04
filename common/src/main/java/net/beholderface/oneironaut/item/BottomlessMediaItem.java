@@ -61,7 +61,7 @@ public class BottomlessMediaItem extends ItemMediaHolder {
             if (lastPhialCount == 1){
                 media = MediaConstants.DUST_UNIT / 10;
             } else {
-                media = (int) (((arbitraryLog(base, lastPhialCount) + 0.75) / lastPhialCount) * (MediaConstants.DUST_UNIT / 10));
+                media = (int) (((arbitraryLog(base, lastPhialCount) + 0.75) / lastPhialCount) * (MediaConstants.DUST_UNIT / 10.0));
             }
         }
         //int media = foundItems > 0 ? (int) (((arbitraryLog(6.0, foundItems) + 0.75) / foundItems) * (MediaConstants.DUST_UNIT / 10)) : 0;
@@ -135,9 +135,7 @@ public class BottomlessMediaItem extends ItemMediaHolder {
     }
 
     @Override
-    public void setMedia(ItemStack stack, long media) {
-        //stack.setCount(media / PSEUDOSHARD_UNIT);
-    }
+    public void setMedia(ItemStack stack, long media) {}
 
     @Override
     public boolean canProvideMedia(ItemStack stack) {

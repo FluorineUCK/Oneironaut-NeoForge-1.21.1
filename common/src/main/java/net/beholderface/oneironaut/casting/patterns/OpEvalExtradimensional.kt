@@ -16,8 +16,6 @@ import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import net.beholderface.oneironaut.casting.environments.ExtradimensionalCastEnv
 import net.beholderface.oneironaut.casting.iotatypes.DimIota
 import net.beholderface.oneironaut.casting.mishaps.MishapExtradimensionalFail
-import net.minecraft.server.world.ServerWorld
-import net.minecraft.text.Text
 
 class OpEvalExtradimensional : Action {
     override fun operate(env: CastingEnvironment, image: CastingImage, continuation: SpellContinuation
@@ -28,20 +26,27 @@ class OpEvalExtradimensional : Action {
         val stack = image.stack.toMutableList()
         val toExecute = stack.removeLastOrNull() ?: throw MishapNotEnoughArgs(2, 0)
         val dimension = stack.removeLastOrNull() ?: throw MishapNotEnoughArgs(2, 1)
+        val server = env.world.server
         if (dimension !is DimIota){
             throw MishapInvalidIota.ofType(dimension, 1, "oneironaut:imprint")
+        } else if (dimension.toWorld(server) == env.world){
+            throw MishapInvalidIota.ofType(dimension, 1, "oneironaut:differentimprint")
         }
-        val newEnv = ExtradimensionalCastEnv(env.caster, env, dimension.toWorld(env.world.server))
-        return exec(newEnv, image.copy(stack = stack), continuation, stack, toExecute, dimension.toWorld(env.world.server))
+        val newEnv = if (env is ExtradimensionalCastEnv) {
+            ExtradimensionalCastEnv(env.caster, env, dimension.toWorld(server), env.vm)
+        } else {
+            ExtradimensionalCastEnv(env.caster, env, dimension.toWorld(server))
+        }
+        return exec(newEnv, image.copy(stack = stack), continuation, toExecute)
     }
 
-    fun exec(env: CastingEnvironment, image: CastingImage, continuation: SpellContinuation, newStack: MutableList<Iota>, instrs: Iota, dimension : ServerWorld): OperationResult {
+    fun exec(env: ExtradimensionalCastEnv, image: CastingImage, continuation: SpellContinuation, instrs: Iota): OperationResult {
         val toExecute = if (instrs is ListIota){
             instrs.list.toList()
         } else {
             listOf(instrs)
         }
-        val subHarness = CastingVM.empty(env)
+        val subHarness = env.vm
         subHarness.image = image
         val executionResult = subHarness.queueExecuteAndWrapIotas(toExecute, env.world)
         if (!executionResult.resolutionType.success){
