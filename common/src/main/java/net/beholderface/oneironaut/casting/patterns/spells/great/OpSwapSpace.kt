@@ -164,6 +164,9 @@ class OpSwapSpace : SpellAction {
                                     || ((originPointState.hasBlockEntity() || destPointState.hasBlockEntity()) && !OneironautConfig.server.swapSwapsBEs)
                                     || !breakingAllowed)){
                             if (destBE != null){
+                                if (originBE == destBE){
+                                    continue
+                                }
                                 var state = destBE.cachedState
                                 if (destBE is BlockEntityAbstractImpetus){
                                     state = resetImpetus(state, destBE)
