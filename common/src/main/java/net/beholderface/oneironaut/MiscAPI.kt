@@ -9,10 +9,10 @@ import at.petrak.hexcasting.api.pigment.FrozenPigment
 import at.petrak.hexcasting.fabric.cc.HexCardinalComponents
 import at.petrak.hexcasting.xplat.IXplatAbstractions
 import net.beholderface.oneironaut.casting.environments.ReverbRodCastEnv
-import net.beholderface.oneironaut.network.UnBrainsweepPacket
-import net.beholderface.oneironaut.recipe.OneironautRecipeTypes
 import net.beholderface.oneironaut.casting.iotatypes.DimIota
 import net.beholderface.oneironaut.casting.iotatypes.SoulprintIota
+import net.beholderface.oneironaut.network.UnBrainsweepPacket
+import net.beholderface.oneironaut.recipe.OneironautRecipeTypes
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
@@ -344,6 +344,14 @@ fun Box.longestAxisLength() : Double{
     } else {
         z
     }
+}
+
+fun Box.intersectsPermissive(minX: Double, minY: Double, minZ: Double, maxX: Double, maxY: Double, maxZ: Double): Boolean {
+    return this.minX <= maxX && this.maxX >= minX && this.minY <= maxY && this.maxY >= minY && this.minZ <= maxZ && this.maxZ >= minZ
+}
+
+fun Box.intersectsPermissive(box : Box): Boolean {
+    return this.intersectsPermissive(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ)
 }
 
 fun FrozenPigment.rawColor(time : Float, pos : Vec3d){

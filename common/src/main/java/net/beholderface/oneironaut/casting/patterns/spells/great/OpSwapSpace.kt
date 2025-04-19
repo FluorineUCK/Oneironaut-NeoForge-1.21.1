@@ -94,6 +94,10 @@ class OpSwapSpace : SpellAction {
             throw MishapNoNoosphere()
         }
 
+        if (originWorld == destWorld && originBox.intersectsPermissive(destBox)){
+            throw MishapBadCuboid("overlap")
+        }
+
         return SpellAction.Result(
             Spell(originWorld, originBox, destWorld, destBox, originCuboidDimensions, boxVolume),
             (cost * MediaConstants.DUST_UNIT).toLong(),
