@@ -3,6 +3,7 @@ package net.beholderface.oneironaut.item;
 import at.petrak.hexcasting.api.misc.MediaConstants;
 import at.petrak.hexcasting.common.items.magic.ItemMediaHolder;
 import com.mojang.datafixers.util.Pair;
+import net.beholderface.oneironaut.OneironautConfig;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -54,21 +55,32 @@ public class BottomlessMediaItem extends ItemMediaHolder {
         int base = lastPhialCount <= 36 ? 6 : 12;
         //NbtCompound currentData = playerPhialCounts.get(phialOwners.get(uuid).getFirst());
         long media = 1;
-        if (time != lastCheckIn){
-            //Oneironaut.LOGGER.info("Stale phial use detected");
-            return media;
-        } else {
-            if (lastPhialCount == 1){
-                media = MediaConstants.DUST_UNIT / 10;
+        float mediaMultiplier = 1.0f;
+        if (lastCheckIn != time){
+            if (lastCheckIn == time - 1){
+                mediaMultiplier = OneironautConfig.getServer().getStaleIPhialLenience();
             } else {
-                media = (int) (((arbitraryLog(base, lastPhialCount) + 0.75) / lastPhialCount) * (MediaConstants.DUST_UNIT / 10.0));
+                mediaMultiplier = 0.0f;
             }
+        }
+        if (lastPhialCount == 1){
+            media = MediaConstants.DUST_UNIT / 10;
+        } else {
+            media = (int) (((arbitraryLog(base, lastPhialCount) + 0.75) / lastPhialCount) * (MediaConstants.DUST_UNIT / 10.0));
         }
         //int media = foundItems > 0 ? (int) (((arbitraryLog(6.0, foundItems) + 0.75) / foundItems) * (MediaConstants.DUST_UNIT / 10)) : 0;
         //Oneironaut.LOGGER.info("Media in each of the "+ lastPhialCount + " endless phials in inventory: "+media);
         //Oneironaut.LOGGER.info(media);
-        return media;
+        return (long) Math.max(media * mediaMultiplier, 1);
     }
+
+    private void resetLists(Pair<List<UUID>, Long> pair, UUID uuid, Entity entity){
+        List<UUID> list = pair.getFirst();
+        list.clear();
+        list.add(uuid);
+        playerPhialList.put(entity, new Pair<>(list, time));
+    }
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (!world.isClient && entity instanceof PlayerEntity){
@@ -90,10 +102,8 @@ public class BottomlessMediaItem extends ItemMediaHolder {
             }
             Pair<List<UUID>, Long> currentData = playerPhialList.get(entity);
             List<UUID> list = currentData.getFirst();
-            if (currentData.getSecond() != time){
-                list.clear();
-                list.add(uuid);
-                playerPhialList.put(entity, new Pair<>(list, time));
+            if (Math.abs(currentData.getSecond() - time) <= 1){
+                resetLists(currentData, uuid, entity);
             } else {
                 if (list.contains(uuid)){
                     uuid = UUID.randomUUID();

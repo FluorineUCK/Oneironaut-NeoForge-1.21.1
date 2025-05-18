@@ -67,6 +67,7 @@ public class FabricOneironautConfig extends PartitioningSerializer.GlobalData {
             boolean infusionEternalChorus = DEFAULT_INFUSE_CHORUS;
             boolean allowOverworldReflection = DEFAULT_OVERWORLD_REFLECTION;
             boolean allowNetherReflection = DEFAULT_NETHER_REFLECTION;
+            float staleIPhialLenience = DEFAULT_STALE_IPHIAL_LENIENCE;
         }
         @Override
         public boolean getPlaneShiftOtherPlayers() {
@@ -76,10 +77,13 @@ public class FabricOneironautConfig extends PartitioningSerializer.GlobalData {
         @Override
         public void validatePostLoad() throws ValidationException {
             this.miscConfig.ideaLifetime = bound(this.miscConfig.ideaLifetime, 1, 20 * 60 * 60 * 24 * 7); //one IRL week
-
+            this.miscConfig.staleIPhialLenience = bound(this.miscConfig.staleIPhialLenience, 0.0f, 1.0f);
         }
 
         private int bound(int toBind, int lower, int upper) {
+            return Math.min(Math.max(toBind, lower), upper);
+        }
+        private float bound(float toBind, float lower, float upper) {
             return Math.min(Math.max(toBind, lower), upper);
         }
         private double bound(double toBind, double lower, double upper) {
@@ -123,6 +127,11 @@ public class FabricOneironautConfig extends PartitioningSerializer.GlobalData {
         @Override
         public boolean getAllowNetherReflection() {
             return miscConfig.allowNetherReflection;
+        }
+
+        @Override
+        public float getStaleIPhialLenience() {
+            return miscConfig.staleIPhialLenience;
         }
 
         private static boolean isValidID(Object o) {

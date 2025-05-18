@@ -19,6 +19,7 @@ object OneironautConfig {
             val infusionEternalChorus : Boolean
             val allowOverworldReflection : Boolean
             val allowNetherReflection : Boolean
+            val staleIPhialLenience : Float
 
             companion object {
                 const val DEFAULT_ALLOW_PLANESHIFT_OTHERS = false
@@ -29,6 +30,7 @@ object OneironautConfig {
                 const val DEFAULT_INFUSE_CHORUS = true
                 const val DEFAULT_OVERWORLD_REFLECTION = true
                 const val DEFAULT_NETHER_REFLECTION = true
+                const val DEFAULT_STALE_IPHIAL_LENIENCE = 0.1f
             }
         }
 
@@ -51,25 +53,29 @@ object OneironautConfig {
             return !anyMatch(keys, key)
         }
 
+        private const val throwMessage = "Attempted to access property of Dummy Config Object"
+
         private object DummyCommon : CommonConfigAccess {  }
         private object DummyClient : ClientConfigAccess {  }
         private object DummyServer : ServerConfigAccess {
             override val planeShiftOtherPlayers: Boolean
-                get() = throw IllegalStateException("Attempted to access property of Dummy Config Object")
+                get() = throw IllegalStateException(throwMessage)
             override val ideaLifetime: Int
-                get() = throw IllegalStateException("Attempted to access property of Dummy Config Object")
+                get() = throw IllegalStateException(throwMessage)
             override val swapRequiresNoosphere: Boolean
-                get() = throw IllegalStateException("Attempted to access property of Dummy Config Object")
+                get() = throw IllegalStateException(throwMessage)
             override val swapSwapsBEs: Boolean
-                get() = throw IllegalStateException("Attempted to access property of Dummy Config Object")
+                get() = throw IllegalStateException(throwMessage)
             override val impulseRedirectsFireball: Boolean
-                get() = throw IllegalStateException("Attempted to access property of Dummy Config Object")
+                get() = throw IllegalStateException(throwMessage)
             override val infusionEternalChorus: Boolean
-                get() = throw IllegalStateException("Attempted to access property of Dummy Config Object")
+                get() = throw IllegalStateException(throwMessage)
             override val allowOverworldReflection: Boolean
-                get() = throw IllegalStateException("Attempted to access property of Dummy Config Object")
+                get() = throw IllegalStateException(throwMessage)
             override val allowNetherReflection: Boolean
-                get() = throw IllegalStateException("Attempted to access property of Dummy Config Object")
+                get() = throw IllegalStateException(throwMessage)
+            override val staleIPhialLenience: Float
+                get() = throw IllegalStateException(throwMessage)
         }
 
         @JvmStatic
