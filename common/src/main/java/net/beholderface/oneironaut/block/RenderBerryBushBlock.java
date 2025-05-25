@@ -150,7 +150,8 @@ public class RenderBerryBushBlock extends PlantBlock implements Fertilizable {
         if (!brainswept){
             DamageSource berryDamage = target.getDamageSources().sweetBerryBush();
             target.damage(berryDamage, target.isPlayer() ? 0.001f : 0f);
-            OvercastDamageEnchant.applyMindDamage(null, target, 2, false);
+            OvercastDamageEnchant.applyMindDamage(null, target, 2,
+                    target.getType().isIn(MiscAPIKt.getEntityTagKey(Oneironaut.id("render_autospare"))));
             Identifier blacklistTagID = Identifier.of(Oneironaut.MOD_ID, "monkfruit_blacklist");
             assert blacklistTagID != null;
             var blacklistTag = MiscAPIKt.getEntityTagKey(blacklistTagID);

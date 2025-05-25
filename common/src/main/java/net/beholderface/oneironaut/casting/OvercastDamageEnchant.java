@@ -66,7 +66,7 @@ public class OvercastDamageEnchant extends Enchantment {
 
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-        applyMindDamage(user, target, level, false);
+        applyMindDamage(user, target, level, target.getType().isIn(MiscAPIKt.getEntityTagKey(Oneironaut.id("render_autospare"))));
     }
 
     public boolean canAccept(Enchantment other){

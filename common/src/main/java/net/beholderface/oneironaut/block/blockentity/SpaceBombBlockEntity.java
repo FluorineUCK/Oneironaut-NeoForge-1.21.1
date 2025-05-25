@@ -2,6 +2,7 @@ package net.beholderface.oneironaut.block.blockentity;
 
 import at.petrak.hexcasting.common.blocks.circles.BlockSlate;
 import at.petrak.hexcasting.common.particles.ConjureParticleOptions;
+import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
 import net.beholderface.oneironaut.registry.OneironautBlockRegistry;
@@ -154,7 +155,8 @@ public class SpaceBombBlockEntity extends BlockEntity {
         for (Entity entity : living){
             LivingEntity livingEntity = (LivingEntity) entity;
             OvercastDamageEnchant.applyMindDamage(null, livingEntity,
-                    (int)Math.floor(16 - entity.getPos().distanceTo(doublePos)) * 2, false);
+                    (int)Math.floor(16 - entity.getPos().distanceTo(doublePos)) * 2,
+                    livingEntity.getType().isIn(MiscAPIKt.getEntityTagKey(Oneironaut.id("render_autospare"))));
         }
         this.world.playSound(null, this.pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 2.0f, 0.75f);
         this.world.setBlockState(this.pos, createdBlockstate);
