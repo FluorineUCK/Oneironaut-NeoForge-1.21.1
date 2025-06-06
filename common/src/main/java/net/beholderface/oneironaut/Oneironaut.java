@@ -8,6 +8,7 @@ import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
+import net.beholderface.oneironaut.block.InactiveSlipwayBlock;
 import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.casting.DepartureEntry;
 import net.beholderface.oneironaut.casting.IdeaInscriptionManager;
@@ -77,6 +78,7 @@ public class Oneironaut {
             randomWispPigments.add(OneironautItemRegistry.PIGMENT_NOOSPHERE.get());
             randomWispPigments.add(OneironautItemRegistry.PIGMENT_FLAME.get());
             OneironautCastEnvComponents.init();
+            InactiveSlipwayBlock.init();
         });
 
         TickEvent.SERVER_PRE.register((server) -> {

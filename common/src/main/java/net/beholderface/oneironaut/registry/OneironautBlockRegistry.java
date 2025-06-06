@@ -13,6 +13,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.BooleanProperty;
 import net.beholderface.oneironaut.Oneironaut;
+import ram.talia.hexal.common.lib.HexalBlocks;
 
 import java.util.function.ToIntFunction;
 
@@ -90,6 +91,9 @@ public class OneironautBlockRegistry {
 
     public static RegistrySupplier<SpaceBombBlock> SPACE_BOMB = BLOCKS.register("spacebomb", ()->new SpaceBombBlock(AbstractBlock.Settings.copy(Blocks.RESPAWN_ANCHOR).luminance(createLightLevelFromBoolBlockState(BlockSlate.ENERGIZED, 13))));
     public static RegistrySupplier<BlockEntityType<SpaceBombBlockEntity>> SPACE_BOMB_ENTITY = BLOCK_ENTITIES.register("spacebomb_entity", ()->BlockEntityType.Builder.create(SpaceBombBlockEntity::new, SPACE_BOMB.get()).build(null));
+
+    public static RegistrySupplier<InactiveSlipwayBlock> INACTIVE_SLIPWAY = BLOCKS.register("inactiveslipway", ()->new InactiveSlipwayBlock(AbstractBlock.Settings.copy(HexalBlocks.SLIPWAY)));
+    public static RegistrySupplier<SlipwaySuppressorBlock> SLIPWAY_SUPPRESSOR = BLOCKS.register("slipwaysuppressor", ()->new SlipwaySuppressorBlock(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK)));
 
     //not intended to be the real-world monk fruit, just thought it was a good name, especially considering the etymology (https://en.wikipedia.org/wiki/Siraitia_grosvenorii#Etymology_and_regional_names)
     public static RegistrySupplier<RenderBerryBushBlock> RENDER_BUSH = BLOCKS.register("monkfruit_bush", ()->new RenderBerryBushBlock(AbstractBlock.Settings.copy(Blocks.SWEET_BERRY_BUSH)));
