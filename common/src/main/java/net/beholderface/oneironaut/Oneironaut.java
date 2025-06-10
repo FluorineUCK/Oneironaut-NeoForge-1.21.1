@@ -2,6 +2,7 @@ package net.beholderface.oneironaut;
 
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.common.items.ItemStaff;
+import at.petrak.hexcasting.common.items.magic.ItemMediaHolder;
 import at.petrak.hexcasting.common.lib.HexItems;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.events.common.InteractionEvent;
@@ -20,6 +21,7 @@ import net.beholderface.oneironaut.recipe.OneironautRecipeSerializer;
 import net.beholderface.oneironaut.recipe.OneironautRecipeTypes;
 import net.beholderface.oneironaut.registry.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -28,6 +30,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.random.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,6 +107,23 @@ public class Oneironaut {
                 noosphere.spawnEntity(wisp);
             }
             LichdomManager.tick(server);
+            //thing I wrote to test the stale phial thingy
+            /*List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
+            if (!players.isEmpty()){
+                ServerPlayerEntity player = players.get(0);
+                List<Entity> entities = server.getOverworld().getOtherEntities(null, new Box(
+                        player.getPos().add(10, 10, 10),
+                        player.getPos().add(-10, -10, -10)), (Entity e)->{
+                    return e instanceof ItemEntity;
+                });
+                ItemEntity item = null;
+                if (!entities.isEmpty()){
+                    item = (ItemEntity) entities.get(0);
+                }
+                if (item != null && item.getStack().getItem() instanceof ItemMediaHolder holder && player.isSneaking()){
+                    Oneironaut.LOGGER.info(holder.getMedia(item.getStack()));
+                }
+            }*/
         });
 
         PlayerEvent.PLAYER_RESPAWN.register((player, leavingEnd)->{

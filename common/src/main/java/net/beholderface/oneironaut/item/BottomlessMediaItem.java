@@ -57,7 +57,7 @@ public class BottomlessMediaItem extends ItemMediaHolder {
         long media = 1;
         float mediaMultiplier = 1.0f;
         if (lastCheckIn != time){
-            if (lastCheckIn == time - 1){
+            if (Math.abs(lastCheckIn - time) <= 1){
                 mediaMultiplier = OneironautConfig.getServer().getStaleIPhialLenience();
             } else {
                 mediaMultiplier = 0.0f;
@@ -102,9 +102,12 @@ public class BottomlessMediaItem extends ItemMediaHolder {
             }
             Pair<List<UUID>, Long> currentData = playerPhialList.get(entity);
             List<UUID> list = currentData.getFirst();
-            if (Math.abs(currentData.getSecond() - time) <= 1){
+            if (/*Math.abs(currentData.getSecond() - time) <= 1*/ currentData.getSecond() != time){
                 resetLists(currentData, uuid, entity);
             } else {
+                /*if (entity.isSneaking()){
+                    Oneironaut.LOGGER.info(list.toString());
+                }*/
                 if (list.contains(uuid)){
                     uuid = UUID.randomUUID();
                     stackNbt.putUuid("uuid", uuid);
