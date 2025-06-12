@@ -8,9 +8,7 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.item.*;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -82,7 +80,15 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<BlockItem> SLIPWAY_SUPPRESSOR_ITEM = ITEMS.register("slipwaysuppressor", ()->new BlockItem(OneironautBlockRegistry.SLIPWAY_SUPPRESSOR.get(), ONEIRONAUT_STACKABLE64));
 
     public static final FoodComponent MONKFRUIT_FOOD = (new FoodComponent.Builder()).hunger(4).saturationModifier(0.6F).snack().alwaysEdible().build();
-    public static final RegistrySupplier<MonkfruitItem> RENDER_FRUIT = ITEMS.register("monkfruit", ()->{
+    public static final FoodComponent MONKFRUIT_FOOD_COOKED = (new FoodComponent.Builder()).hunger(6).saturationModifier(0.8F).alwaysEdible().build();
+    public static final FoodComponent MONKFRUIT_FOOD_JAM = (new FoodComponent.Builder()).hunger(6).saturationModifier(1.0F).alwaysEdible().build();
+    public static final RegistrySupplier<MonkfruitItem> MONKFRUIT = ITEMS.register("monkfruit", ()->{
         return new MonkfruitItem(OneironautBlockRegistry.RENDER_BUSH.get(), ((ONEIRONAUT_STACKABLE64).food(MONKFRUIT_FOOD)));
+    });
+    public static final RegistrySupplier<MonkfruitItemCooked> MONKFRUIT_COOKED = ITEMS.register("monkfruit_cooked", ()->{
+        return new MonkfruitItemCooked(((ONEIRONAUT_STACKABLE64).food(MONKFRUIT_FOOD_COOKED)));
+    });
+    public static final RegistrySupplier<MonkfruitItemJam> MONKFRUIT_JAM = ITEMS.register("hexjam", ()->{
+        return new MonkfruitItemJam(((ONEIRONAUT_STACKABLE64).food(MONKFRUIT_FOOD_JAM)));
     });
 }

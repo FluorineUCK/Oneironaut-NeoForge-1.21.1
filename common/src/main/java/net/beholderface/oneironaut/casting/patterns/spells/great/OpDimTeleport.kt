@@ -70,9 +70,9 @@ class OpDimTeleport : SpellAction {
         if (target == env.caster){
             val entry = DepartureEntry.getEntry(env, destination)
             if (entry != null){
-                if (entry.isWithinCylinder(target.pos)){
+                //if (entry.isWithinCylinder(target.pos)){
                     departure = true
-                }
+                //}
             }
         }
 
@@ -115,7 +115,7 @@ class OpDimTeleport : SpellAction {
                 flightSpell = IXplatAbstractions.INSTANCE.getFlight(playerTarget)
                 if (target == env.caster){
                     DepartureEntry(env, origin)
-                    val entry = DepartureEntry.getEntry(env, destination)
+                    /*val entry = DepartureEntry.getEntry(env, destination)
                     if (entry != null){
                         if (entry.isWithinCylinder(Vec3d(x, 0.0, z))){
                             //Oneironaut.LOGGER.info("Found an existing departure, teleporting there.")
@@ -125,7 +125,7 @@ class OpDimTeleport : SpellAction {
                             playerTarget.sendAbilitiesUpdate()
                             return
                         }
-                    }
+                    }*/
                     //Oneironaut.LOGGER.info("No existing departure found, behaving as normal.")
                 }
                 playerTarget.sendAbilitiesUpdate()

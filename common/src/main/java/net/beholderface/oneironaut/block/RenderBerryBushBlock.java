@@ -4,13 +4,11 @@ import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
-import net.beholderface.oneironaut.registry.OneironautBlockRegistry;
 import net.beholderface.oneironaut.registry.OneironautItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +20,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -37,9 +34,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.event.GameEvent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class RenderBerryBushBlock extends PlantBlock implements Fertilizable {
     public RenderBerryBushBlock(Settings settings) {
@@ -197,7 +192,7 @@ public class RenderBerryBushBlock extends PlantBlock implements Fertilizable {
                     playerx.sendToolBreakStatus(hand));
                 sheared = true;
             } else {
-                dropStack(world, pos, new ItemStack(OneironautItemRegistry.RENDER_FRUIT.get(), dropCount + (fullGrown ? 1 : 0)));
+                dropStack(world, pos, new ItemStack(OneironautItemRegistry.MONKFRUIT.get(), dropCount + (fullGrown ? 1 : 0)));
             }
             world.playSound(null, pos, SoundEvents.BLOCK_SWEET_BERRY_BUSH_PICK_BERRIES, SoundCategory.BLOCKS, 1.0F, 0.8F + world.random.nextFloat() * 0.4F);
             BlockState blockState = state.with(AGE, sheared ? 0 : 1).with(THOUGHTS, 0);

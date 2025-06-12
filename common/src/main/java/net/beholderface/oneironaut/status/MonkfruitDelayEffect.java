@@ -48,7 +48,8 @@ public class MonkfruitDelayEffect extends StatusEffect {
             }
             boolean isLich = LichdomManager.isPlayerLich(player);
             int quantity = mediaHolders.size() + (isLich ? 1 : 0);
-            long inserted = (long) ((overallReleased / quantity) * MediaConstants.DUST_UNIT);
+            double multiplier = 1.0 + (amplifier / 4.0);
+            long inserted = (long) (((overallReleased / quantity) * (multiplier)) * MediaConstants.DUST_UNIT);
             for (ItemStack battery : mediaHolders){
                 MediaHolderItem type = (MediaHolderItem) battery.getItem();
                 type.insertMedia(battery, inserted, false);
