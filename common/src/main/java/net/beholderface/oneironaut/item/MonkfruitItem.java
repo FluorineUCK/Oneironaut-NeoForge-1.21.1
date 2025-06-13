@@ -22,7 +22,7 @@ public class MonkfruitItem extends AliasedBlockItem {
         if (effects.containsKey(rumination)){
             StatusEffectInstance instance = effects.get(rumination);
             //adjust preexisting duration if changing effect level
-            int adjustedDuration = (int) ((double)instance.getDuration() * (((double) (instance.getAmplifier() + 1)) / (double) amplifier + 1.0));
+            int adjustedDuration = instance.getAmplifier() != amplifier ? (int) ((double)instance.getDuration() * ((((double)instance.getAmplifier() / 4.0) + 1.0) / (((double) amplifier / 4.0) + 1.0))) : instance.getDuration();
             effects.put(rumination, new StatusEffectInstance(rumination, adjustedDuration + duration, amplifier, false, false, true));
         } else {
             player.addStatusEffect(new StatusEffectInstance(rumination, duration, amplifier, false, false, true));
