@@ -78,6 +78,7 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<BlockItem> PSEUDOAMETHYST_CLUSTER_ITEM = ITEMS.register("pseudoamethyst_cluster", ()->new BlockItem(OneironautBlockRegistry.PSEUDOAMETHYST_CLUSTER.get(), ONEIRONAUT_STACKABLE64));
     public static final RegistrySupplier<BlockItem> SPACE_BOMB_ITEM = ITEMS.register("spacebomb", ()->new BlockItem(OneironautBlockRegistry.SPACE_BOMB.get(), ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<BlockItem> SLIPWAY_SUPPRESSOR_ITEM = ITEMS.register("slipwaysuppressor", ()->new BlockItem(OneironautBlockRegistry.SLIPWAY_SUPPRESSOR.get(), ONEIRONAUT_STACKABLE64));
+    public static final RegistrySupplier<BlockItem> EXTRADIM_LOCUS_ITEM = ITEMS.register("extradimensional_border", ()->new BlockItem(OneironautBlockRegistry.EXTRADIM_LOCUS.get(), ONEIRONAUT_STACKABLE64));
 
     public static final FoodComponent MONKFRUIT_FOOD = (new FoodComponent.Builder()).hunger(4).saturationModifier(0.6F).snack().alwaysEdible().build();
     public static final FoodComponent MONKFRUIT_FOOD_COOKED = (new FoodComponent.Builder()).hunger(6).saturationModifier(0.8F).alwaysEdible().build();

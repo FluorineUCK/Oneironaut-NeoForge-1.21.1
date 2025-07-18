@@ -16,12 +16,18 @@
     },
     "oneironaut.page.heimdall.2",
     {
+      "type": "patchouli:crafting",
+      "recipe": "oneironaut:extradimensional_border",
+      "text": "oneironaut.page.heimdall.3"
+    },
+    "oneironaut.page.heimdall.4",
+    {
       "type": "hexcasting:pattern",
       "op_id": "oneironaut:shiftsentinel",
       "anchor": "oneironaut:shiftsentinel",
       "input": "Imprint",
       "output": "",
-      "text": "oneironaut.page.heimdall.3"
+      "text": "oneironaut.page.heimdall.5"
     }
   ]
 }

@@ -354,6 +354,10 @@ fun Box.intersectsPermissive(box : Box): Boolean {
     return this.intersectsPermissive(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ)
 }
 
+fun Box.volume() : Double {
+    return this.xLength * this.yLength * this.zLength
+}
+
 fun FrozenPigment.rawColor(time : Float, pos : Vec3d){
     this.colorProvider.getColor(time, pos)
 }

@@ -27,7 +27,7 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
     public final int depth;
     public final CastingVM vm;
 
-    public ExtradimensionalCastEnv(ServerPlayerEntity caster, PlayerBasedCastEnv parent, ServerWorld target, CastingVM existingVM) {
+    public ExtradimensionalCastEnv(ServerPlayerEntity caster, PlayerBasedCastEnv parent, ServerWorld target, @Nullable CastingVM existingVM) {
         super(caster, parent.getCastingHand());
         this.parentEnv = parent;
         ((GeneralCastEnvInvoker)this).setWorld(target);
@@ -36,19 +36,7 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
         } else {
             this.depth = 1;
         }
-        this.vm = existingVM;
-    }
-
-    public ExtradimensionalCastEnv(ServerPlayerEntity caster, PlayerBasedCastEnv parent, ServerWorld target) {
-        super(caster, parent.getCastingHand());
-        this.parentEnv = parent;
-        ((GeneralCastEnvInvoker)this).setWorld(target);
-        if (parentEnv instanceof ExtradimensionalCastEnv extradimensionalCastEnv){
-            this.depth = extradimensionalCastEnv.depth + 1;
-        } else {
-            this.depth = 1;
-        }
-        this.vm = CastingVM.empty(this);
+        this.vm = existingVM != null ? existingVM : CastingVM.empty(this);
     }
 
     @Override

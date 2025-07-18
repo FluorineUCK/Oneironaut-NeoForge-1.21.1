@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,energized=false": {
+      "model": "oneironaut:block/extradimlocus_off",
+      "x": 180
+    },
+    "facing=up,energized=false": {
+      "model": "oneironaut:block/extradimlocus_off",
+      "x": 0
+    },
+    "facing=east,energized=false": {
+      "model": "oneironaut:block/extradimlocus_off",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west,energized=false": {
+      "model": "oneironaut:block/extradimlocus_off",
+      "x": 90,
+      "y": 270
+    },
+    "facing=north,energized=false": {
+      "model": "oneironaut:block/extradimlocus_off",
+      "x": 90
+    },
+    "facing=south,energized=false": {
+      "model": "oneironaut:block/extradimlocus_off",
+      "x": 270
+    },
+    "facing=down,energized=true": {
+      "model": "oneironaut:block/extradimlocus_on",
+      "x": 180
+    },
+    "facing=up,energized=true": {
+      "model": "oneironaut:block/extradimlocus_on",
+      "x": 0
+    },
+    "facing=east,energized=true": {
+      "model": "oneironaut:block/extradimlocus_on",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west,energized=true": {
+      "model": "oneironaut:block/extradimlocus_on",
+      "x": 90,
+      "y": 270
+    },
+    "facing=north,energized=true": {
+      "model": "oneironaut:block/extradimlocus_on",
+      "x": 90
+    },
+    "facing=south,energized=true": {
+      "model": "oneironaut:block/extradimlocus_on",
+      "x": 270
+    }
+  }
+}

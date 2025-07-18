@@ -4,7 +4,9 @@ import at.petrak.hexcasting.api.casting.castables.ConstMediaAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
+import at.petrak.hexcasting.api.casting.mishaps.MishapLocationInWrongDimension
 import at.petrak.hexcasting.api.misc.MediaConstants
+import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.api.player.Sentinel
 import at.petrak.hexcasting.xplat.IXplatAbstractions
 import net.beholderface.oneironaut.casting.mishaps.MishapNoSentinel
@@ -19,6 +21,10 @@ class OpShiftSentinel : ConstMediaAction {
             throw MishapBadCaster()
         }
         val destDim = args.getDimIota(0, argc).toWorld(env.world.server)
+        val worldKey = destDim.registryKey
+        if (!HexConfig.server().canTeleportInThisDimension(worldKey)){
+            throw MishapLocationInWrongDimension(worldKey.value)
+        }
         val sentinel = IXplatAbstractions.INSTANCE.getSentinel(env.caster) ?: throw MishapNoSentinel() //placeholder
         val originDim = env.world.server.getWorld(sentinel.dimension)
         if (originDim == destDim){

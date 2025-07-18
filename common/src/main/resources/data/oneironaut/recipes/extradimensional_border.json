@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "oneironaut:shifting_pseudoamethyst"
+    },
+    "S": {
+      "item": "hexcasting:slate"
+    },
+    "C": {
+      "item": "minecraft:chorus_fruit"
+    },
+    "B": {
+      "item": "oneironaut:noosphere_basalt"
+    }
+  },
+  "pattern": [
+    "SPS",
+    "CBC",
+    "SPS"
+  ],
+  "result": {
+    "item": "oneironaut:extradimensional_border"
+  }
+}

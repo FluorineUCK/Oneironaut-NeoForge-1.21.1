@@ -3,6 +3,7 @@ package net.beholderface.oneironaut.casting.patterns
 import at.petrak.hexcasting.api.casting.castables.Action
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.eval.OperationResult
+import at.petrak.hexcasting.api.casting.eval.env.CircleCastEnv
 import at.petrak.hexcasting.api.casting.eval.env.PlayerBasedCastEnv
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM
@@ -12,15 +13,20 @@ import at.petrak.hexcasting.api.casting.iota.ListIota
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
+import at.petrak.hexcasting.api.utils.getList
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
+import net.beholderface.oneironaut.Oneironaut
+import net.beholderface.oneironaut.block.ExtradimensionalBoundaryLocus
 import net.beholderface.oneironaut.casting.environments.ExtradimensionalCastEnv
+import net.beholderface.oneironaut.casting.environments.ExtradimensionalCircleCastEnv
 import net.beholderface.oneironaut.casting.iotatypes.DimIota
 import net.beholderface.oneironaut.casting.mishaps.MishapExtradimensionalFail
+import net.minecraft.nbt.NbtElement
 
 class OpEvalExtradimensional : Action {
     override fun operate(env: CastingEnvironment, image: CastingImage, continuation: SpellContinuation
     ): OperationResult {
-        if (env !is PlayerBasedCastEnv){
+        if (!(env is PlayerBasedCastEnv || env is CircleCastEnv)){
             throw MishapBadCaster()
         }
         val stack = image.stack.toMutableList()
@@ -32,15 +38,27 @@ class OpEvalExtradimensional : Action {
         } else if (dimension.toWorld(server) == env.world){
             throw MishapInvalidIota.ofType(dimension, 1, "oneironaut:differentimprint")
         }
-        val newEnv = if (env is ExtradimensionalCastEnv) {
-            ExtradimensionalCastEnv(env.caster, env, dimension.toWorld(server), env.vm)
+        val copiedImage = image.copy(stack = stack)
+        if (env is PlayerBasedCastEnv){
+            var vm : CastingVM? = null
+            if (env is ExtradimensionalCastEnv){
+                vm = env.vm
+            }
+            val newEnv = ExtradimensionalCastEnv(env.caster, env, dimension.toWorld(server), vm)
+            return execPlayer(newEnv, copiedImage, continuation, toExecute)
         } else {
-            ExtradimensionalCastEnv(env.caster, env, dimension.toWorld(server))
+            val circleEnv = env as CircleCastEnv
+            var vm : CastingVM? = null
+            if (circleEnv is ExtradimensionalCircleCastEnv){
+                vm = circleEnv.vm
+            }
+            val visitedLoci = ExtradimensionalBoundaryLocus.toPositionSet(image.userData.getList(ExtradimensionalBoundaryLocus.TAG_BOUNDARY_LIST, NbtElement.COMPOUND_TYPE))
+            val newEnv = ExtradimensionalCircleCastEnv(env, dimension.toWorld(server), vm, env.circleState(), visitedLoci)
+            return execCircle(newEnv, copiedImage, continuation, toExecute)
         }
-        return exec(newEnv, image.copy(stack = stack), continuation, toExecute)
     }
 
-    fun exec(env: ExtradimensionalCastEnv, image: CastingImage, continuation: SpellContinuation, instrs: Iota): OperationResult {
+    fun execPlayer(env: ExtradimensionalCastEnv, image: CastingImage, continuation: SpellContinuation, instrs: Iota): OperationResult {
         val toExecute = if (instrs is ListIota){
             instrs.list.toList()
         } else {
@@ -52,6 +70,27 @@ class OpEvalExtradimensional : Action {
         if (!executionResult.resolutionType.success){
             throw MishapExtradimensionalFail()
         }
+        return OperationResult(subHarness.image.withUsedOp(), listOf(), continuation, HexEvalSounds.HERMES)
+    }
+
+    fun execCircle(env: ExtradimensionalCircleCastEnv, image: CastingImage, continuation: SpellContinuation, instrs: Iota): OperationResult {
+        val toExecute = if (instrs is ListIota){
+            instrs.list.toList()
+        } else {
+            listOf(instrs)
+        }
+        val subHarness = env.vm
+        subHarness.image = image
+
+        //Oneironaut.LOGGER.info(env.targetDimBounds)
+
+        val executionResult = subHarness.queueExecuteAndWrapIotas(toExecute, env.world)
+        if (!executionResult.resolutionType.success){
+            throw MishapExtradimensionalFail()
+        }
+
+        //clear visited boundary loci
+        image.userData.remove(ExtradimensionalBoundaryLocus.TAG_BOUNDARY_LIST)
         return OperationResult(subHarness.image.withUsedOp(), listOf(), continuation, HexEvalSounds.HERMES)
     }
 }

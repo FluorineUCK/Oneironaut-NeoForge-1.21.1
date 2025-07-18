@@ -1,5 +1,6 @@
 package net.beholderface.oneironaut.registry;
 
+import at.petrak.hexcasting.api.block.circle.BlockCircleComponent;
 import at.petrak.hexcasting.common.blocks.circles.BlockSlate;
 import at.petrak.hexcasting.common.lib.HexBlocks;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -97,6 +98,8 @@ public class OneironautBlockRegistry {
 
     //not intended to be the real-world monk fruit, just thought it was a good name, especially considering the etymology (https://en.wikipedia.org/wiki/Siraitia_grosvenorii#Etymology_and_regional_names)
     public static RegistrySupplier<RenderBerryBushBlock> RENDER_BUSH = BLOCKS.register("monkfruit_bush", ()->new RenderBerryBushBlock(AbstractBlock.Settings.copy(Blocks.SWEET_BERRY_BUSH)));
+
+    public static RegistrySupplier<ExtradimensionalBoundaryLocus> EXTRADIM_LOCUS = BLOCKS.register("extradimensional_border", ()->new ExtradimensionalBoundaryLocus(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK).luminance(createLightLevelFromBoolBlockState(BlockCircleComponent.ENERGIZED, 14))));
 
     //mostly just stolen from the vanilla class since it's private in there
     protected static ToIntFunction<BlockState> createLightLevelFromBoolBlockState(BooleanProperty property, int litLevel) {
