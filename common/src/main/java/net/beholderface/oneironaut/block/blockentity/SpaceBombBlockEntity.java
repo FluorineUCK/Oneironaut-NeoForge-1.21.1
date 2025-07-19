@@ -62,7 +62,7 @@ public class SpaceBombBlockEntity extends BlockEntity {
                 this.tickCountdown();
                 if (imminent){
                     List<Entity> nearbyLiving = world.getOtherEntities(null, new Box(pos).expand(16.0),
-                            (it)-> it.getPos().distanceTo(doublePos) <= 16 && it instanceof LivingEntity);
+                            (it)-> it.getPos().distanceTo(doublePos) <= 16.0 && it instanceof LivingEntity);
                     for (Entity entity : nearbyLiving){
                         entity.addVelocity(entity.getEyePos().subtract(doublePos).normalize().multiply(0.025));
                     }
@@ -117,8 +117,9 @@ public class SpaceBombBlockEntity extends BlockEntity {
             double particleVelX = (signum(particlePosX - doublePos.x) * speedMultiplier) * rand.nextDouble();
             double particleVelY = (signum(particlePosY - doublePos.y) * speedMultiplier) * rand.nextDouble();
             double particleVelZ = (signum(particlePosZ - doublePos.z) * speedMultiplier) * rand.nextDouble();
+            boolean blue = rand.nextInt(4) == 0;
             world.addParticle(
-                    new ConjureParticleOptions(preparing ? 0xae31d2 : 0x6a31d2),
+                    new ConjureParticleOptions(preparing ? (blue ? 0x3296ff : 0xae31d2) : 0x6a31d2),
                     particlePosX, particlePosY, particlePosZ,
                     particleVelX * direction, particleVelY * direction, particleVelZ * direction
             );
@@ -150,13 +151,26 @@ public class SpaceBombBlockEntity extends BlockEntity {
         Vec3d doublePos = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         BlockState createdBlockstate = this.world != Oneironaut.getNoosphere() ? HexalBlocks.SLIPWAY.getDefaultState() : OneironautBlockRegistry.NOOSPHERE_GATE.get().getDefaultState();
         this.world.setBlockState(this.pos, Blocks.AIR.getDefaultState());
-        //this.world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 15.0f, World.ExplosionSourceType.NONE);
         this.world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 5.0f, World.ExplosionSourceType.BLOCK);
         for (Entity entity : living){
-            LivingEntity livingEntity = (LivingEntity) entity;
-            OvercastDamageEnchant.applyMindDamage(null, livingEntity,
-                    (int)Math.floor(16 - entity.getPos().distanceTo(doublePos)) * 2,
-                    livingEntity.getType().isIn(MiscAPIKt.getEntityTagKey(Oneironaut.id("render_autospare"))));
+            //check for warded obsidian in the path
+            Vec3d entityPos = entity.getPos();
+            boolean shielded = false;
+            double d = 0.0;
+            Vec3d checkedPos = doublePos.lerp(entityPos, d);
+            for (; doublePos.distanceTo(checkedPos) <= doublePos.distanceTo(entityPos); d += 1.0/64.0){
+                if (this.world.getBlockState(BlockPos.ofFloored(checkedPos.x, checkedPos.y, checkedPos.z)).getBlock() == OneironautBlockRegistry.HEX_RESISTANT_BLOCK.get()){
+                    shielded = true;
+                    break;
+                }
+                checkedPos = doublePos.lerp(entityPos, d);
+            }
+            if (!shielded){
+                LivingEntity livingEntity = (LivingEntity) entity;
+                OvercastDamageEnchant.applyMindDamage(null, livingEntity,
+                        (int)Math.floor(16 - entityPos.distanceTo(doublePos)) * 2,
+                        livingEntity.getType().isIn(MiscAPIKt.getEntityTagKey(Oneironaut.id("render_autospare"))));
+            }
         }
         this.world.playSound(null, this.pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 2.0f, 0.75f);
         this.world.setBlockState(this.pos, createdBlockstate);

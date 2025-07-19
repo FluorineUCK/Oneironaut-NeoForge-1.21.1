@@ -94,6 +94,7 @@
   "block.oneironaut.monkfruit_bush": "Monkfruit Bush",
   "block.oneironaut.spacebomb": "Slipcharge",
   "block.oneironaut.extradimensional_border": "Transdimensional Anchor",
+  "block.oneironaut.slipwaysuppressor": "Slipway Suppressor",
 
   "fluid.oneironaut.thought_slurry": "Thought Slurry",
 
@@ -115,6 +116,7 @@
   "oneironaut.entry.hover_elevator": "Hoverlifts",
   "oneironaut.entry.flayrevival": "Artificial Minds",
   "oneironaut.entry.heimdall": "Transdimensional Casting",
+  "oneironaut.entry.slipwaymanipulation": "Slipway Manipulation",
 
   "this.is.a.comment.4": "Book pages--------------------------------------------------------------------------------------------",
   "oneironaut.page.spaceswap.1": "Accepts two lists of two vectors, to define two cuboids, and a Spatial Imprint. These cuboids must have the exact same dimensions and rotation.",
@@ -262,6 +264,10 @@
   "oneironaut.page.heimdall.3": "While I can simply rely on my sentinel when using it in a spell circle, I have also devised an apparatus that allows a portion of the circle's ambit to extend into the target dimension.",
   "oneironaut.page.heimdall.4": "In order to use them, I must place them at all eight corners of a cuboid, and direct the circle's media wave over them. This cuboid defines the circle's ambit in the target dimension, scaled accordingly. Will not function if their positions do not form a perfect cuboid, or if there are not exactly eight of them. In order to use them again, I must direct the media wave over them all again.",
   "oneironaut.page.heimdall.5": "Accepts a spatial imprint, and moves my sentinel to its scaled coordinates in the corresponding dimension. Costs one amethyst shard. Mishaps if I do not currently have a sentinel.",
+  "oneironaut.page.slipwaymanipulation.1": "While slipways are common enough that I do not lack for wisp fuel, they are usually not in places where I feel compelled to settle, and they almost never appear in close proximity to each other. To this end, I have devised a sort of explosive charge capable of piercing spacetime itself, creating a brand-new slipway (or a stable portal, if used in the noosphere).$(br)The explosion is relatively small in this dimension, but it releases a dangerous amount of raw media, capable of piercing through practically any defense not specifically warded against hexes.",
+  "oneironaut.page.slipwaymanipulation.2": "The charge's physical structure directs the explosion along the hyperdimensional axis necessary to pierce spacetime, but I must still provide the vast amount of energy required. Approximately 200,000 Amethyst Dust worth of media, applied via Media Infusion, should do it. Perhaps I should draw on an existing slipway for this.",
+  "oneironaut.page.slipwaymanipulation.3": "In case I ever need to deactivate a slipway without removing it altogether, I have created a device that captures and neutralizes the overwhelming majority of media coming through it, preventing the formation of wandering wisps (as well as significantly reducing the visual effects associated with the slipway).",
+  "oneironaut.page.slipwaymanipulation.4": "To use it, I must simply place it directly under a slipway and apply a redstone signal.",
 
   "this.is.a.comment.5": "Advancements--------------------------------------------------------------------------------------------",
   "oneironaut.advancements.noosphere.enter": "A Realm of Thought and Dream",
