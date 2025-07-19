@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
-public class ExtradimensionalBoundaryLocus extends Block implements ICircleComponent {
+public class ExtradimensionalBoundaryLocus extends BlockCircleComponent {
 
     public static final String TAG_BOUNDARY_LIST = "oneironaut:corners";
 
@@ -94,6 +94,16 @@ public class ExtradimensionalBoundaryLocus extends Block implements ICircleCompo
         BlockState newState = bs.with(BlockCircleComponent.ENERGIZED, false);
         world.setBlockState(pos, newState);
         return newState;
+    }
+
+    @Override
+    public Direction normalDir(BlockPos pos, BlockState bs, World world, int recursionLeft) {
+        return bs.get(Properties.FACING);
+    }
+
+    @Override
+    public float particleHeight(BlockPos pos, BlockState bs, World world) {
+        return 1f / 8f;
     }
 
     public static Set<BlockPos> toPositionSet(NbtList list) {
