@@ -1,0 +1,20 @@
+{
+  "ultrawarm": false,
+  "natural": false,
+  "coordinate_scale": 16,
+  "ambient_light": 0.1,
+  "has_skylight": false,
+  "has_ceiling": false,
+  "infiniburn": "#minecraft:infiniburn_overworld",
+  "logical_height" : 384,
+  "has_raids" : false,
+  "respawn_anchor_works": false,
+  "bed_works" : false,
+  "piglin_safe" : true,
+  "height": 384,
+  "min_y": -64,
+  "monster_spawn_block_light_limit": 0,
+  "monster_spawn_light_level": 0,
+  "effects": "oneironaut:noosphere",
+  "fixed_time": 6000
+}
