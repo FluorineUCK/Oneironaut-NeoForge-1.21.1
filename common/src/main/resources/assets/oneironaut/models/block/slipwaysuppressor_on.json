@@ -1,7 +1,7 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
-	"parent": "block/cube_all",
+	"parent": "block/block",
 	"textures": {
 		"0": "oneironaut:block/slipwaysuppressor_side_on",
 		"1": "oneironaut:block/slipwaysuppressor_top_on",
