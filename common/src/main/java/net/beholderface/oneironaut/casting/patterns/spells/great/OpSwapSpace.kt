@@ -20,7 +20,9 @@ import net.beholderface.oneironaut.casting.mishaps.MishapBadCuboid
 import net.beholderface.oneironaut.casting.mishaps.MishapNoNoosphere
 import net.beholderface.oneironaut.item.BottomlessMediaItem
 import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.fluid.FluidState
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.registry.RegistryKey
 import net.minecraft.server.world.ServerWorld
@@ -89,8 +91,9 @@ class OpSwapSpace : SpellAction {
             throw MishapBadLocation(Vec3d.ZERO, "bad_dimension")
 
         //require that one end of the transfer be the noosphere if config is set to require that
-        if (!(destWorld == Oneironaut.getNoosphere() || originWorld == Oneironaut.getNoosphere())
-            && OneironautConfig.server.swapRequiresNoosphere){
+        if (OneironautConfig.server.swapRequiresNoosphere && !(destWorld == Oneironaut.getNoosphere() || originWorld == Oneironaut.getNoosphere() ||
+                destWorld == Oneironaut.getDeepNoosphere() || originWorld == Oneironaut.getDeepNoosphere()
+                )){
             throw MishapNoNoosphere()
         }
 
@@ -127,6 +130,8 @@ class OpSwapSpace : SpellAction {
             var destDimPos: BlockPos?
             var originPointState: BlockState?
             var destPointState: BlockState?
+            var originFluid: FluidState?
+            var destFluid: FluidState?
             var originBE: BlockEntity?
             var originBEData : NbtCompound?
             var destBE: BlockEntity?
@@ -159,6 +164,8 @@ class OpSwapSpace : SpellAction {
                                 //no-op
                             }
                         }
+                        originFluid = originDim.getFluidState(originDimPos)
+                        destFluid = destDim.getFluidState(destDimPos)
                         originBE = originDim.getBlockEntity(originDimPos)
                         destBE = destDim.getBlockEntity(destDimPos)
                         var newBE : BlockEntity?
@@ -177,12 +184,15 @@ class OpSwapSpace : SpellAction {
                                 }
                                 destBEData = destBE.createNbt()
                                 originDim.removeBlockEntity(originDimPos)
+                                //pretty sure using void air instead of normal air doesn't actually change anything, but it seems thematic
+                                originDim.setBlockState(originDimPos, Blocks.VOID_AIR.defaultState, flags)
                                 originDim.setBlockState(originDimPos, state, flags, maxdepth)
                                 newBE = originDim.getBlockEntity(originDimPos)
                                 newBE?.readNbt(destBEData)
                                 newBE?.markDirty()
                             } else {
                                 originDim.removeBlockEntity(originDimPos)
+                                originDim.setBlockState(originDimPos, Blocks.VOID_AIR.defaultState, flags)
                                 originDim.setBlockState(originDimPos, destPointState, flags, maxdepth)
                             }
                             if (originBE != null){
@@ -192,12 +202,14 @@ class OpSwapSpace : SpellAction {
                                 }
                                 originBEData = originBE.createNbt()
                                 destDim.removeBlockEntity(destDimPos)
+                                destDim.setBlockState(destDimPos, Blocks.VOID_AIR.defaultState, flags)
                                 destDim.setBlockState(destDimPos, state, flags, maxdepth)
                                 newBE = destDim.getBlockEntity(destDimPos)
                                 newBE?.readNbt(originBEData)
                                 newBE?.markDirty()
                             } else {
                                 destDim.removeBlockEntity(destDimPos)
+                                destDim.setBlockState(destDimPos, Blocks.VOID_AIR.defaultState, flags)
                                 destDim.setBlockState(destDimPos, originPointState, flags, maxdepth)
                             }
                         }
