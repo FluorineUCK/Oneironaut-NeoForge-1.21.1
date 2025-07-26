@@ -4,12 +4,11 @@ import at.petrak.hexcasting.api.casting.ParticleSpray
 import at.petrak.hexcasting.api.casting.RenderedSpell
 import at.petrak.hexcasting.api.casting.castables.SpellAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
+import at.petrak.hexcasting.api.casting.getEntity
 import at.petrak.hexcasting.api.casting.getLivingEntityButNotArmorStand
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.NullIota
-import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
-import at.petrak.hexcasting.api.casting.mishaps.MishapImmuneEntity
-import at.petrak.hexcasting.api.casting.mishaps.MishapLocationInWrongDimension
+import at.petrak.hexcasting.api.casting.mishaps.*
 import at.petrak.hexcasting.api.misc.MediaConstants
 import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.api.mod.HexTags
@@ -30,6 +29,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.TeleportTarget
 import net.beholderface.oneironaut.casting.DepartureEntry
+import net.minecraft.entity.Entity
 import net.minecraft.util.math.Vec3i
 import ram.talia.hexal.api.div
 //import net.oneironaut.registry.OneironautThingRegistry
@@ -45,7 +45,7 @@ class OpDimTeleport : SpellAction {
         if (env.castingEntity == null){
             throw MishapBadCaster()
         }
-        val target = args.getLivingEntityButNotArmorStand(0, argc)
+        val target = args.getNonlivingIfAllowed(0, argc)
         env.assertEntityInRange(target)
         val origin = env.world
         val coords = target.pos
@@ -98,7 +98,7 @@ class OpDimTeleport : SpellAction {
         }
     }
 
-    private data class Spell(var target: LivingEntity, val origin: ServerWorld, val destination: ServerWorld, val coords: Vec3d, val noosphere: Boolean) : RenderedSpell {
+    private data class Spell(var target: Entity, val origin: ServerWorld, val destination: ServerWorld, val coords: Vec3d, val noosphere: Boolean) : RenderedSpell {
         override fun cast(env: CastingEnvironment) {
             var x = coords.x
             var y = floor(coords.y)
@@ -194,8 +194,8 @@ class OpDimTeleport : SpellAction {
 
                     //FabricDimensions.teleport(target, destination, TeleportTarget(Vec3d(x, y, z), Vec3d.ZERO, target.yaw, target.pitch))
                     if (noosphere){
-                        target.addStatusEffect(StatusEffectInstance(StatusEffects.NAUSEA, 200))
-                        target.addStatusEffect(StatusEffectInstance(StatusEffects.BLINDNESS, 100))
+                        playerTarget.addStatusEffect(StatusEffectInstance(StatusEffects.NAUSEA, 200))
+                        playerTarget.addStatusEffect(StatusEffectInstance(StatusEffects.BLINDNESS, 100))
                     }
                     if (floorNeeded && !isFlying){
                         destination.setBlockState((floorSpot), HexBlocks.CONJURED_BLOCK.defaultState)
@@ -208,8 +208,8 @@ class OpDimTeleport : SpellAction {
                         BlockConjured.setColor(destination, floorSpot, colorizer)
                     }
                 }
-                if (!isFlying){
-                    target.addStatusEffect(StatusEffectInstance(StatusEffects.SLOW_FALLING, 1200))
+                if (!isFlying && target is LivingEntity){
+                    (target as LivingEntity).addStatusEffect(StatusEffectInstance(StatusEffects.SLOW_FALLING, 1200))
                 }
             }
         }
