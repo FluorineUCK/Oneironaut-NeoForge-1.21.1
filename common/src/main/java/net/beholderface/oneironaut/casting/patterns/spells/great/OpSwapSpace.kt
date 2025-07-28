@@ -91,9 +91,7 @@ class OpSwapSpace : SpellAction {
             throw MishapBadLocation(Vec3d.ZERO, "bad_dimension")
 
         //require that one end of the transfer be the noosphere if config is set to require that
-        if (OneironautConfig.server.swapRequiresNoosphere && !(destWorld == Oneironaut.getNoosphere() || originWorld == Oneironaut.getNoosphere() ||
-                destWorld == Oneironaut.getDeepNoosphere() || originWorld == Oneironaut.getDeepNoosphere()
-                )){
+        if (OneironautConfig.server.swapRequiresNoosphere && !(Oneironaut.isWorldNoosphere(originWorld) || Oneironaut.isWorldNoosphere(destWorld))){
             throw MishapNoNoosphere()
         }
 

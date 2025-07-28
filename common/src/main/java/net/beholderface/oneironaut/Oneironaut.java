@@ -131,7 +131,7 @@ public class Oneironaut {
                     }
                 }
             }
-            LichdomManager.tick(server);
+            //LichdomManager.tick(server);
         });
 
         PlayerEvent.PLAYER_RESPAWN.register((player, leavingEnd)->{
@@ -204,6 +204,12 @@ public class Oneironaut {
             throw new IllegalStateException("getDeepNoosphere method called before server start");
         }
         return deepNoosphere;
+    }
+    public static boolean isWorldNoosphere(ServerWorld world){
+        if (world != null){
+            return world == noosphere || world == deepNoosphere;
+        }
+        return false;
     }
     public static MinecraftServer getCachedServer(){
         if (server == null){

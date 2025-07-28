@@ -36,7 +36,7 @@ public class OneironautItemRegistry {
 
     public static final RegistrySupplier<ItemStolenMediaProvider> PSUEDOAMETHYST_SHARD = ITEMS.register("pseudoamethyst_shard", () -> new
             ItemStolenMediaProvider(ONEIRONAUT_STACKABLE64, (int) (MediaConstants.SHARD_UNIT * 1.5), 1500));
-    public static final RegistrySupplier<Item> SHIFTING_PSEUDOAMETHYST = ITEMS.register("shifting_pseudoamethyst", ()-> new ShiftingPseudoamethystItem(ONEIRONAUT_STACKABLE64.rarity(Rarity.UNCOMMON)));
+    public static final RegistrySupplier<ShiftingPseudoamethystItem> SHIFTING_PSEUDOAMETHYST = ITEMS.register("shifting_pseudoamethyst", ()-> new ShiftingPseudoamethystItem(ONEIRONAUT_STACKABLE64.rarity(Rarity.UNCOMMON)));
     public static final RegistrySupplier<ArchitecturyBucketItem> THOUGHT_SLURRY_BUCKET = ITEMS.register("thought_slurry_bucket", () -> new ArchitecturyBucketItem(OneironautMiscRegistry.THOUGHT_SLURRY, ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<ReverberationRod> REVERBERATION_ROD = ITEMS.register("reverberation_rod", () -> new ReverberationRod(ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<BottomlessMediaItem> BOTTOMLESS_MEDIA_ITEM = ITEMS.register("endless_phial", () -> new BottomlessMediaItem(ONEIRONAUT_UNSTACKABLE));
@@ -51,7 +51,7 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<MemoryFragmentItem> MEMORY_FRAGMENT = ITEMS.register("memory_fragment", () -> new MemoryFragmentItem(ONEIRONAUT_UNSTACKABLE.rarity(Rarity.RARE), MemoryFragmentItem.NAMES_TOWER));
     public static final RegistrySupplier<WispCaptureItem> WISP_CAPTURE_ITEM = ITEMS.register("wisp_capture_device", ()-> new WispCaptureItem(ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<MindScalpelItem> MIND_SCALPEL = ITEMS.register("mind_scalpel", ()->new MindScalpelItem(ONEIRONAUT_UNSTACKABLE.rarity(Rarity.RARE)));
-    public static final RegistrySupplier<Item> RENDER_THORNS = ITEMS.register("rending_thorns", ()->new RenderThorns(ONEIRONAUT_STACKABLE64.rarity(Rarity.UNCOMMON)));
+    public static final RegistrySupplier<RenderThorns> RENDER_THORNS = ITEMS.register("rending_thorns", ()->new RenderThorns(ONEIRONAUT_STACKABLE64.rarity(Rarity.UNCOMMON)));
     public static final RegistrySupplier<ItemLibraryCard> LIBRARY_CARD = ITEMS.register("library_card", ()->new ItemLibraryCard(ONEIRONAUT_UNSTACKABLE.rarity(Rarity.COMMON)));
 
     public static final RegistrySupplier<BlockItem> PSUEDOAMETHYST_BLOCK_ITEM = ITEMS.register("pseudoamethyst_block", () -> new BlockItem(OneironautBlockRegistry.PSUEDOAMETHYST_BLOCK.get(), ONEIRONAUT_STACKABLE64.rarity(Rarity.COMMON)));
