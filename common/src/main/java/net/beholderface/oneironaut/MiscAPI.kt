@@ -2,6 +2,7 @@ package net.beholderface.oneironaut
 
 import at.petrak.hexcasting.api.HexAPI
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
+import at.petrak.hexcasting.api.casting.iota.EntityIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
@@ -16,8 +17,11 @@ import net.beholderface.oneironaut.recipe.OneironautRecipeTypes
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.GoalSelector
+import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.MobEntity
 import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.item.Item
@@ -360,4 +364,21 @@ fun Box.volume() : Double {
 
 fun FrozenPigment.rawColor(time : Float, pos : Vec3d){
     this.colorProvider.getColor(time, pos)
+}
+
+fun List<Iota>.getNonlivingIfAllowed(idx: Int, argc: Int = 0): Entity {
+    val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
+    val nonlivingAllowed = OneironautConfig.server.planeShiftNonliving
+    if (x is EntityIota) {
+        val e = x.entity
+        if (nonlivingAllowed || (e is LivingEntity && e !is ArmorStandEntity)){
+            return e
+        }
+    }
+    val stub = if (nonlivingAllowed){
+        "entity"
+    } else {
+        "entity.living"
+    }
+    throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), stub)
 }

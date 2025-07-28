@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "oneironaut:raycast_blocker",
-    "oneironaut:raycast_blocker_glass"
+    "oneironaut:raycast_blocker_glass",
+    "oneironaut:deep_border"
   ]
 }

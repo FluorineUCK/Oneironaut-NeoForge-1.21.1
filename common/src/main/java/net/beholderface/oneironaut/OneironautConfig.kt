@@ -11,6 +11,7 @@ object OneironautConfig {
         interface ServerConfigAccess {
             //allow Noetic Gateway to teleport other players
             val planeShiftOtherPlayers : Boolean
+            val planeShiftNonliving : Boolean
             //Idea Inscription expiration time, in ticks
             val ideaLifetime : Int
             val swapRequiresNoosphere : Boolean
@@ -23,6 +24,7 @@ object OneironautConfig {
 
             companion object {
                 const val DEFAULT_ALLOW_PLANESHIFT_OTHERS = false
+                const val DEFAULT_ALLOW_PLANESHIT_NONLIVING = true
                 const val DEFAULT_IDEA_LIFETIME = 20 * 60 * 60 //one hour
                 const val DEFAULT_SWAP_NOOSPHERE = true
                 const val DEFAULT_SWAP_BES = true
@@ -59,6 +61,8 @@ object OneironautConfig {
         private object DummyClient : ClientConfigAccess {  }
         private object DummyServer : ServerConfigAccess {
             override val planeShiftOtherPlayers: Boolean
+                get() = throw IllegalStateException(throwMessage)
+            override val planeShiftNonliving: Boolean
                 get() = throw IllegalStateException(throwMessage)
             override val ideaLifetime: Int
                 get() = throw IllegalStateException(throwMessage)

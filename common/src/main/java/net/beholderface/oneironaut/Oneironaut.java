@@ -13,6 +13,7 @@ import net.beholderface.oneironaut.block.InactiveSlipwayBlock;
 import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.casting.DepartureEntry;
 import net.beholderface.oneironaut.casting.IdeaInscriptionManager;
+import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
 import net.beholderface.oneironaut.casting.lichdom.LichData;
 import net.beholderface.oneironaut.casting.lichdom.LichMediaExtractComponent;
 import net.beholderface.oneironaut.casting.lichdom.LichdomManager;
@@ -22,6 +23,8 @@ import net.beholderface.oneironaut.recipe.OneironautRecipeTypes;
 import net.beholderface.oneironaut.registry.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -31,6 +34,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +43,7 @@ import ram.talia.hexal.common.entities.WanderingWisp;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static net.beholderface.oneironaut.MiscAPIKt.getItemTagKey;
 import static net.beholderface.oneironaut.MiscAPIKt.stringToWorld;
@@ -52,6 +57,7 @@ public class Oneironaut {
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     private static final List<Item> randomWispPigments = new ArrayList<>();
     private static ServerWorld noosphere = null;
+    private static ServerWorld deepNoosphere = null;
     private static MinecraftServer server = null;
 
 
@@ -69,6 +75,7 @@ public class Oneironaut {
         LifecycleEvent.SERVER_STARTED.register((startedserver) ->{
             server = startedserver;
             noosphere = stringToWorld("oneironaut:noosphere", startedserver);
+            deepNoosphere = stringToWorld("oneironaut:deep_noosphere", startedserver);
             IdeaInscriptionManager ideaState = IdeaInscriptionManager.getServerState(startedserver);
             IdeaInscriptionManager.cleanMap(startedserver, ideaState);
             ideaState.markDirty();
@@ -106,24 +113,32 @@ public class Oneironaut {
                 wisp.setPigment(new FrozenPigment(stack, ((Entity)wisp).getUuid()));
                 noosphere.spawnEntity(wisp);
             }
-            LichdomManager.tick(server);
-            //thing I wrote to test the stale phial thingy
-            /*List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
-            if (!players.isEmpty()){
-                ServerPlayerEntity player = players.get(0);
-                List<Entity> entities = server.getOverworld().getOtherEntities(null, new Box(
-                        player.getPos().add(10, 10, 10),
-                        player.getPos().add(-10, -10, -10)), (Entity e)->{
-                    return e instanceof ItemEntity;
-                });
-                ItemEntity item = null;
-                if (!entities.isEmpty()){
-                    item = (ItemEntity) entities.get(0);
+            for (ServerPlayerEntity player : deepNoosphere.getPlayers()){
+                if (!player.isSpectator()){
+                    Vec3d playerPos = player.getPos();
+                    if (playerPos.y <= -62.0 || playerPos.y >= 316.2){
+                        double y = playerPos.getY() < 0.0 ? 304.0 : -48.0;
+                        player.teleport(playerPos.getX(), y, playerPos.getZ());
+                    }
+                    if (!player.isCreative() && deepNoosphere.getTime() % 20 == 0){
+                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 10));
+                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60, 10));
+                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 10));
+                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 60, 10));
+                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.UNLUCK, 60, 10));
+                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 10));
+                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 60, 0));
+                        player.removeStatusEffect(StatusEffects.REGENERATION);
+                        player.removeStatusEffect(StatusEffects.ABSORPTION);
+                        player.removeStatusEffect(StatusEffects.RESISTANCE);
+                        player.removeStatusEffect(StatusEffects.WATER_BREATHING);
+                        player.removeStatusEffect(StatusEffects.SATURATION);
+                        OvercastDamageEnchant.applyMindDamage(null, player, (int)Math.max(1, Math.floor(player.getMaxHealth() / 6f)), false);
+                    }
                 }
-                if (item != null && item.getStack().getItem() instanceof ItemMediaHolder holder && player.isSneaking()){
-                    Oneironaut.LOGGER.info(holder.getMedia(item.getStack()));
-                }
-            }*/
+            }
+
+            //LichdomManager.tick(server);
         });
 
         PlayerEvent.PLAYER_RESPAWN.register((player, leavingEnd)->{
@@ -151,10 +166,31 @@ public class Oneironaut {
         //IdeaInscriptionManager ideaState = IdeaInscriptionManager.getServerState()
     }
 
+    public enum Loggers {
+        INFO,
+        DEBUG,
+        WARN,
+        ERROR,
+        FATAL,
+        TRACE
+    }
+
     //for easily toggling whether several things should be logged without having to search through the whole file
     public static void boolLogger(String str, boolean bool){
+        boolLogger(str, bool, Loggers.INFO);
+    }
+
+    public static void boolLogger(String str, boolean bool, Loggers logType){
         if (bool){
-            LOGGER.info(str);
+            Consumer<String> logger = switch (logType) {
+                case DEBUG -> LOGGER::debug;
+                case WARN -> LOGGER::warn;
+                case ERROR -> LOGGER::error;
+                case FATAL -> LOGGER::fatal;
+                case TRACE -> LOGGER::trace;
+                default -> LOGGER::info;
+            };
+            logger.accept(str);
         }
     }
 
@@ -169,6 +205,18 @@ public class Oneironaut {
             throw new IllegalStateException("getNoosphere method called before server start");
         }
         return noosphere;
+    }
+    public static ServerWorld getDeepNoosphere(){
+        if (deepNoosphere == null){
+            throw new IllegalStateException("getDeepNoosphere method called before server start");
+        }
+        return deepNoosphere;
+    }
+    public static boolean isWorldNoosphere(ServerWorld world){
+        if (world != null){
+            return world == noosphere || world == deepNoosphere;
+        }
+        return false;
     }
     public static MinecraftServer getCachedServer(){
         if (server == null){

@@ -101,6 +101,9 @@ public class OneironautBlockRegistry {
 
     public static RegistrySupplier<ExtradimensionalBoundaryLocus> EXTRADIM_LOCUS = BLOCKS.register("extradimensional_border", ()->new ExtradimensionalBoundaryLocus(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK).luminance(createLightLevelFromBoolBlockState(BlockCircleComponent.ENERGIZED, 14))));
 
+    //yes it acts like an xray thingy, no I don't care, it's not available in survival
+    public static RegistrySupplier<DeepNoosphereFloorBlock> DEEP_NOOSPHERE_FLOOR = BLOCKS.register("deep_border", ()->new DeepNoosphereFloorBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().mapColor(MapColor.PALE_PURPLE)));
+
     //mostly just stolen from the vanilla class since it's private in there
     protected static ToIntFunction<BlockState> createLightLevelFromBoolBlockState(BooleanProperty property, int litLevel) {
         return state -> state.get(property) ? litLevel : 0;

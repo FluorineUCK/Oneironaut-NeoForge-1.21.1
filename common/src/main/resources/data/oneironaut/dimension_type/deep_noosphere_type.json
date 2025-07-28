@@ -4,7 +4,7 @@
   "coordinate_scale": 16,
   "ambient_light": 0.1,
   "has_skylight": false,
-  "has_ceiling": false,
+  "has_ceiling": true,
   "infiniburn": "#minecraft:infiniburn_overworld",
   "logical_height" : 384,
   "has_raids" : false,
@@ -15,6 +15,6 @@
   "min_y": -64,
   "monster_spawn_block_light_limit": 0,
   "monster_spawn_light_level": 0,
-  "effects": "oneironaut:noosphere",
+  "effects": "oneironaut:deep_noosphere",
   "fixed_time": 6000
 }

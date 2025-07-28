@@ -1,0 +1,37 @@
+{
+  "carvers": {},
+  "downfall" : 0.1,
+  "effects": {
+    "fog_color": 11433168,
+    "sky_color": 1376290,
+    "water_color": 4146916,
+    "water_fog_color": 8204458,
+    "particle": {
+      "probability": 0.025,
+      "options": {
+        "type": "hexcasting:conjure_particle",
+        "color": 8204458
+      }
+    }
+  },
+  "features": [
+    [
+    ],
+    [],
+    [
+    ],
+    [],
+    [],
+    [],
+    [
+    ],
+    [],
+    [],
+    [],
+    []
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {},
+  "temperature": 0.0
+}

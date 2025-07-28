@@ -1,0 +1,25 @@
+{
+  "type": "oneironaut:deep_noosphere_type",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "oneironaut:deep_noosphere",
+      "lakes": false,
+      "features": true,
+      "layers": [
+        {
+          "block": "oneironaut:deep_border",
+          "height": 1
+        },
+        {
+          "block": "oneironaut:thought_slurry",
+          "height": 382
+        },
+        {
+          "block": "oneironaut:deep_border",
+          "height": 1
+        }
+      ]
+    }
+  }
+}
