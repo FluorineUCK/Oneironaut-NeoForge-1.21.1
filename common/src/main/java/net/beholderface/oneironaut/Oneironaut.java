@@ -34,6 +34,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -112,9 +113,14 @@ public class Oneironaut {
                 wisp.setPigment(new FrozenPigment(stack, ((Entity)wisp).getUuid()));
                 noosphere.spawnEntity(wisp);
             }
-            if (deepNoosphere.getTime() % 20 == 0){
-                for (ServerPlayerEntity player : deepNoosphere.getPlayers()){
-                    if (!(player.isCreative() || player.isSpectator())){
+            for (ServerPlayerEntity player : deepNoosphere.getPlayers()){
+                if (!player.isSpectator()){
+                    Vec3d playerPos = player.getPos();
+                    if (playerPos.y <= -62.0 || playerPos.y >= 316.2){
+                        double y = playerPos.getY() < 0.0 ? 304.0 : -48.0;
+                        player.teleport(playerPos.getX(), y, playerPos.getZ());
+                    }
+                    if (!player.isCreative() && deepNoosphere.getTime() % 20 == 0){
                         player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 10));
                         player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60, 10));
                         player.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 10));
@@ -127,10 +133,11 @@ public class Oneironaut {
                         player.removeStatusEffect(StatusEffects.RESISTANCE);
                         player.removeStatusEffect(StatusEffects.WATER_BREATHING);
                         player.removeStatusEffect(StatusEffects.SATURATION);
-                        OvercastDamageEnchant.applyMindDamage(null, player, (int)Math.floor(player.getMaxHealth() / 6f), false);
+                        OvercastDamageEnchant.applyMindDamage(null, player, (int)Math.max(1, Math.floor(player.getMaxHealth() / 6f)), false);
                     }
                 }
             }
+
             //LichdomManager.tick(server);
         });
 
