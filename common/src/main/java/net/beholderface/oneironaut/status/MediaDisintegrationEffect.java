@@ -69,7 +69,7 @@ public class MediaDisintegrationEffect extends StatusEffect {
         if (Oneironaut.getCachedServer() != null){
             if (entity.getWorld() == Oneironaut.getDeepNoosphere() && !entity.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get())){
                 if (entity.getStatusEffect(this) != null && entity.getStatusEffect(this).duration > 0){
-                    Oneironaut.reapplicationSet.add(new Pair<>(entity, new StatusEffectInstance(this, 100, Math.min(amplifier + 1, Byte.MAX_VALUE)/*you've made it mad*/)));
+                    Oneironaut.reapplicationSet.add(new Pair<>(entity, new StatusEffectInstance(this, 100, Math.min(amplifier + 1, Byte.MAX_VALUE)/*you've made it mad*/, true, true)));
                 }
             }
         }

@@ -128,11 +128,11 @@ public class OneironautClient {
                 } catch (ConcurrentModificationException exception){
                     Oneironaut.LOGGER.error("Oopsie client-side hoverlift exception " + exception.getMessage());
                 }
-                if (client.world != null && client.world.getDimensionEffects().getClass() == DeepNoosphereDimensionEffects.class && client.world.getTime() % 20 == 0){
+                /*if (client.world != null && client.world.getDimensionEffects().getClass() == DeepNoosphereDimensionEffects.class && client.world.getTime() % 20 == 0){
                     for (PlayerEntity player : client.world.getPlayers()){
                         Oneironaut.processDisintegration(player);
                     }
-                }
+                }*/
             });
 
             ClientLifecycleEvent.CLIENT_STARTED.register((client)->{

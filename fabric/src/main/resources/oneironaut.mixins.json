@@ -9,6 +9,7 @@
   ],
   "mixins": [
     "BottomlessMediaPriorityMixin",
+    "DeepNoosphereErosionMixin",
     "EdifyBushMixinGrower",
     "EdifyBushMixinSpell",
     "EternalChorusMixin",
@@ -16,9 +17,10 @@
     "GlowAmbitEffectAmbitMixin",
     "GlowAmbitEffectGlowMixin",
     "LensMediaTooltipMixin",
+    "LivingEntityDisintegrationMixin",
+    "MixinHonorLibraryCardReads",
     "OneResetSoundMixin",
-    "SlurryFrostWalkerMixin",
-    "MixinHonorLibraryCardReads"
+    "SlurryFrostWalkerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

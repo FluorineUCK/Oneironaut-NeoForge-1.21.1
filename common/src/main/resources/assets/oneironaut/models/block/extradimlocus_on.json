@@ -2,7 +2,7 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/slab",
-	"texture_size": [16, 56],
+	"texture_size": [16, 64],
 	"textures": {
 		"0": "oneironaut:block/extradimlocus",
 		"particle": "hexcasting:block/slate"
@@ -12,12 +12,12 @@
 			"from": [0, 0, 0],
 			"to": [16, 8, 16],
 			"faces": {
-				"north": {"uv": [0, 13.71429, 16, 16], "texture": "#0"},
-				"east": {"uv": [0, 13.71429, 16, 16], "texture": "#0"},
-				"south": {"uv": [0, 13.71429, 16, 16], "texture": "#0"},
-				"west": {"uv": [0, 13.71429, 16, 16], "texture": "#0"},
-				"up": {"uv": [0, 4.57143, 16, 9.14286], "texture": "#0"},
-				"down": {"uv": [0, 9.14286, 16, 13.71429], "texture": "#0"}
+				"north": {"uv": [0, 12, 16, 14], "texture": "#0"},
+				"east":  {"uv": [0, 12, 16, 14], "texture": "#0"},
+				"south": {"uv": [0, 12, 16, 14], "texture": "#0"},
+				"west":  {"uv": [0, 12, 16, 14], "texture": "#0"},
+				"up":    {"uv": [0, 4, 16, 8], "texture": "#0"},
+				"down":  {"uv": [0, 8, 16, 12], "texture": "#0"}
 			}
 		}
 	]

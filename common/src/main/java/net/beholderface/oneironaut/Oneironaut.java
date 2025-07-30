@@ -118,18 +118,13 @@ public class Oneironaut {
                 wisp.setPigment(new FrozenPigment(stack, ((Entity)wisp).getUuid()));
                 noosphere.spawnEntity(wisp);
             }
-            for (ServerPlayerEntity player : deepNoosphere.getPlayers()) {
+            /*for (ServerPlayerEntity player : deepNoosphere.getPlayers()) {
                 if (!player.isSpectator()) {
-                    /*Vec3d playerPos = player.getPos();
-                    if (playerPos.y <= -62.0 || playerPos.y >= 316.2){
-                        double y = playerPos.getY() < 0.0 ? 304.0 : -48.0;
-                        player.teleport(playerPos.getX(), y, playerPos.getZ());
-                    }*/
                     if (!player.isCreative() && deepNoosphere.getTime() % 20 == 0) {
                         processDisintegration(player);
                     }
                 }
-            }
+            }*/
             for (Pair<LivingEntity, StatusEffectInstance> pair : reapplicationSet){
                 if (!pair.getLeft().hasStatusEffect(pair.getRight().getEffectType())){
                     pair.getLeft().addStatusEffect(pair.getRight());
@@ -224,12 +219,12 @@ public class Oneironaut {
         return server;
     }
 
-    public static void processDisintegration(PlayerEntity player){
-        if (!player.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get())){
-            if (!player.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION.get())){
-                player.addStatusEffect(new StatusEffectInstance(OneironautMiscRegistry.DISINTEGRATION.get(), 100, 0, true, true));
+    public static void processDisintegration(LivingEntity entity){
+        if (!entity.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get())){
+            if (!entity.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION.get())){
+                entity.addStatusEffect(new StatusEffectInstance(OneironautMiscRegistry.DISINTEGRATION.get(), 100, 0, true, true));
             } else {
-                StatusEffectInstance instance = player.getStatusEffect(OneironautMiscRegistry.DISINTEGRATION.get());
+                StatusEffectInstance instance = entity.getStatusEffect(OneironautMiscRegistry.DISINTEGRATION.get());
                 if (instance != null && instance.getDuration() <= 40){
                     instance.duration += 90;
                 }
