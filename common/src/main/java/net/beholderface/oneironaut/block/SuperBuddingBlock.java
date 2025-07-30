@@ -1,6 +1,7 @@
 package net.beholderface.oneironaut.block;
 
 import at.petrak.hexcasting.common.particles.ConjureParticleOptions;
+import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.registry.OneironautBlockRegistry;
 import net.minecraft.block.AmethystClusterBlock;
@@ -37,7 +38,7 @@ public class SuperBuddingBlock extends Block /*extends BuddingAmethystBlock*/ {
             BlockPos blockPos = pos.offset(direction);
             BlockState blockState = world.getBlockState(blockPos);
             Block block = null;
-            if (world.getRegistryKey().getValue().equals(Identifier.of("oneironaut", "noosphere"))){
+            if (Oneironaut.isWorldNoosphere(world)){
                 if (canGrowIn(blockState)) {
                     block = OneironautBlockRegistry.PSEUDOAMETHYST_BUD_SMALL.get();
                 } else if (blockState.isOf(OneironautBlockRegistry.PSEUDOAMETHYST_BUD_SMALL.get()) && blockState.get(AmethystClusterBlock.FACING) == direction) {

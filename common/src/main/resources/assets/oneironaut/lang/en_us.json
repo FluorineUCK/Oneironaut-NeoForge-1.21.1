@@ -336,6 +336,8 @@
   "effect.oneironaut.detection_resistance": "Media Shroud",
   "effect.oneironaut.not_missing": "Uplifting Resonance",
   "effect.oneironaut.rumination": "Rumination",
+  "effect.oneironaut.disintegration": "Subsumption",
+  "effect.oneironaut.disintegration_protection": "Obstinance",
   "enchantment.oneironaut.overcast_damage": "Mind Render",
   "itemGroup.oneironaut.oneironaut": "Oneironaut",
   "oneironaut.tooltip.wispcapturedevice.haswisp": "Contains a wisp with %s dust and hex signature %s.",

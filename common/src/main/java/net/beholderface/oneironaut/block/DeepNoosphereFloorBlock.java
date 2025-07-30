@@ -33,7 +33,7 @@ public class DeepNoosphereFloorBlock extends Block {
         return VoxelShapes.fullCube();
     }
 
-    public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
+    /*public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
         double y = pos.getY() < 0.0 ? 256.0 : 0.0;
         entity.teleport(pos.getX(), y, pos.getZ());
     }
@@ -52,5 +52,5 @@ public class DeepNoosphereFloorBlock extends Block {
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         double y = pos.getY() < 0.0 ? 256.0 : 0.0;
         entity.teleport(pos.getX(), y, pos.getZ());
-    }
+    }*/
 }

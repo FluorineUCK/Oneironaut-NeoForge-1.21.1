@@ -25,9 +25,9 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
@@ -121,13 +121,20 @@ public class OneironautClient {
             Oneironaut.LOGGER.info("Applied translucent layer to " + applyBlockRenderLayers(translucentBlocks, RenderLayer.getTranslucent()) + " blocks");
 
             Oneironaut.LOGGER.info("Registering client-side hoverlift processor.");
+
             ClientTickEvent.CLIENT_POST.register((client)->{
                 try {
                     HoverElevatorBlockEntity.processHover(false, client.world != null ? client.world.getTime() : -1L);
                 } catch (ConcurrentModificationException exception){
                     Oneironaut.LOGGER.error("Oopsie client-side hoverlift exception " + exception.getMessage());
                 }
+                if (client.world != null && client.world.getDimensionEffects().getClass() == DeepNoosphereDimensionEffects.class && client.world.getTime() % 20 == 0){
+                    for (PlayerEntity player : client.world.getPlayers()){
+                        Oneironaut.processDisintegration(player);
+                    }
+                }
             });
+
             ClientLifecycleEvent.CLIENT_STARTED.register((client)->{
                 //cachedPlayer = client.player;
                 cachedClient = client;
