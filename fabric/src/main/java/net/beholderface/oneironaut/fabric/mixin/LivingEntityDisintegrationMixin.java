@@ -2,9 +2,13 @@ package net.beholderface.oneironaut.fabric.mixin;
 
 import net.beholderface.oneironaut.DeepNoosphereDimensionEffects;
 import net.beholderface.oneironaut.Oneironaut;
+import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
+import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class LivingEntityDisintegrationMixin {
 
     @Unique LivingEntity entity = (LivingEntity) (Object) this;
+    @Unique private static DisintegrationProtectionManager.DisintegrationProtectionEntry latestFoundEntry = null;
+
 
     @Inject(method = "tick", at = @At(value = "TAIL"))
     public void disintegrate(CallbackInfo ci){
@@ -27,6 +33,30 @@ public class LivingEntityDisintegrationMixin {
             shouldDisintegrate = world == Oneironaut.getDeepNoosphere() && world.getTime() % 20 == 0;
         }
         if (shouldDisintegrate){
+            DisintegrationProtectionManager.DisintegrationProtectionEntry entry = latestFoundEntry;
+            Vec3d pos = entity.getEyePos();
+            if (!entity.getWorld().isClient){
+                if (entry != null && !entry.canProtect(pos)){
+                    DisintegrationProtectionManager manager = DisintegrationProtectionManager.getServerState(((ServerWorld)entity.getWorld()).getServer());
+                    entry = manager.getProtectionEntry(pos);
+                }
+                if (entry != null){
+                    int hitValue = 100;
+                    StatusEffectInstance instance = entity.getStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get());
+                    if (instance != null){
+                        if (instance.getDuration() <= 40){
+                            hitValue -= instance.getDuration();
+                            instance.duration = 100;
+                        }
+                    } else {
+                        entity.addStatusEffect(new StatusEffectInstance(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get(), 100, 0, true, true));
+                    }
+                    entry.hit(hitValue);
+                    if (!entry.isBroken()){
+                        latestFoundEntry = entry;
+                    }
+                }
+            }
             Oneironaut.processDisintegration(entity);
         }
     }

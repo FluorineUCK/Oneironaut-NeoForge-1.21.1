@@ -12,6 +12,7 @@ import dev.architectury.event.events.common.TickEvent;
 import net.beholderface.oneironaut.block.InactiveSlipwayBlock;
 import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.casting.DepartureEntry;
+import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
 import net.beholderface.oneironaut.casting.IdeaInscriptionManager;
 import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
 import net.beholderface.oneironaut.casting.lichdom.LichData;
@@ -86,6 +87,9 @@ public class Oneironaut {
             ideaState.markDirty();
             LichdomManager lichState = LichdomManager.getServerState(startedserver);
             lichState.markDirty();
+            DisintegrationProtectionManager disintegrationState = DisintegrationProtectionManager.getServerState(startedserver);
+            disintegrationState.cleanEntries();
+            disintegrationState.markDirty();
             randomWispPigments.addAll(HexItems.DYE_PIGMENTS.values());
             randomWispPigments.addAll(HexItems.PRIDE_PIGMENTS.values());
             randomWispPigments.add(HexItems.DEFAULT_PIGMENT);
