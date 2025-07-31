@@ -43,14 +43,16 @@ public class DeepNoosphereErosionMixin {
                 if (!(existingState.getHardness(world, pos) == -1 || existingState.isIn(tagkey)
                         || existingState.isAir() || existingState.getBlock() == OneironautBlockRegistry.THOUGHT_SLURRY_BLOCK.get())){
                     DisintegrationProtectionManager.DisintegrationProtectionEntry entry = latestFoundEntry;
+                    DisintegrationProtectionManager manager = DisintegrationProtectionManager.getServerState(server);
                     if (entry != null && !entry.canProtect(pos)){
-                        DisintegrationProtectionManager manager = DisintegrationProtectionManager.getServerState(server);
                         entry = manager.getProtectionEntry(Vec3d.of(pos));
                     }
                     if (entry != null){
-                        entry.hit(25);
-                        if (!entry.isBroken()){
+                        boolean hit = entry.hit(Vec3d.of(pos), world);
+                        if (!hit){
                             latestFoundEntry = entry;
+                        } else {
+                            manager.removeEntry(entry);
                         }
                     } else {
                         world.breakBlock(pos, false);

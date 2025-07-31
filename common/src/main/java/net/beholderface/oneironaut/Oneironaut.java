@@ -87,9 +87,16 @@ public class Oneironaut {
             ideaState.markDirty();
             LichdomManager lichState = LichdomManager.getServerState(startedserver);
             lichState.markDirty();
-            DisintegrationProtectionManager disintegrationState = DisintegrationProtectionManager.getServerState(startedserver);
-            disintegrationState.cleanEntries();
-            disintegrationState.markDirty();
+            try {
+                DisintegrationProtectionManager disintegrationState = DisintegrationProtectionManager.getServerState(startedserver);
+                disintegrationState.cleanEntries();
+                disintegrationState.markDirty();
+            } catch (ClassCastException exception){
+                //WHAT THE FUCK IS GOING WRONG
+                LOGGER.error(exception.getMessage());
+                exception.printStackTrace();
+            }
+
             randomWispPigments.addAll(HexItems.DYE_PIGMENTS.values());
             randomWispPigments.addAll(HexItems.PRIDE_PIGMENTS.values());
             randomWispPigments.add(HexItems.DEFAULT_PIGMENT);

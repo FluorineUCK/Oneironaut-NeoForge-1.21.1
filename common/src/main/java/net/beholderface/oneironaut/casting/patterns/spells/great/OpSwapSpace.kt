@@ -77,7 +77,7 @@ class OpSwapSpace : SpellAction {
         }
         /*Oneironaut.LOGGER.info("box volume: $boxVolume")
         Oneironaut.LOGGER.info("cost: $cost dust")*/
-        val boxCorners = getBoxCorners(originBox)
+        val boxCorners = originBox.corners()
         for (corner in boxCorners) {
             env.assertVecInRange(corner)
         }

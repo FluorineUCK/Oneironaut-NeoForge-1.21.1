@@ -36,12 +36,12 @@ public class LivingEntityDisintegrationMixin {
             DisintegrationProtectionManager.DisintegrationProtectionEntry entry = latestFoundEntry;
             Vec3d pos = entity.getEyePos();
             if (!entity.getWorld().isClient){
+                DisintegrationProtectionManager manager = DisintegrationProtectionManager.getServerState(((ServerWorld)entity.getWorld()).getServer());
                 if (entry != null && !entry.canProtect(pos)){
-                    DisintegrationProtectionManager manager = DisintegrationProtectionManager.getServerState(((ServerWorld)entity.getWorld()).getServer());
                     entry = manager.getProtectionEntry(pos);
                 }
                 if (entry != null){
-                    int hitValue = 100;
+                    long hitValue = 100;
                     StatusEffectInstance instance = entity.getStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get());
                     if (instance != null){
                         if (instance.getDuration() <= 40){
@@ -51,9 +51,11 @@ public class LivingEntityDisintegrationMixin {
                     } else {
                         entity.addStatusEffect(new StatusEffectInstance(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get(), 100, 0, true, true));
                     }
-                    entry.hit(hitValue);
-                    if (!entry.isBroken()){
+                    boolean hit = entry.hit(hitValue, pos,(ServerWorld) entity.getWorld());
+                    if (!hit){
                         latestFoundEntry = entry;
+                    } else {
+                        manager.removeEntry(entry);
                     }
                 }
             }

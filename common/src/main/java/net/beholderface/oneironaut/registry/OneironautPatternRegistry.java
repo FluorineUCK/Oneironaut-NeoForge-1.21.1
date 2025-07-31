@@ -92,6 +92,8 @@ public class OneironautPatternRegistry {
 
     public static HexPattern EVAL_EXTRADIMENSIONAL = register(HexPattern.fromAngles("wqwqwqwqwqwaqdeaqqe", HexDir.WEST), "extradimensionaleval", new OpEvalExtradimensional());
     public static HexPattern SHIFT_SENTINEL = register(HexPattern.fromAngles("wwaeawwaeqqwqwqwqwqwq", HexDir.EAST), "shiftsentinel", new OpShiftSentinel());
+    public static HexPattern EROSION_SHIELD = register(HexPattern.fromAngles("wwqwwqwwqwwqwwqwwaeqwwqqqwwqaeadaqadaawww", HexDir.WEST), "erosionshield", new OpErosionShield());
+
     //cell spells
     //public static List<Triple<String[][], Identifier, ICellSpell>> CELL_PATTERNS = new ArrayList<>();
 
