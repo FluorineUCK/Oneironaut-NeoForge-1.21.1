@@ -16,6 +16,7 @@ import net.beholderface.oneironaut.corners
 import net.beholderface.oneironaut.volume
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Vec3d
 import ram.talia.hexal.api.getStrictlyPositiveLong
 
 class OpErosionShield : SpellAction {
@@ -26,14 +27,17 @@ class OpErosionShield : SpellAction {
         }
         val cornerA = args.getBlockPos(0, argc)
         val cornerB = args.getBlockPos(1, argc)
-        val box = Box(cornerA, cornerB)
+        val costBox = Box(Vec3d.of(cornerA), Vec3d.of(cornerB.add(1,1,1)))
+        val ambitCheckBox = Box(Vec3d.of(cornerA), Vec3d.of(cornerB))
         val particlePositions : MutableList<ParticleSpray> = mutableListOf()
-        for (corner in box.corners()){
+        for (corner in ambitCheckBox.corners()){
             env.assertVecInRange(corner)
+        }
+        for (corner in costBox.corners()){
             particlePositions.add(ParticleSpray.cloud(corner, 2.0))
         }
         val durability = args.getStrictlyPositiveLong(2, argc)
-        val cost = (box.volume() * 0.1) * (durability * 0.01) * MediaConstants.DUST_UNIT
+        val cost = (costBox.volume() * 0.1) * (durability.toDouble() * 0.01) * (MediaConstants.DUST_UNIT / 10)
         return SpellAction.Result(
             Spell(cornerA, cornerB, durability),
             cost.toLong(),

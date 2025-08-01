@@ -1,12 +1,16 @@
 package net.beholderface.oneironaut.casting;
 
 import at.petrak.hexcasting.api.utils.NBTHelper;
+import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -16,12 +20,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class DisintegrationProtectionManager extends PersistentState {
 
+    public static final String ID = Oneironaut.MOD_ID + "_disintegration";
     private final Map<UUID, DisintegrationProtectionEntry> entries = new HashMap<>();
     public static final String TAG_ENTRIES = "entries";
 
@@ -35,6 +41,7 @@ public class DisintegrationProtectionManager extends PersistentState {
         for (DisintegrationProtectionEntry entry : entries.values()){
             list.add(entry.serialize());
         }
+        //Oneironaut.LOGGER.info(list.asString());
         NBTHelper.putList(nbt, TAG_ENTRIES, list);
         return nbt;
     }
@@ -52,12 +59,14 @@ public class DisintegrationProtectionManager extends PersistentState {
                 manager.entries.put(entry.getUuid(), entry);
             }
         }
+        Oneironaut.LOGGER.info("Reconstructed protection map with {} entries", manager.entries.size());
         return manager;
     }
 
     public static DisintegrationProtectionManager getServerState(MinecraftServer server){
-        PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
-        DisintegrationProtectionManager manager = stateManager.getOrCreate(DisintegrationProtectionManager::createFromNbt, DisintegrationProtectionManager::new, Oneironaut.MOD_ID);
+        PersistentStateManager stateManager = Oneironaut.getDeepNoosphere().getPersistentStateManager();
+        DisintegrationProtectionManager manager = stateManager.getOrCreate(DisintegrationProtectionManager::createFromNbt,
+                DisintegrationProtectionManager::new, ID);
         manager.markDirty();
         return manager;
     }
@@ -93,10 +102,15 @@ public class DisintegrationProtectionManager extends PersistentState {
         while (iterator.hasNext()){
             entry = iterator.next();
             if (!entry.isBroken()){
+                //Oneironaut.LOGGER.info("Entry not broken");
                 if (entry.canProtect(pos)){
+                    //Oneironaut.LOGGER.info("Can protect {}", pos.toString());
                     return entry;
-                }
+                }/* else {
+                    //Oneironaut.LOGGER.info("Cannot protect {}", pos.toString());
+                }*/
             } else {
+                //Oneironaut.LOGGER.info("Entry broken");
                 iterator.remove();
                 this.markDirty();
             }
@@ -105,13 +119,16 @@ public class DisintegrationProtectionManager extends PersistentState {
     }
 
     public static class DisintegrationProtectionEntry {
-        private Box bounds;
+        private final Box bounds;
         private long hits = 0;
         private long durability = 1;
-        private UUID uuid;
+        private final UUID uuid;
 
         public DisintegrationProtectionEntry(BlockPos cornerA, BlockPos cornerB, long durability){
-            new DisintegrationProtectionEntry(new Box(cornerA, cornerB), 0, durability, UUID.randomUUID());
+            this.bounds = new Box(cornerA, cornerB.add(1,1,1));
+            this.hits = 0;
+            this.durability = durability;
+            this.uuid = UUID.randomUUID();
         }
 
         private DisintegrationProtectionEntry(Box bounds, long hits, long durability, UUID uuid){
@@ -126,7 +143,7 @@ public class DisintegrationProtectionManager extends PersistentState {
         }
 
         public boolean canProtect(Vec3d pos){
-            return this.bounds.contains(pos);
+            return !this.isBroken() && MiscAPIKt.containsPermissive(this.bounds, pos);
         }
 
         public boolean canProtect(Vec3i pos){
@@ -148,13 +165,25 @@ public class DisintegrationProtectionManager extends PersistentState {
         public boolean hit(long addedHits, Vec3d pos, ServerWorld world){
             boolean startedBroken = this.isBroken();
             this.hits += addedHits;
-            if ((this.isBroken() && !startedBroken)){
-                if (world != null){
-                    world.playSound(pos.x, pos.y, pos.z, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.AMBIENT, 1.0f, 1.0f, true);
+            //Oneironaut.LOGGER.info("Entry {} hit for {} points, for a total of {}", this.uuid.toString(), addedHits, this.getHits());
+            boolean newlyBroken = (this.isBroken() && !startedBroken);
+            if (world != null){
+                PlaySoundS2CPacket hitSoundMessage = getHitMessage(pos, world, newlyBroken);
+                for (ServerPlayerEntity player : world.getPlayers()){
+                    world.sendToPlayerIfNearby(player, false, pos.x, pos.y, pos.z, hitSoundMessage);
                 }
-                return true;
             }
-            return false;
+            return newlyBroken;
+        }
+
+        private static @NotNull PlaySoundS2CPacket getHitMessage(Vec3d pos, ServerWorld world, boolean newlyBroken) {
+            if (newlyBroken){
+                return new PlaySoundS2CPacket(RegistryEntry.of(SoundEvents.BLOCK_GLASS_BREAK), SoundCategory.BLOCKS,
+                        pos.x, pos.y, pos.z, 0.5f, 0.2f, world.getSeed());
+            } else {
+                return new PlaySoundS2CPacket(RegistryEntry.of(SoundEvents.BLOCK_GLASS_HIT), SoundCategory.BLOCKS,
+                        pos.x, pos.y, pos.z, 1f, 0.5f, world.getSeed());
+            }
         }
 
         public boolean hit(Vec3d pos, ServerWorld world){
@@ -162,6 +191,7 @@ public class DisintegrationProtectionManager extends PersistentState {
         }
 
         public boolean isBroken(){
+            //return false;
             return this.getHits() >= this.getDurability();
         }
 
@@ -173,6 +203,7 @@ public class DisintegrationProtectionManager extends PersistentState {
         public NbtCompound serialize(){
             NbtCompound nbt = new NbtCompound();
             nbt.putLong(TAG_HITS, this.getHits());
+            nbt.putLong(TAG_DURABILITY, durability);
             nbt.putUuid(TAG_UUID, this.getUuid());
             NBTHelper.putCompound(nbt, TAG_CORNER_1, NbtHelper.fromBlockPos(new BlockPos((int) this.bounds.minX, (int) this.bounds.minY, (int) this.bounds.minZ)));
             NBTHelper.putCompound(nbt, TAG_CORNER_2, NbtHelper.fromBlockPos(new BlockPos((int) this.bounds.maxX, (int) this.bounds.maxY, (int) this.bounds.maxZ)));

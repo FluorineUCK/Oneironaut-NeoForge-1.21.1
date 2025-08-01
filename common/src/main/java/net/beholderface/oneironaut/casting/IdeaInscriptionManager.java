@@ -19,6 +19,7 @@ import java.util.*;
 
 public class IdeaInscriptionManager extends PersistentState {
 
+    public static final String ID = Oneironaut.MOD_ID + "_ideainscription";
     //setup for Idea Inscription
     private static Map<String, NbtCompound> iotaMap = new HashMap<>();
     private static final int minuteInTicks = 20 * 60;
@@ -52,7 +53,9 @@ public class IdeaInscriptionManager extends PersistentState {
 
     public static IdeaInscriptionManager getServerState(MinecraftServer server){
         PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
-        IdeaInscriptionManager ideas = stateManager.getOrCreate(IdeaInscriptionManager::createFromNbt, IdeaInscriptionManager::new, Oneironaut.MOD_ID);
+        //allow old idea entries to be carried over to the new ID
+        PersistentState oldIdeas = stateManager.readFromFile(IdeaInscriptionManager::createFromNbt, Oneironaut.MOD_ID);
+        IdeaInscriptionManager ideas = stateManager.getOrCreate(IdeaInscriptionManager::createFromNbt, IdeaInscriptionManager::new, ID);
         ideas.markDirty();
         return ideas;
     }

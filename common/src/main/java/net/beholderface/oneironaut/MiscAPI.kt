@@ -363,6 +363,14 @@ fun Box.intersectsPermissive(box : Box): Boolean {
     return this.intersectsPermissive(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ)
 }
 
+fun Box.containsPermissive(x : Double, y : Double, z : Double) : Boolean{
+    return x >= this.minX && x <= this.maxX && y >= this.minY && y <= this.maxY && z >= this.minZ && z <= this.maxZ
+}
+
+fun Box.containsPermissive(vec : Vec3d) : Boolean{
+    return this.containsPermissive(vec.x, vec.y, vec.z)
+}
+
 fun Box.volume() : Double {
     return this.xLength * this.yLength * this.zLength
 }

@@ -7,6 +7,7 @@ import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,26 +36,25 @@ public class LivingEntityDisintegrationMixin {
         if (shouldDisintegrate){
             DisintegrationProtectionManager.DisintegrationProtectionEntry entry = latestFoundEntry;
             Vec3d pos = entity.getEyePos();
-            if (!entity.getWorld().isClient){
+            if (!entity.getWorld().isClient && !(entity instanceof PlayerEntity player && (player.isCreative() || player.isSpectator()))){
                 DisintegrationProtectionManager manager = DisintegrationProtectionManager.getServerState(((ServerWorld)entity.getWorld()).getServer());
-                if (entry != null && !entry.canProtect(pos)){
+                if (entry == null || !entry.canProtect(pos)){
                     entry = manager.getProtectionEntry(pos);
                 }
-                if (entry != null){
-                    long hitValue = 100;
+                if (entry != null && !entry.isBroken()){
                     StatusEffectInstance instance = entity.getStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get());
                     if (instance != null){
                         if (instance.getDuration() <= 40){
-                            hitValue -= instance.getDuration();
                             instance.duration = 100;
                         }
                     } else {
                         entity.addStatusEffect(new StatusEffectInstance(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get(), 100, 0, true, true));
                     }
-                    boolean hit = entry.hit(hitValue, pos,(ServerWorld) entity.getWorld());
+                    boolean hit = entry.hit(2, pos,(ServerWorld) entity.getWorld());
                     if (!hit){
                         latestFoundEntry = entry;
                     } else {
+                        latestFoundEntry = null;
                         manager.removeEntry(entry);
                     }
                 }

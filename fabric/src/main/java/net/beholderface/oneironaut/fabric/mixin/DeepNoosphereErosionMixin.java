@@ -6,6 +6,7 @@ import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
 import net.beholderface.oneironaut.registry.OneironautBlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
@@ -44,18 +45,21 @@ public class DeepNoosphereErosionMixin {
                         || existingState.isAir() || existingState.getBlock() == OneironautBlockRegistry.THOUGHT_SLURRY_BLOCK.get())){
                     DisintegrationProtectionManager.DisintegrationProtectionEntry entry = latestFoundEntry;
                     DisintegrationProtectionManager manager = DisintegrationProtectionManager.getServerState(server);
-                    if (entry != null && !entry.canProtect(pos)){
+                    if (entry == null || !entry.canProtect(pos)){
                         entry = manager.getProtectionEntry(Vec3d.of(pos));
                     }
-                    if (entry != null){
+                    //Oneironaut.LOGGER.info(entry != null ? entry.getUuid() : "no");
+                    if (entry != null && !entry.isBroken()){
                         boolean hit = entry.hit(Vec3d.of(pos), world);
                         if (!hit){
                             latestFoundEntry = entry;
                         } else {
+                            latestFoundEntry = null;
                             manager.removeEntry(entry);
                         }
                     } else {
                         world.breakBlock(pos, false);
+                        world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
                 }
             }

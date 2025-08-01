@@ -85,8 +85,8 @@ public class Oneironaut {
             IdeaInscriptionManager ideaState = IdeaInscriptionManager.getServerState(startedserver);
             IdeaInscriptionManager.cleanMap(startedserver, ideaState);
             ideaState.markDirty();
-            LichdomManager lichState = LichdomManager.getServerState(startedserver);
-            lichState.markDirty();
+            /*LichdomManager lichState = LichdomManager.getServerState(startedserver);
+            lichState.markDirty();*/
             try {
                 DisintegrationProtectionManager disintegrationState = DisintegrationProtectionManager.getServerState(startedserver);
                 disintegrationState.cleanEntries();
@@ -116,7 +116,7 @@ public class Oneironaut {
             try {
                 HoverElevatorBlockEntity.processHover(true, server.getOverworld().getTime());
             } catch (ConcurrentModificationException exception){
-                LOGGER.error("Oopsie server-side hoverlift exception " + exception.getMessage());
+                LOGGER.error("Oopsie server-side hoverlift exception {}", exception.getMessage());
             }
             DepartureEntry.clearMap();
             ServerPlayerEntity noospherePlayer = noosphere.getRandomAlivePlayer();
