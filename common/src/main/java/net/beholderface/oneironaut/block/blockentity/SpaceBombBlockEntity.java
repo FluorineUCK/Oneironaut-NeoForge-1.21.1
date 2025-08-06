@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -149,7 +150,7 @@ public class SpaceBombBlockEntity extends BlockEntity {
     public void explode(List<Entity> living){
         assert this.world != null;
         Vec3d doublePos = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-        BlockState createdBlockstate = this.world != Oneironaut.getNoosphere() ? HexalBlocks.SLIPWAY.getDefaultState() : OneironautBlockRegistry.NOOSPHERE_GATE.get().getDefaultState();
+        BlockState createdBlockstate = Oneironaut.isWorldNoosphere((ServerWorld) this.world) ? HexalBlocks.SLIPWAY.getDefaultState() : OneironautBlockRegistry.NOOSPHERE_GATE.get().getDefaultState();
         this.world.setBlockState(this.pos, Blocks.AIR.getDefaultState());
         this.world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 5.0f, World.ExplosionSourceType.BLOCK);
         for (Entity entity : living){

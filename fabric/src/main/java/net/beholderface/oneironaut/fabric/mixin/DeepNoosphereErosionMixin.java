@@ -29,7 +29,7 @@ public class DeepNoosphereErosionMixin {
 
     @Shadow @Final private MinecraftServer server;
     @Unique ServerWorld world = (ServerWorld)(Object) this;
-    @Unique private static final TagKey<Block> tagkey = MiscAPIKt.getBlockTagKey(new Identifier("oneironaut:hexbreakimmune"));
+    @Unique private static final TagKey<Block> tagkey = MiscAPIKt.getBlockTagKey(new Identifier("oneironaut:deeperosionimmune"));
     @Unique private static DisintegrationProtectionManager.DisintegrationProtectionEntry latestFoundEntry = null;
 
     @Inject(method = "tickChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ChunkSection;hasRandomTicks()Z"))
