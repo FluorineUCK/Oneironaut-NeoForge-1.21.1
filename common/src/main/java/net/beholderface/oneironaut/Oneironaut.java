@@ -12,6 +12,7 @@ import dev.architectury.event.events.common.TickEvent;
 import net.beholderface.oneironaut.block.InactiveSlipwayBlock;
 import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.casting.DepartureEntry;
+import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
 import net.beholderface.oneironaut.casting.IdeaInscriptionManager;
 import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
 import net.beholderface.oneironaut.casting.lichdom.LichData;
@@ -21,10 +22,14 @@ import net.beholderface.oneironaut.item.BottomlessMediaItem;
 import net.beholderface.oneironaut.recipe.OneironautRecipeSerializer;
 import net.beholderface.oneironaut.recipe.OneironautRecipeTypes;
 import net.beholderface.oneironaut.registry.*;
+import net.beholderface.oneironaut.status.MediaDisintegrationEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -33,16 +38,16 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ram.talia.hexal.common.entities.WanderingWisp;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static net.beholderface.oneironaut.MiscAPIKt.getItemTagKey;
@@ -61,6 +66,7 @@ public class Oneironaut {
     private static MinecraftServer server = null;
 
 
+    public static final Set<Pair<LivingEntity, StatusEffectInstance>> reapplicationSet = new HashSet<>();
     public static void init() {
         LOGGER.info("why do they call it oven when you of in the cold food of out hot eat the food");
         OneironautMiscRegistry.init();
@@ -79,8 +85,18 @@ public class Oneironaut {
             IdeaInscriptionManager ideaState = IdeaInscriptionManager.getServerState(startedserver);
             IdeaInscriptionManager.cleanMap(startedserver, ideaState);
             ideaState.markDirty();
-            LichdomManager lichState = LichdomManager.getServerState(startedserver);
-            lichState.markDirty();
+            /*LichdomManager lichState = LichdomManager.getServerState(startedserver);
+            lichState.markDirty();*/
+            try {
+                DisintegrationProtectionManager disintegrationState = DisintegrationProtectionManager.getServerState(startedserver);
+                disintegrationState.cleanEntries();
+                disintegrationState.markDirty();
+            } catch (ClassCastException exception){
+                //WHAT THE FUCK IS GOING WRONG
+                LOGGER.error(exception.getMessage());
+                exception.printStackTrace();
+            }
+
             randomWispPigments.addAll(HexItems.DYE_PIGMENTS.values());
             randomWispPigments.addAll(HexItems.PRIDE_PIGMENTS.values());
             randomWispPigments.add(HexItems.DEFAULT_PIGMENT);
@@ -100,7 +116,7 @@ public class Oneironaut {
             try {
                 HoverElevatorBlockEntity.processHover(true, server.getOverworld().getTime());
             } catch (ConcurrentModificationException exception){
-                LOGGER.error("Oopsie server-side hoverlift exception " + exception.getMessage());
+                LOGGER.error("Oopsie server-side hoverlift exception {}", exception.getMessage());
             }
             DepartureEntry.clearMap();
             ServerPlayerEntity noospherePlayer = noosphere.getRandomAlivePlayer();
@@ -113,30 +129,19 @@ public class Oneironaut {
                 wisp.setPigment(new FrozenPigment(stack, ((Entity)wisp).getUuid()));
                 noosphere.spawnEntity(wisp);
             }
-            for (ServerPlayerEntity player : deepNoosphere.getPlayers()){
-                if (!player.isSpectator()){
-                    Vec3d playerPos = player.getPos();
-                    if (playerPos.y <= -62.0 || playerPos.y >= 316.2){
-                        double y = playerPos.getY() < 0.0 ? 304.0 : -48.0;
-                        player.teleport(playerPos.getX(), y, playerPos.getZ());
-                    }
-                    if (!player.isCreative() && deepNoosphere.getTime() % 20 == 0){
-                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 10));
-                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60, 10));
-                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 10));
-                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 60, 10));
-                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.UNLUCK, 60, 10));
-                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 10));
-                        player.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 60, 0));
-                        player.removeStatusEffect(StatusEffects.REGENERATION);
-                        player.removeStatusEffect(StatusEffects.ABSORPTION);
-                        player.removeStatusEffect(StatusEffects.RESISTANCE);
-                        player.removeStatusEffect(StatusEffects.WATER_BREATHING);
-                        player.removeStatusEffect(StatusEffects.SATURATION);
-                        OvercastDamageEnchant.applyMindDamage(null, player, (int)Math.max(1, Math.floor(player.getMaxHealth() / 6f)), false);
+            /*for (ServerPlayerEntity player : deepNoosphere.getPlayers()) {
+                if (!player.isSpectator()) {
+                    if (!player.isCreative() && deepNoosphere.getTime() % 20 == 0) {
+                        processDisintegration(player);
                     }
                 }
+            }*/
+            for (Pair<LivingEntity, StatusEffectInstance> pair : reapplicationSet){
+                if (!pair.getLeft().hasStatusEffect(pair.getRight().getEffectType())){
+                    pair.getLeft().addStatusEffect(pair.getRight());
+                }
             }
+            reapplicationSet.clear();
 
             //LichdomManager.tick(server);
         });
@@ -223,5 +228,18 @@ public class Oneironaut {
             throw new IllegalStateException("getCachedServer method called before server start");
         }
         return server;
+    }
+
+    public static void processDisintegration(LivingEntity entity){
+        if (!entity.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get())){
+            if (!entity.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION.get())){
+                entity.addStatusEffect(new StatusEffectInstance(OneironautMiscRegistry.DISINTEGRATION.get(), 100, 0, true, true));
+            } else {
+                StatusEffectInstance instance = entity.getStatusEffect(OneironautMiscRegistry.DISINTEGRATION.get());
+                if (instance != null && instance.getDuration() <= 40){
+                    instance.duration += 90;
+                }
+            }
+        }
     }
 }

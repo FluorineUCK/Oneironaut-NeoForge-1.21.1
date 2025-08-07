@@ -10,7 +10,7 @@ import at.petrak.hexcasting.api.misc.MediaConstants
 import net.minecraft.block.Blocks
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
-import net.beholderface.oneironaut.getBoxCorners
+import net.beholderface.oneironaut.corners
 import net.beholderface.oneironaut.getPositionsInCuboid
 import net.beholderface.oneironaut.registry.OneironautBlockRegistry
 import net.beholderface.oneironaut.toVec3i
@@ -19,7 +19,7 @@ class OpAdvanceAutomaton : SpellAction {
     override val argc = 2
     override fun execute(args: List<Iota>, env: CastingEnvironment): SpellAction.Result {
         val box = Box(BlockPos(args.getVec3(0, argc).toVec3i()), BlockPos(args.getVec3(1, argc).toVec3i()))
-        val corners = getBoxCorners(box)
+        val corners = box.corners()
         for(c in corners){
             env.assertVecInRange(c)
         }

@@ -19,18 +19,20 @@ import net.beholderface.oneironaut.*
 import net.beholderface.oneironaut.casting.mishaps.MishapBadCuboid
 import net.beholderface.oneironaut.casting.mishaps.MishapNoNoosphere
 import net.beholderface.oneironaut.item.BottomlessMediaItem
+import net.fabricmc.fabric.api.dimension.v1.FabricDimensions
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.fluid.FluidState
 import net.minecraft.nbt.NbtCompound
-import net.minecraft.registry.RegistryKey
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.text.Text
 import net.minecraft.util.math.*
-import net.minecraft.world.World
+import net.minecraft.world.TeleportTarget
 import java.lang.Exception
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 
 class OpSwapSpace : SpellAction {
@@ -70,14 +72,14 @@ class OpSwapSpace : SpellAction {
                 * originCuboidDimensions.z.coerceAtLeast(1))
         //cost is logarithmic until passing 1001 total blocks swapped, at which point it starts increasing linearly.
         //https://www.desmos.com/calculator/ydbg8zhmyp
-        val cost : Double = if (boxVolume <= 1001){
+        var cost : Double = if (boxVolume <= 1001){
             BottomlessMediaItem.arbitraryLog(1.036, boxVolume.toDouble()) + 5
         } else {
             boxVolume.toDouble() / 5 //yes all these values are magic numbers but I can't be arsed right now
         }
         /*Oneironaut.LOGGER.info("box volume: $boxVolume")
         Oneironaut.LOGGER.info("cost: $cost dust")*/
-        val boxCorners = getBoxCorners(originBox)
+        val boxCorners = originBox.corners()
         for (corner in boxCorners) {
             env.assertVecInRange(corner)
         }
@@ -99,15 +101,30 @@ class OpSwapSpace : SpellAction {
             throw MishapBadCuboid("overlap")
         }
 
+        var casterOffset : Vec3d? = null;
+        var casterEnd : Boolean = false;
+        if (env.castingEntity != null){
+            if (env.castingEntity!!.world == originWorld && originBox.containsPermissive(env.castingEntity!!.pos)){
+                casterOffset = env.castingEntity!!.pos.subtract(originBox.minCorner())
+                casterEnd = true
+            } else if (env.castingEntity!!.world == destWorld && destBox.containsPermissive(env.castingEntity!!.pos)){
+                casterOffset = env.castingEntity!!.pos.subtract(destBox.minCorner())
+                casterEnd = false
+            }
+            if (casterOffset != null){
+                cost += 250.0
+            }
+        }
+
         return SpellAction.Result(
-            Spell(originWorld, originBox, destWorld, destBox, originCuboidDimensions, boxVolume),
+            Spell(originWorld, originBox, destWorld, destBox, originCuboidDimensions, boxVolume, casterOffset, casterEnd),
             (cost * MediaConstants.DUST_UNIT).toLong(),
             listOf(ParticleSpray.cloud(env.mishapSprayPos(), 2.0))
         )
     }
     private data class Spell(val originDim : ServerWorld, val originBox : Box,
                              val destDim : ServerWorld, val destBox : Box,
-                             val dimensions : Vec3i, val volume : Int) : RenderedSpell {
+                             val dimensions : Vec3i, val volume : Int, val casterOffset : Vec3d?, val casterEnd : Boolean) : RenderedSpell {
         override fun cast(env: CastingEnvironment) {
             val originLowerCorner = BlockPos(originBox.minX.toInt(), originBox.minY.toInt(), originBox.minZ.toInt())
             val destLowerCorner = BlockPos(destBox.minX.toInt(), destBox.minY.toInt(), destBox.minZ.toInt())
@@ -226,6 +243,16 @@ class OpSwapSpace : SpellAction {
                         destPointState.updateNeighbors(destDim, destDimPos, 3, 512)
                     }
                 }
+            }
+            if (casterOffset != null){
+                val caster = env.castingEntity!!
+                var dim = destDim
+                var box = destBox
+                if (!casterEnd){
+                    dim = originDim
+                    box = originBox
+                }
+                FabricDimensions.teleport(caster, dim, TeleportTarget(box.minCorner().add(casterOffset), caster.velocity, caster.headYaw, caster.pitch))
             }
             //this stuff is commented out because I can't figure out how to get the spell to load entities on the other side of the transfer
             /*for (pair in originEntityMap){

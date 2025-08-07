@@ -6,14 +6,10 @@ import at.petrak.hexcasting.api.casting.circles.BlockEntityAbstractImpetus;
 import at.petrak.hexcasting.api.casting.circles.CircleExecutionState;
 import at.petrak.hexcasting.api.casting.eval.CastResult;
 import at.petrak.hexcasting.api.casting.eval.MishapEnvironment;
-import at.petrak.hexcasting.api.casting.eval.SpellCircleContext;
 import at.petrak.hexcasting.api.casting.eval.env.CircleCastEnv;
-import at.petrak.hexcasting.api.casting.eval.env.PlayerBasedCastEnv;
-import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import net.beholderface.oneironaut.MiscAPIKt;
-import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.block.ExtradimensionalBoundaryLocus;
 import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker;
 import net.beholderface.oneironaut.mixin.PlayerCastEnvInvoker;
@@ -29,7 +25,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -73,7 +68,7 @@ public class ExtradimensionalCircleCastEnv extends CircleCastEnv {
                 }
             }
             boolean validBox = true;
-            for (Vec3d vec : MiscAPIKt.getBoxCorners(biggestBoxFound)){
+            for (Vec3d vec : MiscAPIKt.corners(biggestBoxFound)){
                 BlockPos pos = new BlockPos(MiscAPIKt.toVec3i(vec));
                 if (!(visitedLoci.contains(pos) && originalWorld.getBlockState(pos).getBlock() instanceof ExtradimensionalBoundaryLocus)){
                     validBox = false;

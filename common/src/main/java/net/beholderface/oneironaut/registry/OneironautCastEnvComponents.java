@@ -14,7 +14,7 @@ public class OneironautCastEnvComponents {
                 if (!(env instanceof LichPassiveHexEnv)){
                     env.addExtension(new LichMediaExtractComponent(env));
                 }
-                if (env.getWorld() == Oneironaut.getNoosphere()){
+                if (Oneironaut.isWorldNoosphere(env.getWorld())){
                     env.addExtension(new NoosphereAmbitExtensionComponent(env));
                 }
             }

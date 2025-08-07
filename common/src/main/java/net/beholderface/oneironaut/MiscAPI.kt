@@ -225,6 +225,10 @@ fun Vec3d.toVec3i() : Vec3i {
     return Vec3i(floor(this.x).toInt(), floor(this.y).toInt(), floor(this.z).toInt())
 }
 
+fun Vec3d.toBlockPos() : BlockPos{
+    return BlockPos(floor(this.x).toInt(), floor(this.y).toInt(), floor(this.z).toInt())
+}
+
 fun genCircle(world : StructureWorldAccess, center : BlockPos, diameter : Int, state : BlockState, replacable : Array<Block>, fillPortion : Double) : Int{
     val realCenter = Vec3d(center.x + 0.5, center.y + 0.5, center.z + 0.5)
     //val area = diameter * diameter
@@ -295,11 +299,12 @@ fun getPositionsInCuboid(corner1 : BlockPos, corner2 : BlockPos) : List<BlockPos
     )
 }
 
-fun getBoxCorners(box : Box) : List<Vec3d>{
-    return listOf(Vec3d(box.minX, box.minY, box.minZ), Vec3d(box.maxX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.maxY, box.minZ), Vec3d(box.maxX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.maxZ), Vec3d(box.minX, box.minY, box.maxZ),
-        Vec3d(box.maxX, box.minY, box.maxZ), Vec3d(box.minX, box.maxY, box.minZ)
+fun Box.corners() : List<Vec3d>{
+    return listOf(
+        Vec3d(this.minX, this.minY, this.minZ), Vec3d(this.maxX, this.minY, this.minZ),
+        Vec3d(this.maxX, this.maxY, this.minZ), Vec3d(this.maxX, this.maxY, this.maxZ),
+        Vec3d(this.minX, this.maxY, this.maxZ), Vec3d(this.minX, this.minY, this.maxZ),
+        Vec3d(this.maxX, this.minY, this.maxZ), Vec3d(this.minX, this.maxY, this.minZ)
     )
 }
 
@@ -356,6 +361,14 @@ fun Box.intersectsPermissive(minX: Double, minY: Double, minZ: Double, maxX: Dou
 
 fun Box.intersectsPermissive(box : Box): Boolean {
     return this.intersectsPermissive(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ)
+}
+
+fun Box.containsPermissive(x : Double, y : Double, z : Double) : Boolean{
+    return x >= this.minX && x <= this.maxX && y >= this.minY && y <= this.maxY && z >= this.minZ && z <= this.maxZ
+}
+
+fun Box.containsPermissive(vec : Vec3d) : Boolean{
+    return this.containsPermissive(vec.x, vec.y, vec.z)
 }
 
 fun Box.volume() : Double {
