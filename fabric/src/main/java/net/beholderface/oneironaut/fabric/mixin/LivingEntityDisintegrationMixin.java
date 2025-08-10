@@ -21,14 +21,22 @@ public class LivingEntityDisintegrationMixin {
 
     @Unique LivingEntity entity = (LivingEntity) (Object) this;
     @Unique private static DisintegrationProtectionManager.DisintegrationProtectionEntry latestFoundEntry = null;
+    @Unique private static boolean hasCaughtError = false;
 
 
     @Inject(method = "tick", at = @At(value = "TAIL"))
     public void disintegrate(CallbackInfo ci){
         boolean shouldDisintegrate = false;
         if (entity.getWorld().isClient){
-            ClientWorld world = (ClientWorld) entity.getWorld();
-            shouldDisintegrate = world.getDimensionEffects().getClass() == DeepNoosphereDimensionEffects.class && world.getTime() % 20 == 0;
+            try {
+                ClientWorld world = (ClientWorld) entity.getWorld();
+                shouldDisintegrate = world.getDimensionEffects().getClass() == DeepNoosphereDimensionEffects.class && world.getTime() % 20 == 0;
+            } catch (NoClassDefFoundError why){
+                if (!hasCaughtError){
+                    Oneironaut.LOGGER.info("I hear they're adding glorbo to silksong");
+                    hasCaughtError = true;
+                }
+            }
         } else {
             ServerWorld world = (ServerWorld) entity.getWorld();
             shouldDisintegrate = world == Oneironaut.getDeepNoosphere() && world.getTime() % 20 == 0;
