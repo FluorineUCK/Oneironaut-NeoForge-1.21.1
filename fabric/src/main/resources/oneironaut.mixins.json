@@ -16,7 +16,6 @@
     "FishUpScrollMixin",
     "GlowAmbitEffectAmbitMixin",
     "GlowAmbitEffectGlowMixin",
-    "LensMediaTooltipMixin",
     "LivingEntityDisintegrationMixin",
     "MixinHonorLibraryCardReads",
     "OneResetSoundMixin",

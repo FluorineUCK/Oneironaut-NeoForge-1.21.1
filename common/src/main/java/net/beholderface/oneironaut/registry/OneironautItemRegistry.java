@@ -1,5 +1,7 @@
 package net.beholderface.oneironaut.registry;
 
+import at.petrak.hexcasting.api.casting.iota.DoubleIota;
+import at.petrak.hexcasting.api.casting.iota.EntityIota;
 import at.petrak.hexcasting.api.misc.MediaConstants;
 import at.petrak.hexcasting.common.items.ItemStaff;
 import dev.architectury.core.item.ArchitecturyBucketItem;
@@ -8,6 +10,7 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.item.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.SoundEvents;
@@ -79,6 +82,16 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<BlockItem> SPACE_BOMB_ITEM = ITEMS.register("spacebomb", ()->new BlockItem(OneironautBlockRegistry.SPACE_BOMB.get(), ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<BlockItem> SLIPWAY_SUPPRESSOR_ITEM = ITEMS.register("slipwaysuppressor", ()->new BlockItem(OneironautBlockRegistry.SLIPWAY_SUPPRESSOR.get(), ONEIRONAUT_STACKABLE64));
     public static final RegistrySupplier<BlockItem> EXTRADIM_LOCUS_ITEM = ITEMS.register("extradimensional_border", ()->new BlockItem(OneironautBlockRegistry.EXTRADIM_LOCUS.get(), ONEIRONAUT_STACKABLE64));
+
+    public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_GRIDSIZE = ITEMS.register("concept_modifier_gridsize", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE.get(),
+            ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof DoubleIota));
+    public static final RegistrySupplier<WriteableBlockItem> CONCEPT_CORE = ITEMS.register("concept_core", ()->new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_CORE.get(), ONEIRONAUT_UNSTACKABLE,
+            (iota)-> {
+                if ( iota instanceof EntityIota entityIota){
+                    return entityIota.getEntity() instanceof PlayerEntity;
+                }
+                return false;
+            }));
 
     public static final FoodComponent MONKFRUIT_FOOD = (new FoodComponent.Builder()).hunger(4).saturationModifier(0.6F).snack().alwaysEdible().build();
     public static final FoodComponent MONKFRUIT_FOOD_COOKED = (new FoodComponent.Builder()).hunger(6).saturationModifier(0.8F).alwaysEdible().build();

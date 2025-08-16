@@ -6,8 +6,6 @@ import at.petrak.hexcasting.common.lib.HexDamageTypes;
 import at.petrak.hexcasting.common.lib.HexItems;
 import at.petrak.hexcasting.ktxt.AccessorWrappers;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
-import net.beholderface.oneironaut.casting.lichdom.LichData;
-import net.beholderface.oneironaut.casting.lichdom.LichdomManager;
 import net.beholderface.oneironaut.network.ParticleBurstPacket;
 import net.minecraft.enchantment.DamageEnchantment;
 import net.minecraft.enchantment.Enchantment;
@@ -96,12 +94,6 @@ public class OvercastDamageEnchant extends Enchantment {
             boolean creative = target instanceof PlayerEntity player && (player.isSpectator() || player.isCreative());
             DamageSource overcastSource = livingTarget.getDamageSources().create(HexDamageTypes.OVERCAST);
             if (!livingTarget.isInvulnerableTo(overcastSource) && !livingTarget.isDead() && !brainswept && !creative){
-                if (target instanceof ServerPlayerEntity serverPlayer && LichdomManager.isPlayerLich(serverPlayer)){
-                    LichData data = LichdomManager.getLichData(serverPlayer);
-                    data.withdrawMedia(MediaConstants.DUST_UNIT * level, false);
-                    level *= 2;
-                    data.setAbilityCooldown(Math.max(data.getAbilityCooldown(), level * 20L));
-                }
                 float oldHealth = livingTarget.getHealth();
                 float newHealth = oldHealth - (level / 2f);
                 if (newHealth > 0){

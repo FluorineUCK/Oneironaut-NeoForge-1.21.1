@@ -2,11 +2,13 @@ package net.beholderface.oneironaut.registry;
 
 import at.petrak.hexcasting.api.block.circle.BlockCircleComponent;
 import at.petrak.hexcasting.common.blocks.circles.BlockSlate;
+import at.petrak.hexcasting.common.lib.HexAttributes;
 import at.petrak.hexcasting.common.lib.HexBlocks;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.beholderface.oneironaut.block.*;
 import net.beholderface.oneironaut.block.blockentity.*;
+import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.Instrument;
@@ -103,6 +105,13 @@ public class OneironautBlockRegistry {
 
     //yes it acts like an xray thingy, no I don't care, it's not available in survival
     public static RegistrySupplier<DeepNoosphereFloorBlock> DEEP_NOOSPHERE_FLOOR = BLOCKS.register("deep_border", ()->new DeepNoosphereFloorBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().mapColor(MapColor.PALE_PURPLE)));
+
+    public static RegistrySupplier<ConceptCoreBlock> CONCEPT_CORE = BLOCKS.register("concept_core", ()->new ConceptCoreBlock(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK)));
+    public static RegistrySupplier<BlockEntityType<ConceptCoreBlockEntity>> CONCEPT_CORE_ENTITY = BLOCK_ENTITIES.register("concept_core_entity", ()->BlockEntityType.Builder.create(ConceptCoreBlockEntity::new, CONCEPT_CORE.get()).build(null));
+
+    public static RegistrySupplier<Block> CONCEPT_MODIFIER_EMPTY = BLOCKS.register("concept_modifier_empty", ()->new Block(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK)));
+    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_GRIDSIZE = BLOCKS.register("concept_modifier_gridsize", ()->new ConceptModifierBlock(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK), ConceptModifier.ModifierType.ATTRIBUTE, HexAttributes.GRID_ZOOM));
+    public static RegistrySupplier<BlockEntityType<ConceptModifierBlockEntity>> CONCEPT_MODIFIER_ENTITY = BLOCK_ENTITIES.register("concept_modifier_entity", ()->BlockEntityType.Builder.create(ConceptModifierBlockEntity::new, CONCEPT_MODIFIER_EMPTY.get(), CONCEPT_MODIFIER_GRIDSIZE.get()).build(null));
 
     //mostly just stolen from the vanilla class since it's private in there
     protected static ToIntFunction<BlockState> createLightLevelFromBoolBlockState(BooleanProperty property, int litLevel) {

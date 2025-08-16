@@ -1,22 +1,16 @@
 package net.beholderface.oneironaut.registry;
 
-import at.petrak.hexcasting.api.HexAPI;
 import at.petrak.hexcasting.api.casting.ActionRegistryEntry;
 import at.petrak.hexcasting.api.casting.castables.Action;
-import at.petrak.hexcasting.api.casting.math.HexAngle;
 import at.petrak.hexcasting.api.casting.math.HexDir;
 import at.petrak.hexcasting.api.casting.math.HexPattern;
 import at.petrak.hexcasting.api.misc.MediaConstants;
 import at.petrak.hexcasting.common.casting.actions.spells.OpMakePackagedSpell;
-import at.petrak.hexcasting.common.lib.HexRegistries;
 import at.petrak.hexcasting.common.lib.hex.HexActions;
 import dev.architectury.registry.registries.RegistrySupplier;
 import kotlin.Triple;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.OneironautConfig;
-import net.beholderface.oneironaut.casting.lichdom.OpIsLich;
-import net.beholderface.oneironaut.casting.lichdom.OpLichify;
-import net.beholderface.oneironaut.casting.lichdom.OpSetPassiveHex;
 import net.beholderface.oneironaut.casting.patterns.*;
 import net.beholderface.oneironaut.casting.patterns.rod.*;
 import net.beholderface.oneironaut.casting.patterns.spells.*;
@@ -86,21 +80,10 @@ public class OneironautPatternRegistry {
     public static HexPattern APPLY_NOT_MISSING = registerPerWorld(HexPattern.fromAngles("qdaeqeawaeqeadqqdeed", HexDir.SOUTH_WEST), "applynotmissing", new OpMarkEntity());
     public static HexPattern APPLY_MIND_RENDER = registerPerWorld(HexPattern.fromAngles("qweqadeqadeqadqqqwdaqedaqedaqeqaqdwawdwawdwaqawdwawdwawddwwwwwqdeddw", HexDir.EAST), "applymindrender", new OpApplyOvercastDamage());
     public static HexPattern REVIVE_FLAYED = registerPerWorld(HexPattern.fromAngles("qeqwqqedeeeeeaqwqeqaqedqde", HexDir.NORTH_EAST), "reviveflayed", new OpReviveFlayed());
-    /*public static HexPattern BECOME_LICH = registerPerWorld(HexPattern.fromAngles("ede", HexDir.NORTH_WEST), "lichify", new OpLichify());
-    public static HexPattern QUERY_LICH = register(HexPattern.fromAngles("edew", HexDir.NORTH_WEST), "getislich", new OpIsLich());
-    public static HexPattern SET_LICH_TICKHEX = register(HexPattern.fromAngles("edeq", HexDir.NORTH_WEST), "setlichtickhex", new OpSetPassiveHex());*/
 
     public static HexPattern EVAL_EXTRADIMENSIONAL = register(HexPattern.fromAngles("wqwqwqwqwqwaqdeaqqe", HexDir.WEST), "extradimensionaleval", new OpEvalExtradimensional());
     public static HexPattern SHIFT_SENTINEL = register(HexPattern.fromAngles("wwaeawwaeqqwqwqwqwqwq", HexDir.EAST), "shiftsentinel", new OpShiftSentinel());
     public static HexPattern EROSION_SHIELD = register(HexPattern.fromAngles("wwqwwqwwqwwqwwqwwaeqwwqqqwwqaeadaqadaawww", HexDir.WEST), "erosionshield", new OpErosionShield());
-
-    //cell spells
-    //public static List<Triple<String[][], Identifier, ICellSpell>> CELL_PATTERNS = new ArrayList<>();
-
-    //public static String[][] CELL_EXPLOSION = registerCellSpell(OpCellExplosion.explosionPattern, "explosion", new OpCellExplosion(OpCellExplosion.explosionPattern, "oneironaut.cellspell.explosion"));
-    //public static String[][] CELL_HEAL = registerCellSpell(OpCellHeal.line, "heal", new OpCellHeal(OpCellHeal.line, "oneironaut.cellspell.heal"));
-    //public static String[][] CELL_UNIFY = registerCellSpell(OpCellUnify.unifyPattern, "unify", new OpCellUnify(OpCellUnify.unifyPattern, "oneironaut.cellspell.unify"));
-    //public static String[][] CELL_COPY_EFFECTS = registerCellSpell(OpCellCopyEffects.copyPattern, "copyeffects", new OpCellCopyEffects(OpCellCopyEffects.copyPattern, "oneironaut.cellspell.copyeffects"));
 
     public static void init() {
         try {
@@ -119,7 +102,7 @@ public class OneironautPatternRegistry {
 
     }
 //stolen from gloop
-    private static Map<RegistrySupplier<? extends Item>, UncheckedPatternRegister> itemDependentPatternRegisterers = new HashMap<>();
+    private static final Map<RegistrySupplier<? extends Item>, UncheckedPatternRegister> itemDependentPatternRegisterers = new HashMap<>();
 
     static {
         itemDependentPatternRegisterers.put(OneironautItemRegistry.REVERBERATION_ROD, () -> {
@@ -157,10 +140,4 @@ public class OneironautPatternRegistry {
     public static interface UncheckedPatternRegister{
         public void register();
     }
-
-    /*private static String[][] registerCellSpell(String[][] pattern, String name, ICellSpell spell){
-        Triple<String[][], Identifier, ICellSpell> triple = new Triple<>(pattern, id(name), spell);
-        CELL_PATTERNS.add(triple);
-        return pattern;
-    }*/
 }

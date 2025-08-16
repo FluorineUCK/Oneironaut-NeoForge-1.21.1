@@ -2,8 +2,6 @@ package net.beholderface.oneironaut.status;
 
 import at.petrak.hexcasting.api.item.MediaHolderItem;
 import at.petrak.hexcasting.api.misc.MediaConstants;
-import net.beholderface.oneironaut.casting.lichdom.LichData;
-import net.beholderface.oneironaut.casting.lichdom.LichdomManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
@@ -46,17 +44,12 @@ public class MonkfruitDelayEffect extends StatusEffect {
                     mediaHolders.add(player.getStackInHand(Hand.OFF_HAND));
                 }
             }
-            boolean isLich = LichdomManager.isPlayerLich(player);
-            int quantity = mediaHolders.size() + (isLich ? 1 : 0);
+            int quantity = mediaHolders.size();
             double multiplier = 1.0 + (amplifier / 4.0);
             long inserted = (long) (((overallReleased / quantity) * (multiplier)) * MediaConstants.DUST_UNIT);
             for (ItemStack battery : mediaHolders){
                 MediaHolderItem type = (MediaHolderItem) battery.getItem();
                 type.insertMedia(battery, inserted, false);
-            }
-            if (isLich){
-                LichData data = LichdomManager.getLichData(player);
-                data.insertMedia(inserted, false);
             }
         }
     }

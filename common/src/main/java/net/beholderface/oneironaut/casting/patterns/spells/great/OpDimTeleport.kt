@@ -51,7 +51,7 @@ class OpDimTeleport : SpellAction {
         val coords = target.pos
         var noosphere = false
         val destination = if (args[1] is NullIota){
-            noosphere = true;
+            noosphere = true
             Oneironaut.getNoosphere()
         } else {
             args.getDimIota(1, argc).toWorld(env.world.server)

@@ -2,7 +2,6 @@ package net.beholderface.oneironaut;
 
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.common.items.ItemStaff;
-import at.petrak.hexcasting.common.items.magic.ItemMediaHolder;
 import at.petrak.hexcasting.common.lib.HexItems;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.events.common.InteractionEvent;
@@ -14,22 +13,15 @@ import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.casting.DepartureEntry;
 import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
 import net.beholderface.oneironaut.casting.IdeaInscriptionManager;
-import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
-import net.beholderface.oneironaut.casting.lichdom.LichData;
-import net.beholderface.oneironaut.casting.lichdom.LichMediaExtractComponent;
-import net.beholderface.oneironaut.casting.lichdom.LichdomManager;
+import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
+import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager;
 import net.beholderface.oneironaut.item.BottomlessMediaItem;
 import net.beholderface.oneironaut.recipe.OneironautRecipeSerializer;
 import net.beholderface.oneironaut.recipe.OneironautRecipeTypes;
 import net.beholderface.oneironaut.registry.*;
-import net.beholderface.oneironaut.status.MediaDisintegrationEffect;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -39,10 +31,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ram.talia.hexal.common.entities.WanderingWisp;
@@ -82,20 +71,18 @@ public class Oneironaut {
             server = startedserver;
             noosphere = stringToWorld("oneironaut:noosphere", startedserver);
             deepNoosphere = stringToWorld("oneironaut:deep_noosphere", startedserver);
+
             IdeaInscriptionManager ideaState = IdeaInscriptionManager.getServerState(startedserver);
             IdeaInscriptionManager.cleanMap(startedserver, ideaState);
             ideaState.markDirty();
-            /*LichdomManager lichState = LichdomManager.getServerState(startedserver);
-            lichState.markDirty();*/
-            try {
-                DisintegrationProtectionManager disintegrationState = DisintegrationProtectionManager.getServerState(startedserver);
-                disintegrationState.cleanEntries();
-                disintegrationState.markDirty();
-            } catch (ClassCastException exception){
-                //WHAT THE FUCK IS GOING WRONG
-                LOGGER.error(exception.getMessage());
-                exception.printStackTrace();
-            }
+
+            DisintegrationProtectionManager disintegrationState = DisintegrationProtectionManager.getServerState(startedserver);
+            disintegrationState.cleanEntries();
+            disintegrationState.markDirty();
+
+            ConceptModifierManager conceptState = ConceptModifierManager.getServerState(startedserver);
+            conceptState.verifyModifiers();
+            conceptState.markDirty();
 
             randomWispPigments.addAll(HexItems.DYE_PIGMENTS.values());
             randomWispPigments.addAll(HexItems.PRIDE_PIGMENTS.values());
@@ -129,27 +116,27 @@ public class Oneironaut {
                 wisp.setPigment(new FrozenPigment(stack, ((Entity)wisp).getUuid()));
                 noosphere.spawnEntity(wisp);
             }
-            /*for (ServerPlayerEntity player : deepNoosphere.getPlayers()) {
-                if (!player.isSpectator()) {
-                    if (!player.isCreative() && deepNoosphere.getTime() % 20 == 0) {
-                        processDisintegration(player);
-                    }
-                }
-            }*/
             for (Pair<LivingEntity, StatusEffectInstance> pair : reapplicationSet){
                 if (!pair.getLeft().hasStatusEffect(pair.getRight().getEffectType())){
                     pair.getLeft().addStatusEffect(pair.getRight());
                 }
             }
             reapplicationSet.clear();
-
-            //LichdomManager.tick(server);
         });
 
         PlayerEvent.PLAYER_RESPAWN.register((player, leavingEnd)->{
-            if (LichdomManager.isPlayerLich(player) && !leavingEnd){
-                LichData data = LichdomManager.getLichData(player);
-                data.setMedia(data.getMedia() / 2);
+            ConceptModifierManager conceptModifierManager = ConceptModifierManager.getServerState(player.server);
+            LOGGER.info("r");
+            for (ConceptModifier modifier : conceptModifierManager.getAllModifiers(player)){
+                modifier.onApply(player);
+            }
+        });
+        PlayerEvent.PLAYER_JOIN.register((player)->{
+            ConceptModifierManager conceptModifierManager = ConceptModifierManager.getServerState(player.server);
+            LOGGER.info("j");
+            for (ConceptModifier modifier : conceptModifierManager.getAllModifiers(player)){
+                LOGGER.info("jdasdasd");
+                modifier.onApply(player);
             }
         });
 
@@ -168,7 +155,6 @@ public class Oneironaut {
             }
             return CompoundEventResult.pass();
         });
-        //IdeaInscriptionManager ideaState = IdeaInscriptionManager.getServerState()
     }
 
     public enum Loggers {
