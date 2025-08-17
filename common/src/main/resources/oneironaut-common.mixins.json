@@ -12,6 +12,7 @@
     "CubeLoreGrantMixin",
     "DecorativeWispMixin",
     "EntityRaycastImmunityMixin",
+    "EntityRefConceptMixin",
     "EraseSoulprintSignatureMixin",
     "GeneralCastEnvInvoker",
     "IllegalIotasMixin",

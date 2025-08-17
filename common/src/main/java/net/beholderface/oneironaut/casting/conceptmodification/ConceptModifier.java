@@ -36,6 +36,7 @@ public class ConceptModifier {
     public static final String TAG_MODIFIER_TYPE = "type";
     public static final String TAG_ATTRIBUTE_DATA = "attribute";
     public static final String TAG_ATTRIBUTE_MODIFIER = "modifier";
+    public static final String TAG_COMPARISON_OVERRIDE = "comparison";
 
     public final BlockPos corePos;
     public final BlockPos hostPos;
@@ -131,5 +132,12 @@ public class ConceptModifier {
 
     public long getMediaCost(){
         return 0;
+    }
+
+    public static boolean typeRequiresIota(ConceptModifier.ModifierType type){
+        return switch (type){
+            case ATTRIBUTE, REFERENCE_COMPARISON: yield true;
+            default: yield false;
+        };
     }
 }

@@ -19,8 +19,11 @@ import net.beholderface.oneironaut.item.BottomlessMediaItem;
 import net.beholderface.oneironaut.recipe.OneironautRecipeSerializer;
 import net.beholderface.oneironaut.recipe.OneironautRecipeTypes;
 import net.beholderface.oneironaut.registry.*;
+import net.beholderface.oneironaut.status.MediaDisintegrationEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,6 +74,10 @@ public class Oneironaut {
             server = startedserver;
             noosphere = stringToWorld("oneironaut:noosphere", startedserver);
             deepNoosphere = stringToWorld("oneironaut:deep_noosphere", startedserver);
+
+            if (OneironautMiscRegistry.DISINTEGRATION.get().getAttributeModifiers().isEmpty()){
+                OneironautMiscRegistry.DISINTEGRATION.get().addAttributeModifier(EntityAttributes.GENERIC_MAX_HEALTH, MediaDisintegrationEffect.ATTRIBUTE_UUID_STRING, -1.0, EntityAttributeModifier.Operation.ADDITION);
+            }
 
             IdeaInscriptionManager ideaState = IdeaInscriptionManager.getServerState(startedserver);
             IdeaInscriptionManager.cleanMap(startedserver, ideaState);
@@ -126,18 +133,16 @@ public class Oneironaut {
 
         PlayerEvent.PLAYER_RESPAWN.register((player, leavingEnd)->{
             ConceptModifierManager conceptModifierManager = ConceptModifierManager.getServerState(player.server);
-            LOGGER.info("r");
             for (ConceptModifier modifier : conceptModifierManager.getAllModifiers(player)){
                 modifier.onApply(player);
             }
         });
         PlayerEvent.PLAYER_JOIN.register((player)->{
             ConceptModifierManager conceptModifierManager = ConceptModifierManager.getServerState(player.server);
-            LOGGER.info("j");
             for (ConceptModifier modifier : conceptModifierManager.getAllModifiers(player)){
-                LOGGER.info("jdasdasd");
                 modifier.onApply(player);
             }
+            Oneironaut.LOGGER.info(player.getActiveStatusEffects());
         });
 
         ItemStack fakeStaffStack = HexItems.STAFF_OAK.getDefaultStack();
@@ -217,6 +222,11 @@ public class Oneironaut {
     }
 
     public static void processDisintegration(LivingEntity entity){
+        /*if (entity instanceof ServerPlayerEntity player){
+            if (ConceptModifierManager.getServerState(player.server).hasModifierType(player, ConceptModifier.ModifierType.ANTIEROSION)){
+                return;
+            }
+        }*/
         if (!entity.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get())){
             if (!entity.hasStatusEffect(OneironautMiscRegistry.DISINTEGRATION.get())){
                 entity.addStatusEffect(new StatusEffectInstance(OneironautMiscRegistry.DISINTEGRATION.get(), 100, 0, true, true));

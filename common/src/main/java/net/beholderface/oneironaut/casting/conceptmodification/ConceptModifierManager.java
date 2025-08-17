@@ -4,6 +4,10 @@ import at.petrak.hexcasting.api.utils.NBTHelper;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.block.ConceptCoreBlock;
 import net.beholderface.oneironaut.block.ConceptModifierBlock;
+import net.beholderface.oneironaut.block.blockentity.ConceptCoreBlockEntity;
+import net.beholderface.oneironaut.block.blockentity.ConceptModifierBlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -45,16 +49,23 @@ public class ConceptModifierManager extends PersistentState {
         return this.getAllModifiers(player.getUuid());
     }
 
-    public boolean hasModifierType(UUID playerID, ConceptModifier.ModifierType type){
+    public ConceptModifier getModifierByType(UUID playerID, ConceptModifier.ModifierType type){
         Map<BlockPos, ConceptModifier> map = this.modifierMap.get(playerID);
         if (map != null){
             for (ConceptModifier modifier : map.values()){
                 if (modifier.type == type){
-                    return true;
+                    return modifier;
                 }
             }
         }
-        return false;
+        return null;
+    }
+    public ConceptModifier getModifierByType(ServerPlayerEntity player, ConceptModifier.ModifierType type){
+        return this.getModifierByType(player.getUuid(), type);
+    }
+
+    public boolean hasModifierType(UUID playerID, ConceptModifier.ModifierType type){
+        return this.getModifierByType(playerID, type) != null;
     }
     public boolean hasModifierType(ServerPlayerEntity player, ConceptModifier.ModifierType type){
         return this.hasModifierType(player.getUuid(), type);
@@ -93,7 +104,9 @@ public class ConceptModifierManager extends PersistentState {
         this.removeModifier(playerID, BlockPos.fromLong(modifierID.getLeastSignificantBits()));
     }
     public void removeModifier(UUID playerID, ConceptModifier modifier){
-        this.removeModifier(playerID, modifier.hostPos);
+        if (modifier != null){
+            this.removeModifier(playerID, modifier.hostPos);
+        }
     }
 
     public int clearPlayerModifiers(UUID playerID){
@@ -145,6 +158,9 @@ public class ConceptModifierManager extends PersistentState {
     }
 
     public static ConceptModifierManager getServerState(MinecraftServer server){
+        if (server == null){
+            return null;
+        }
         PersistentStateManager stateManager = Oneironaut.getDeepNoosphere().getPersistentStateManager();
         ConceptModifierManager manager = stateManager.getOrCreate(ConceptModifierManager::createFromNbt,
                 ConceptModifierManager::new, ID);
@@ -163,19 +179,29 @@ public class ConceptModifierManager extends PersistentState {
             ConceptModifier modifier = null;
             while (iterator.hasNext()){
                 modifier = iterator.next();
-                if (!(world.getBlockState(modifier.hostPos).getBlock() instanceof ConceptModifierBlock) ||
-                        !(world.getBlockState(modifier.corePos).getBlock() instanceof ConceptCoreBlock)){
+                Block hostPosBlock = world.getBlockState(modifier.hostPos).getBlock();
+                boolean appropriateHost = false;
+                ConceptModifierBlockEntity be = null;
+                if (hostPosBlock instanceof ConceptModifierBlock conceptModifierBlock){
+                    if (conceptModifierBlock.type == modifier.type){
+                        appropriateHost = true;
+                        be = (ConceptModifierBlockEntity) world.getBlockEntity(modifier.hostPos);
+                    }
+                }
+                BlockState coreState = world.getBlockState(modifier.corePos);
+                Block corePosBlock = coreState.getBlock();
+                boolean appropriateCore = false;
+                if (corePosBlock instanceof ConceptCoreBlock conceptCoreBlock){
+                    if (world.getBlockEntity(modifier.corePos) instanceof ConceptCoreBlockEntity core){
+                        appropriateCore = playerID.equals(core.getStoredUUID())
+                                && conceptCoreBlock.getConnectedModifiers(coreState, modifier.corePos, world, null).contains(be);
+                    }
+                }
+                if (!(appropriateCore && appropriateHost)){
                     iterator.remove();
                     i++;
-                    /*if (modifier.type == ConceptModifier.ModifierType.ATTRIBUTE){
-                        ServerPlayerEntity hostPlayer = Oneironaut.getCachedServer().getPlayerManager().getPlayer(playerID);
-                        if (hostPlayer != null)
-                    }*/
                 }
             }
-            /*this.modifierMap.get(playerID).values().removeIf(modifier ->
-                    !(world.getBlockState(modifier.hostPos).getBlock() instanceof ConceptModifierBlock) ||
-                    !(world.getBlockState(modifier.corePos).getBlock() instanceof ConceptCoreBlock));*/
         }
         this.markDirty();
         Oneironaut.LOGGER.info("Removed {} invalid concept modifiers.", i);

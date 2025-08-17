@@ -1,5 +1,6 @@
 package net.beholderface.oneironaut.registry;
 
+import at.petrak.hexcasting.api.casting.iota.BooleanIota;
 import at.petrak.hexcasting.api.casting.iota.DoubleIota;
 import at.petrak.hexcasting.api.casting.iota.EntityIota;
 import at.petrak.hexcasting.api.misc.MediaConstants;
@@ -8,6 +9,7 @@ import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import kotlin.math.MathKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.item.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -84,14 +86,17 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<BlockItem> EXTRADIM_LOCUS_ITEM = ITEMS.register("extradimensional_border", ()->new BlockItem(OneironautBlockRegistry.EXTRADIM_LOCUS.get(), ONEIRONAUT_STACKABLE64));
 
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_GRIDSIZE = ITEMS.register("concept_modifier_gridsize", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE.get(),
-            ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof DoubleIota));
+            ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof DoubleIota && Math.abs(((DoubleIota) iota).getDouble()) <= 2.0));
+    public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_MAXHEALTH = ITEMS.register("concept_modifier_maxhealth", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_MAXHEALTH.get(),
+            ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof DoubleIota && Math.abs(((DoubleIota) iota).getDouble()) <= 10.0));
+    public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_ANTIEROSION = ITEMS.register("concept_modifier_antierosion", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_ANTIEROSION.get(),
+            ONEIRONAUT_UNSTACKABLE, (iota)-> false));
+    public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_REFERENCE_FALSY = ITEMS.register("concept_modifier_falsy", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY.get(),
+            ONEIRONAUT_UNSTACKABLE, (iota)-> false));
+    public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_REFERENCE_COMPARISON = ITEMS.register("concept_modifier_comparison", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_COMPARISON.get(),
+            ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof BooleanIota));
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_CORE = ITEMS.register("concept_core", ()->new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_CORE.get(), ONEIRONAUT_UNSTACKABLE,
-            (iota)-> {
-                if ( iota instanceof EntityIota entityIota){
-                    return entityIota.getEntity() instanceof PlayerEntity;
-                }
-                return false;
-            }));
+            (iota)-> iota instanceof EntityIota && ((EntityIota) iota).getEntity() instanceof PlayerEntity));
 
     public static final FoodComponent MONKFRUIT_FOOD = (new FoodComponent.Builder()).hunger(4).saturationModifier(0.6F).snack().alwaysEdible().build();
     public static final FoodComponent MONKFRUIT_FOOD_COOKED = (new FoodComponent.Builder()).hunger(6).saturationModifier(0.8F).alwaysEdible().build();

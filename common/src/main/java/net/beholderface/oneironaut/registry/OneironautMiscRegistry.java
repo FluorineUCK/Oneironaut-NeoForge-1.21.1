@@ -24,7 +24,6 @@ public class OneironautMiscRegistry {
     public static void init() {
         FLUIDS.register();
         EFFECTS.register();
-        DISINTEGRATION.get().addAttributeModifier(EntityAttributes.GENERIC_MAX_HEALTH, MediaDisintegrationEffect.ATTRIBUTE_UUID_STRING, -1.0, EntityAttributeModifier.Operation.ADDITION);
         ENCHANTMENTS.register();
     }
 

@@ -3,11 +3,14 @@ package net.beholderface.oneironaut.fabric.mixin;
 import net.beholderface.oneironaut.DeepNoosphereDimensionEffects;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
+import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
+import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager;
 import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,7 +52,11 @@ public class LivingEntityDisintegrationMixin {
                 if (entry == null || !entry.canProtect(pos)){
                     entry = manager.getProtectionEntry(pos);
                 }
-                if (entry != null && !entry.isBroken()){
+                boolean conceptProtected = false;
+                if (entity instanceof ServerPlayerEntity player){
+                    conceptProtected = ConceptModifierManager.getServerState(player.server).hasModifierType(player, ConceptModifier.ModifierType.ANTIEROSION);
+                }
+                if ((entry != null && !entry.isBroken()) || conceptProtected){
                     StatusEffectInstance instance = entity.getStatusEffect(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get());
                     if (instance != null){
                         if (instance.getDuration() <= 40){
@@ -58,12 +65,14 @@ public class LivingEntityDisintegrationMixin {
                     } else {
                         entity.addStatusEffect(new StatusEffectInstance(OneironautMiscRegistry.DISINTEGRATION_PROTECTION.get(), 100, 0, true, true));
                     }
-                    boolean hit = entry.hit(2, pos,(ServerWorld) entity.getWorld());
-                    if (!hit){
-                        latestFoundEntry = entry;
-                    } else {
-                        latestFoundEntry = null;
-                        manager.removeEntry(entry);
+                    if (entry != null && !entry.isBroken()){
+                        boolean hit = entry.hit(2, pos,(ServerWorld) entity.getWorld());
+                        if (!hit){
+                            latestFoundEntry = entry;
+                        } else {
+                            latestFoundEntry = null;
+                            manager.removeEntry(entry);
+                        }
                     }
                 }
             }
