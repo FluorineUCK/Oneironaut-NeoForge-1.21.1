@@ -25,13 +25,17 @@ public class ConceptModifierBlockEntity extends HexBlockEntity {
 
     private final boolean typeNeedsIota;
 
+    public final ConceptModifier.ModifierType modifierType;
+
     private ConceptModifier conceptModifier = null;
     public ConceptModifierBlockEntity(BlockPos pos, BlockState state) {
         super(OneironautBlockRegistry.CONCEPT_MODIFIER_ENTITY.get(), pos, state);
         if (state.getBlock() instanceof ConceptModifierBlock block){
             typeNeedsIota = ConceptModifier.typeRequiresIota(block.type);
+            this.modifierType = block.type;
         } else {
             typeNeedsIota = false;
+            this.modifierType = null;
         }
     }
 
@@ -59,7 +63,7 @@ public class ConceptModifierBlockEntity extends HexBlockEntity {
                                 double attributeValue = ((DoubleIota)iota).getDouble();
                                 ConceptModifier modifier = new ConceptModifier(core.getPos(), this.pos, null, conceptBlock.type);
                                 modifier.setAttributeData(conceptBlock.getAttribute(), new EntityAttributeModifier(modifier.id, modifier.id.toString(),
-                                        attributeValue, EntityAttributeModifier.Operation.ADDITION));
+                                        attributeValue, EntityAttributeModifier.Operation.MULTIPLY_BASE));
                                 modifierToSet = modifier;
                             } else if (conceptBlock.type == ConceptModifier.ModifierType.REFERENCE_COMPARISON){
                                 boolean overrideValue = ((BooleanIota)iota).getBool();
@@ -85,7 +89,7 @@ public class ConceptModifierBlockEntity extends HexBlockEntity {
         this.conceptModifier = newModifier;
     }
     public ConceptModifier getConceptModifier(){
-        if (this.conceptModifier == null && !this.typeNeedsIota){
+        if (this.conceptModifier == null && !this.typeNeedsIota && this.modifierType != ConceptModifier.ModifierType.NONE){
             if (this.world instanceof ServerWorld serverWorld){
                 BlockState state = serverWorld.getBlockState(this.pos);
                 if (state.getBlock() instanceof ConceptModifierBlock block){

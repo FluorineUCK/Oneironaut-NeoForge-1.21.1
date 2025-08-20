@@ -1,7 +1,10 @@
 package net.beholderface.oneironaut.casting.conceptmodification;
 
+import at.petrak.hexcasting.api.misc.MediaConstants;
 import at.petrak.hexcasting.api.utils.NBTHelper;
 import net.beholderface.oneironaut.MiscAPIKt;
+import net.beholderface.oneironaut.block.ConceptModifierBlock;
+import net.minecraft.block.Block;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -9,6 +12,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +29,7 @@ public class ConceptModifier {
         KEEPINVENTORY,
         LITTERBUG_REFERENCE,
         NO_OVERCAST,
+        NONE,
         REFERENCE_COMPARISON,
         TOTEM,
         XL_REFERENCE
@@ -130,7 +135,10 @@ public class ConceptModifier {
         NBTHelper.putCompound(this.parameters, TAG_ATTRIBUTE_DATA, attributeNBT);
     }
 
-    public long getMediaCost(){
+    public long getMediaCost(Block block){
+        if (block instanceof ConceptModifierBlock conceptModifierBlock && conceptModifierBlock.costCalulator != null){
+            return (long) (conceptModifierBlock.costCalulator.apply(this.parameters) * MediaConstants.DUST_UNIT);
+        }
         return 0;
     }
 

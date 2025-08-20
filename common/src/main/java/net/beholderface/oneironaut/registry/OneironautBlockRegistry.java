@@ -13,12 +13,14 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.BooleanProperty;
 import net.beholderface.oneironaut.Oneironaut;
 import ram.talia.hexal.common.lib.HexalBlocks;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
@@ -113,13 +115,22 @@ public class OneironautBlockRegistry {
 
     public static Supplier<AbstractBlock.Settings> CONCEPT_MODIFIER_SETTINGS = ()->AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK).luminance((state)->15);
 
-    public static RegistrySupplier<Block> CONCEPT_MODIFIER_EMPTY = BLOCKS.register("concept_modifier_empty", ()->new Block(CONCEPT_MODIFIER_SETTINGS.get()));
+    public static RegistrySupplier<Block> CONCEPT_MODIFIER_EMPTY = BLOCKS.register("concept_modifier_empty", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.NONE, null));
 
-    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_GRIDSIZE = BLOCKS.register("concept_modifier_gridsize", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.ATTRIBUTE, HexAttributes.GRID_ZOOM));
-    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_MAXHEALTH = BLOCKS.register("concept_modifier_maxhealth", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.ATTRIBUTE, EntityAttributes.GENERIC_MAX_HEALTH));
-    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_ANTIEROSION = BLOCKS.register("concept_modifier_antierosion", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.ANTIEROSION));
-    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_REFERENCE_FALSY = BLOCKS.register("concept_modifier_falsy", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.FALSY_REFERENCE));
-    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_REFERENCE_COMPARISON = BLOCKS.register("concept_modifier_comparison", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.REFERENCE_COMPARISON));
+    private static final Function<NbtCompound, Double> ATTRIBUTE_CONCEPT_CALULATOR = (nbt)->{
+        double potency = nbt.getDouble("potency");
+        if (potency <= 1){
+            potency = (1 - potency) + 1; //0.8 original potency becomes 1.2 processed potency
+            return -Math.pow(potency * 5.0, 2.0);
+        } else {
+            return Math.pow(potency * 10.0, 2.0);
+        }
+    };
+    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_GRIDSIZE = BLOCKS.register("concept_modifier_gridsize", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.ATTRIBUTE, HexAttributes.GRID_ZOOM, ATTRIBUTE_CONCEPT_CALULATOR));
+    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_MAXHEALTH = BLOCKS.register("concept_modifier_maxhealth", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.ATTRIBUTE, EntityAttributes.GENERIC_MAX_HEALTH, ATTRIBUTE_CONCEPT_CALULATOR));
+    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_ANTIEROSION = BLOCKS.register("concept_modifier_antierosion", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.ANTIEROSION, (nbt)->10000.0));
+    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_REFERENCE_FALSY = BLOCKS.register("concept_modifier_falsy", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.FALSY_REFERENCE, (nbt)->1000.0));
+    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_REFERENCE_COMPARISON = BLOCKS.register("concept_modifier_comparison", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.REFERENCE_COMPARISON, (nbt)->1000.0));
 
     public static RegistrySupplier<BlockEntityType<ConceptModifierBlockEntity>> CONCEPT_MODIFIER_ENTITY = BLOCK_ENTITIES.register("concept_modifier_entity", ()->BlockEntityType.Builder.create(ConceptModifierBlockEntity::new,
             CONCEPT_MODIFIER_GRIDSIZE.get(), CONCEPT_MODIFIER_MAXHEALTH.get(),

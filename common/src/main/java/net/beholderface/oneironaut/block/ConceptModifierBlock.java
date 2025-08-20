@@ -9,6 +9,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
@@ -22,20 +23,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Function;
 
 public class ConceptModifierBlock extends BlockWithEntity implements IConceptSocketed {
 
     private EntityAttribute attribute = null;
     public final ConceptModifier.ModifierType type;
+    @Nullable
+    public final Function<NbtCompound, Double> costCalulator;
 
-    public ConceptModifierBlock(Settings settings, ConceptModifier.ModifierType type) {
+    public ConceptModifierBlock(Settings settings, ConceptModifier.ModifierType type, @Nullable Function<NbtCompound, Double> costCalulator) {
         super(settings);
         this.type = type;
+        this.costCalulator = costCalulator;
     }
-    public ConceptModifierBlock(Settings settings, ConceptModifier.ModifierType type, EntityAttribute attribute){
+    public ConceptModifierBlock(Settings settings, ConceptModifier.ModifierType type, EntityAttribute attribute, @Nullable Function<NbtCompound, Double> costCalulator){
         super(settings);
         this.type = type;
         this.attribute = attribute;
+        this.costCalulator = costCalulator;
     }
 
     @Override
@@ -89,7 +95,6 @@ public class ConceptModifierBlock extends BlockWithEntity implements IConceptSoc
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context){
-
         return switch (state.get(Properties.FACING)){
             case DOWN -> VoxelShapes.cuboid(3.0 / 16, 2.0 / 16, 3.0 / 16, 13.0 / 16, 16.0 / 16, 13.0 / 16);
             case UP -> VoxelShapes.cuboid(3.0 / 16, 0.0 / 16, 3.0 / 16, 13.0 / 16, 14.0 / 16, 13.0 / 16);

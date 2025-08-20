@@ -65,7 +65,9 @@ public class ConceptCoreBlock extends BlockWithEntity implements IConceptSockete
                         try {
                             EnumSet<ConceptModifier.ModifierType> encounteredTypes = EnumSet.noneOf(ConceptModifier.ModifierType.class);
                             Set<EntityAttribute> attributes = new HashSet<>();
-                            long mediaTotal = 0L;
+                            long positiveTotal = 0L;
+                            long negativeTotal = 0L;
+                            Set<ConceptModifier> modifiersToApply = new HashSet<>();
                             for (ConceptModifierBlockEntity entity : modifierBlocks){
                                 ConceptModifier modifier = entity.getConceptModifier();
                                 boolean shouldApply = false;
@@ -80,13 +82,22 @@ public class ConceptCoreBlock extends BlockWithEntity implements IConceptSockete
                                     shouldApply = true;
                                 }
                                 if (shouldApply){
-                                    manager.addModifier(player, modifier);
-                                    modifier.onApply(player);
-                                    mediaTotal += modifier.getMediaCost();
+                                    modifiersToApply.add(modifier);
+                                    long cost = modifier.getMediaCost(world.getBlockState(entity.getPos()).getBlock());
+                                    if (cost > 0){
+                                        positiveTotal += cost;
+                                    } else if (cost < 0) {
+                                        negativeTotal -= cost;
+                                    }
                                 }
                             }
-                            if (mediaTotal > 0){
-                                be.extractMedia(mediaTotal);
+                            long finalCost = Math.max(positiveTotal / 10, positiveTotal - negativeTotal);
+                            if (finalCost > 0 && be.getStoredMedia() >= finalCost){
+                                be.extractMedia(finalCost);
+                                for (ConceptModifier modifier : modifiersToApply){
+                                    manager.addModifier(player, modifier);
+                                    modifier.onApply(player);
+                                }
                             }
                         } catch (Exception e){
                             //nothing
