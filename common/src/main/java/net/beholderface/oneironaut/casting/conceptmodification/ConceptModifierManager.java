@@ -1,6 +1,7 @@
 package net.beholderface.oneironaut.casting.conceptmodification;
 
 import at.petrak.hexcasting.api.utils.NBTHelper;
+import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.block.ConceptCoreBlock;
 import net.beholderface.oneironaut.block.ConceptModifierBlock;
@@ -29,7 +30,7 @@ public class ConceptModifierManager extends PersistentState {
     public ConceptModifier getModifier(UUID playerID, UUID modifierID){
         Map<BlockPos, ConceptModifier> map = this.modifierMap.get(playerID);
         if (map != null){
-            return map.get(BlockPos.fromLong(modifierID.getLeastSignificantBits()));
+            return map.get(MiscAPIKt.toBlockPos(modifierID));
         }
         return null;
     }
@@ -101,7 +102,7 @@ public class ConceptModifierManager extends PersistentState {
         }
     }
     public void removeModifier(UUID playerID, UUID modifierID){
-        this.removeModifier(playerID, BlockPos.fromLong(modifierID.getLeastSignificantBits()));
+        this.removeModifier(playerID, MiscAPIKt.toBlockPos(modifierID));
     }
     public void removeModifier(UUID playerID, ConceptModifier modifier){
         if (modifier != null){

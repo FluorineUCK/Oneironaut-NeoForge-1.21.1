@@ -1,7 +1,7 @@
 package net.beholderface.oneironaut.casting.conceptmodification;
 
 import at.petrak.hexcasting.api.utils.NBTHelper;
-import net.beholderface.oneironaut.Oneironaut;
+import net.beholderface.oneironaut.MiscAPIKt;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -47,7 +47,7 @@ public class ConceptModifier {
     public ConceptModifier(@NotNull BlockPos corePos, @NotNull BlockPos hostPos, @Nullable NbtCompound parameters, ModifierType type){
         this.corePos = corePos;
         this.hostPos = hostPos;
-        this.id = new UUID(0L, hostPos.asLong());
+        this.id = MiscAPIKt.toUUID(hostPos);
         this.parameters = parameters != null ? parameters : new NbtCompound();
         this.type = type;
     }

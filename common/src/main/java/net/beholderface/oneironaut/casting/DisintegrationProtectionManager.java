@@ -131,11 +131,15 @@ public class DisintegrationProtectionManager extends PersistentState {
             this.uuid = UUID.randomUUID();
         }
 
-        private DisintegrationProtectionEntry(Box bounds, long hits, long durability, UUID uuid){
+        private DisintegrationProtectionEntry(Box bounds, long hits, long durability, @Nullable UUID uuid){
             this.bounds = bounds;
             this.hits = hits;
             this.durability = durability;
-            this.uuid = uuid;
+            this.uuid = uuid != null ? uuid : UUID.randomUUID();
+        }
+
+        public DisintegrationProtectionEntry indestructible(Box bounds){
+            return new DisintegrationProtectionEntry(bounds, -1L, -1L, MiscAPIKt.toUUID(MiscAPIKt.toBlockPos(bounds.getCenter())));
         }
 
         public Box getBounds(){
@@ -151,20 +155,26 @@ public class DisintegrationProtectionManager extends PersistentState {
         }
 
         public long getHits() {
-            return hits;
+            return hits != -1 ? hits : Long.MIN_VALUE;
         }
 
         public long getDurability() {
-            return durability;
+            return durability != -1 ? durability : Long.MAX_VALUE;
         }
 
         public UUID getUuid() {
             return uuid;
         }
 
+        private void addHits(long addedHits){
+            if (this.hits != -1){
+                this.hits += addedHits;
+            }
+        }
+
         public boolean hit(long addedHits, Vec3d pos, ServerWorld world){
             boolean startedBroken = this.isBroken();
-            this.hits += addedHits;
+            this.addHits(addedHits);
             //Oneironaut.LOGGER.info("Entry {} hit for {} points, for a total of {}", this.uuid.toString(), addedHits, this.getHits());
             boolean newlyBroken = (this.isBroken() && !startedBroken);
             if (world != null){
@@ -191,7 +201,6 @@ public class DisintegrationProtectionManager extends PersistentState {
         }
 
         public boolean isBroken(){
-            //return false;
             return this.getHits() >= this.getDurability();
         }
 
@@ -202,8 +211,8 @@ public class DisintegrationProtectionManager extends PersistentState {
         public static final String TAG_UUID = "uuid";
         public NbtCompound serialize(){
             NbtCompound nbt = new NbtCompound();
-            nbt.putLong(TAG_HITS, this.getHits());
-            nbt.putLong(TAG_DURABILITY, durability);
+            nbt.putLong(TAG_HITS, this.hits);
+            nbt.putLong(TAG_DURABILITY, this.durability);
             nbt.putUuid(TAG_UUID, this.getUuid());
             NBTHelper.putCompound(nbt, TAG_CORNER_1, NbtHelper.fromBlockPos(new BlockPos((int) this.bounds.minX, (int) this.bounds.minY, (int) this.bounds.minZ)));
             NBTHelper.putCompound(nbt, TAG_CORNER_2, NbtHelper.fromBlockPos(new BlockPos((int) this.bounds.maxX, (int) this.bounds.maxY, (int) this.bounds.maxZ)));

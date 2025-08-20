@@ -395,3 +395,11 @@ fun List<Iota>.getNonlivingIfAllowed(idx: Int, argc: Int = 0): Entity {
     }
     throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), stub)
 }
+
+fun BlockPos.toUUID() : UUID{
+    return UUID(0L, this.asLong())
+}
+
+fun UUID.toBlockPos() : BlockPos{
+    return BlockPos.fromLong(this.leastSignificantBits)
+}

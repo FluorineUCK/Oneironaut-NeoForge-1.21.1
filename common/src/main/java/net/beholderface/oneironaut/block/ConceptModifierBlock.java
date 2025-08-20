@@ -4,10 +4,7 @@ import net.beholderface.oneironaut.block.blockentity.ConceptCoreBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.ConceptModifierBlockEntity;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,6 +14,9 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,5 +85,29 @@ public class ConceptModifierBlock extends BlockWithEntity implements IConceptSoc
                 }
             }
         }
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context){
+
+        return switch (state.get(Properties.FACING)){
+            case DOWN -> VoxelShapes.cuboid(3.0 / 16, 2.0 / 16, 3.0 / 16, 13.0 / 16, 16.0 / 16, 13.0 / 16);
+            case UP -> VoxelShapes.cuboid(3.0 / 16, 0.0 / 16, 3.0 / 16, 13.0 / 16, 14.0 / 16, 13.0 / 16);
+            case NORTH -> VoxelShapes.cuboid(3.0 / 16, 3.0 / 16, 2.0 / 16, 13.0 / 16, 13.0 / 16, 16.0 / 16);
+            case SOUTH -> VoxelShapes.cuboid(3.0 / 16, 3.0 / 16, 0.0 / 16, 13.0 / 16, 13.0 / 16, 14.0 / 16);
+            case WEST -> VoxelShapes.cuboid(2.0 / 16, 3.0 / 16, 3.0 / 16, 16.0 / 16, 13.0 / 16, 13.0 / 16);
+            case EAST -> VoxelShapes.cuboid(0.0 / 16, 3.0 / 16, 3.0 / 16, 14.0 / 16, 13.0 / 16, 13.0 / 16);
+        };
+    }
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context){
+        return switch (state.get(Properties.FACING)){
+            case DOWN -> VoxelShapes.cuboid(3.0 / 16, 2.0 / 16, 3.0 / 16, 13.0 / 16, 16.0 / 16, 13.0 / 16);
+            case UP -> VoxelShapes.cuboid(3.0 / 16, 0.0 / 16, 3.0 / 16, 13.0 / 16, 14.0 / 16, 13.0 / 16);
+            case NORTH -> VoxelShapes.cuboid(3.0 / 16, 3.0 / 16, 2.0 / 16, 13.0 / 16, 13.0 / 16, 16.0 / 16);
+            case SOUTH -> VoxelShapes.cuboid(3.0 / 16, 3.0 / 16, 0.0 / 16, 13.0 / 16, 13.0 / 16, 14.0 / 16);
+            case WEST -> VoxelShapes.cuboid(2.0 / 16, 3.0 / 16, 3.0 / 16, 16.0 / 16, 13.0 / 16, 13.0 / 16);
+            case EAST -> VoxelShapes.cuboid(0.0 / 16, 3.0 / 16, 3.0 / 16, 14.0 / 16, 13.0 / 16, 13.0 / 16);
+        };
     }
 }

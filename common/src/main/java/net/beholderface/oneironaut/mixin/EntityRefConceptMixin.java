@@ -32,14 +32,41 @@ public abstract class EntityRefConceptMixin {
     }
 
     @WrapMethod(method = "toleratesOther", remap = false)
-    public boolean intolerance(Iota that, Operation<Boolean> original){
+    public boolean toleranceOverride(Iota that, Operation<Boolean> original){
+        ConceptModifier ent1override = null;
+        ConceptModifier ent2override = null;
+        ConceptModifierManager manager = null;
         if (this.getEntity() instanceof ServerPlayerEntity player){
-            ConceptModifierManager manager = ConceptModifierManager.getServerState(Oneironaut.getCachedServer());
+            manager = ConceptModifierManager.getServerState(Oneironaut.getCachedServer());
             if (manager != null){
                 ConceptModifier modifier = manager.getModifierByType(player, ConceptModifier.ModifierType.REFERENCE_COMPARISON);
                 if (modifier != null){
-                    return modifier.parameters.getBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE);
+                    ent1override = modifier;
                 }
+            }
+        }
+        if (that instanceof EntityIota entityIota && entityIota.getEntity() instanceof ServerPlayerEntity player){
+            if (manager == null){
+                manager = ConceptModifierManager.getServerState(Oneironaut.getCachedServer());
+            }
+            if (manager != null){
+                ConceptModifier modifier = manager.getModifierByType(player, ConceptModifier.ModifierType.REFERENCE_COMPARISON);
+                if (modifier != null){
+                    ent2override = modifier;
+                }
+            }
+        }
+        if (ent1override != null && ent2override == null){
+            return ent1override.parameters.getBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE);
+        } else if (ent1override == null && ent2override != null){
+            return ent2override.parameters.getBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE);
+        } else if (ent1override != null){ //intellij says that explicitly stating ent2override != null always evaluates to true here
+            boolean ent1bool = ent1override.parameters.getBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE);
+            boolean ent2bool = ent2override.parameters.getBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE);
+            if (ent1bool == ent2bool){
+                return ent1bool;
+            } else {
+                return false;
             }
         }
         return original.call(that);
