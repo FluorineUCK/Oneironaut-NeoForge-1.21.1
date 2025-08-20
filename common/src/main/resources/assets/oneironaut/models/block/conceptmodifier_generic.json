@@ -4,7 +4,7 @@
 	"parent": "block/cube",
 	"texture_size": [16, 32],
 	"textures": {
-		"0": "oneironaut:block/sigil_augurs",
+		"0": "oneironaut:block/conceptsigils/placeholder",
 		"1": "oneironaut:block/pseudoamethyst_block",
 		"2": "oneironaut:block/conceptmodifier_slates",
 		"particle": "hexcasting:block/slate"
