@@ -146,7 +146,7 @@
   "oneironaut.page.wisp_lanterns.6": "When releasing a cyclic wisp, it is placed on the side of the block I use the item on. Projectile wisps are launched from my face, retaining their previous speed (but not direction). To discard a contained wisp, I need only use the item while crouching.",
   "oneironaut.page.wisp_lanterns.7": "To initalize the device's media battery, I must use it on one of my own wisps, which will irretrievably consume it and set the battery's capacity to the wisp's stored media value, rounded up to the nearest dust. Should I wish to reset this (along with everything else about the device), I can simply place it in a crafting grid on its own.",
 
-  "oneironaut.page.noosphere_materials.1": "A strange fluid which agitates media entering it, preventing amethyst crystal formation. Stimulates my mind in pleasing ways when I immerse myself in it.",
+  "oneironaut.page.noosphere_materials.1": "A strange fluid which agitates media entering it, preventing crystal formation. Stimulates my mind in pleasing ways when I immerse myself in it.$(br2)I keep finding scraps of paper floating in it. Maybe if I looked hard enough, I could find something interesting.",
   "oneironaut.page.noosphere_materials.2": "A rock which is primarily composed of media, somehow. Can be used to craft spell circle blocks.",
   "oneironaut.page.noosphere_materials.3.title": "Pseudoamethyst",
   "oneironaut.page.noosphere_materials.3": "A large crystal of media much like amethyst, but not quite the same. Produces a buzzing sensation under my fingers when I touch it, as if its media is stimulating the nerves. Breaking it without special care causes it to shatter into 1-4 pieces.",
