@@ -2,13 +2,18 @@ package net.beholderface.oneironaut.block;
 
 import net.beholderface.oneironaut.block.blockentity.ConceptCoreBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.ConceptModifierBlockEntity;
+import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -79,6 +84,15 @@ public class ConceptModifierBlock extends BlockWithEntity implements IConceptSoc
         return BlockRenderType.MODEL;
     }
 
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        try {
+            ConceptModifierBlockEntity be = (ConceptModifierBlockEntity) world.getBlockEntity(pos);
+            be.getConceptModifier();
+        } catch (Exception e){
+            //do nothing
+        }
+    }
+
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player){
         super.onBreak(world,pos,state,player);
         if (world instanceof ServerWorld serverWorld){
@@ -92,6 +106,11 @@ public class ConceptModifierBlock extends BlockWithEntity implements IConceptSoc
             }
         }
     }
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return (_world, _pos, _state, _be) -> ((ConceptModifierBlockEntity)_be).tick(_world, _pos, _state);
+    }
+
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context){

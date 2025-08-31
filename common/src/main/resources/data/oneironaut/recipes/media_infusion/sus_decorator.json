@@ -1,0 +1,11 @@
+{
+  "type": "oneironaut:infuse",
+  "blockIn": {
+    "type": "tag",
+    "tag": "oneironaut:conceptdecorators"
+  },
+  "resultType": {
+    "name": "oneironaut:concept_modifier_sus"
+  },
+  "mediaCost": 100000
+}

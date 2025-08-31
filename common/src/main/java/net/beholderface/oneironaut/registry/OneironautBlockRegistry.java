@@ -18,8 +18,11 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.BooleanProperty;
 import net.beholderface.oneironaut.Oneironaut;
+import net.minecraft.util.DyeColor;
 import ram.talia.hexal.common.lib.HexalBlocks;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -115,7 +118,16 @@ public class OneironautBlockRegistry {
 
     public static Supplier<AbstractBlock.Settings> CONCEPT_MODIFIER_SETTINGS = ()->AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK).luminance((state)->15);
 
-    public static RegistrySupplier<Block> CONCEPT_MODIFIER_EMPTY = BLOCKS.register("concept_modifier_empty", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.NONE, null));
+    public static RegistrySupplier<ConceptDecoratorBlock> CONCEPT_MODIFIER_EMPTY = BLOCKS.register("concept_modifier_empty", ()->new ConceptDecoratorBlock(CONCEPT_MODIFIER_SETTINGS.get()));
+    public static RegistrySupplier<ConceptDecoratorBlock> CONCEPT_MODIFIER_SUS = BLOCKS.register("concept_modifier_sus", ()->new ConceptDecoratorBlock(CONCEPT_MODIFIER_SETTINGS.get()));
+
+    public static final Map<DyeColor, RegistrySupplier<ConceptDecoratorBlock>> COLORFUL_CONCEPT_MODIFIERS = new HashMap<>();
+    static {
+        for (DyeColor color : DyeColor.values()){
+            RegistrySupplier<ConceptDecoratorBlock> supplier = BLOCKS.register("concept_decorator_color/" + color.getName(), ()->new ConceptDecoratorBlock(CONCEPT_MODIFIER_SETTINGS.get()));
+            COLORFUL_CONCEPT_MODIFIERS.put(color, supplier);
+        }
+    }
 
     private static final Function<NbtCompound, Double> ATTRIBUTE_CONCEPT_CALULATOR = (nbt)->{
         double potency = nbt.getDouble("potency");

@@ -1,0 +1,7 @@
+{
+	"parent": "oneironaut:block/conceptmodifiers/conceptmodifier_generic",
+	"texture_size": [16, 32],
+	"textures": {
+		"0": "oneironaut:block/conceptsigils/color/magenta"
+	}
+}

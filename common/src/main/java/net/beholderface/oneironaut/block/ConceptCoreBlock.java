@@ -92,7 +92,7 @@ public class ConceptCoreBlock extends BlockWithEntity implements IConceptSockete
                                 }
                             }
                             long finalCost = Math.max(positiveTotal / 10, positiveTotal - negativeTotal);
-                            if (finalCost > 0 && be.getStoredMedia() >= finalCost){
+                            if ((finalCost > 0 && be.getStoredMedia() >= finalCost) || player.isCreative()){
                                 be.extractMedia(finalCost);
                                 for (ConceptModifier modifier : modifiersToApply){
                                     manager.addModifier(player, modifier);

@@ -40,7 +40,7 @@ public interface IConceptSocketed {
     public Direction getRootFace(BlockState state);
 
     @Nullable
-    public default ConceptCoreBlockEntity getCore(BlockState state, BlockPos pos, ServerWorld world, @Nullable Set<BlockPos> alreadyVisited){
+    public default ConceptCoreBlockEntity getCore(BlockState state, BlockPos pos, World world, @Nullable Set<BlockPos> alreadyVisited){
         if (alreadyVisited == null){
             alreadyVisited = new HashSet<>();
         }

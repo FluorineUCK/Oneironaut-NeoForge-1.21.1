@@ -22,19 +22,6 @@ import java.util.UUID;
 
 public class ConceptModifier {
 
-    public enum ModifierType {
-        ANTIEROSION,
-        ATTRIBUTE,
-        FALSY_REFERENCE,
-        KEEPINVENTORY,
-        LITTERBUG_REFERENCE,
-        NO_OVERCAST,
-        NONE,
-        REFERENCE_COMPARISON,
-        TOTEM,
-        XL_REFERENCE
-    }
-
     public static final String TAG_COREPOS = "corePos";
     public static final String TAG_HOSTPOS = "hostPos";
     public static final String TAG_PARAMETERS = "parameters";
@@ -49,7 +36,7 @@ public class ConceptModifier {
     public final NbtCompound parameters;
     public final ModifierType type;
 
-    public ConceptModifier(@NotNull BlockPos corePos, @NotNull BlockPos hostPos, @Nullable NbtCompound parameters, ModifierType type){
+    public ConceptModifier(@Nullable BlockPos corePos, @NotNull BlockPos hostPos, @Nullable NbtCompound parameters, ModifierType type){
         this.corePos = corePos;
         this.hostPos = hostPos;
         this.id = MiscAPIKt.toUUID(hostPos);
@@ -80,7 +67,9 @@ public class ConceptModifier {
 
     public NbtCompound serialize(){
         NbtCompound nbt = new NbtCompound();
-        NBTHelper.putCompound(nbt, TAG_COREPOS, NbtHelper.fromBlockPos(this.corePos));
+        if (this.corePos != null){
+            NBTHelper.putCompound(nbt, TAG_COREPOS, NbtHelper.fromBlockPos(this.corePos));
+        }
         NBTHelper.putCompound(nbt, TAG_HOSTPOS, NbtHelper.fromBlockPos(this.hostPos));
         NBTHelper.putCompound(nbt, TAG_PARAMETERS, parameters != null ? parameters : new NbtCompound());
         nbt.putString(TAG_MODIFIER_TYPE, this.type.toString());
@@ -90,7 +79,10 @@ public class ConceptModifier {
     @Nullable
     public static ConceptModifier deserialize(NbtCompound nbt){
         try {
-            BlockPos corePos = NbtHelper.toBlockPos(nbt.getCompound(TAG_COREPOS));
+            BlockPos corePos = null;
+            if (nbt.contains(TAG_COREPOS)){
+                corePos = NbtHelper.toBlockPos(nbt.getCompound(TAG_COREPOS));
+            }
             BlockPos hostPos = NbtHelper.toBlockPos(nbt.getCompound(TAG_HOSTPOS));
             NbtCompound parameters = nbt.getCompound(TAG_PARAMETERS);
             ModifierType type = ModifierType.valueOf(nbt.getString(TAG_MODIFIER_TYPE));
@@ -142,10 +134,24 @@ public class ConceptModifier {
         return 0;
     }
 
-    public static boolean typeRequiresIota(ConceptModifier.ModifierType type){
-        return switch (type){
-            case ATTRIBUTE, REFERENCE_COMPARISON: yield true;
-            default: yield false;
-        };
+    public enum ModifierType {
+        ANTIEROSION(false, "antierosion"),
+        ATTRIBUTE(true, "attribute"),
+        FALSY_REFERENCE(false, "falsy"),
+        GTP_DROPREDUCTION(true, "gtp_splat"),
+        KEEPINVENTORY(false, "keepinv"),
+        LITTERBUG_REFERENCE(false, "litterbug"),
+        NO_OVERCAST(false, "nobloodcast"),
+        NONE(false, "none"),
+        REFERENCE_COMPARISON(true, "ref_comparison"),
+        TOTEM(false, "totem"),
+        XL_REFERENCE(true, "ref_size");
+
+        public final boolean requiresIota;
+        public final String translationKey;
+        ModifierType(boolean requiresIota, String translation){
+            this.requiresIota = requiresIota;
+            this.translationKey = "oneironaut.conceptmodifier." + translation;
+        }
     }
 }

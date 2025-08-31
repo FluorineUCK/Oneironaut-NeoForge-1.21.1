@@ -7,7 +7,11 @@ import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.beholderface.oneironaut.block.ConceptDecoratorBlock;
+import net.beholderface.oneironaut.block.ConceptModifierBlock;
 import net.beholderface.oneironaut.block.ThoughtSlurry;
+import net.beholderface.oneironaut.block.blockentity.ConceptModifierBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.WispBatteryEntity;
 import net.beholderface.oneironaut.item.ItemLibraryCard;
@@ -32,15 +36,14 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.ConcurrentModificationException;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Common client loading entrypoint.
  */
 public class OneironautClient {
 
-    private static int applyBlockRenderLayers(Block[] blocks, RenderLayer layer){
+    private static int applyBlockRenderLayers(Collection<Block> blocks, RenderLayer layer){
         int applied = 0;
         for (Block block : blocks){
             BlockRenderLayerMap.INSTANCE.putBlock(block, layer);
@@ -92,7 +95,7 @@ public class OneironautClient {
     }
     public static void init() {
 
-        if (Platform.isFabric()){
+        //if (Platform.isFabric()){
             /*ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
                 registry.register(new Identifier("oneironaut:block/thought_slurry"));
                 registry.register(new Identifier("oneironaut:block/thought_slurry_flowing"));
@@ -107,19 +110,30 @@ public class OneironautClient {
                     WispBatteryEntity::applyScryingLensOverlay
                     );
 
-            Block[] cutoutBlocks = {OneironautBlockRegistry.WISP_LANTERN.get(), OneironautBlockRegistry.WISP_LANTERN_TINTED.get(),
+            List<RegistrySupplier<ConceptModifierBlock>> conceptModifiers = List.of(OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE,
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_ANTIEROSION, OneironautBlockRegistry.CONCEPT_MODIFIER_MAXHEALTH,
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_COMPARISON, OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY);
+            for (RegistrySupplier<ConceptModifierBlock> supplier : conceptModifiers){
+                ScryingLensOverlayRegistry.addDisplayer(supplier.get(), ConceptModifierBlockEntity::applyScryingLensOverlay);
+            }
+
+            List<Block> cutoutBlocks = new ArrayList<>(List.of(OneironautBlockRegistry.WISP_LANTERN.get(), OneironautBlockRegistry.WISP_LANTERN_TINTED.get(),
                     OneironautBlockRegistry.WISP_BATTERY.get(), OneironautBlockRegistry.WISP_BATTERY_DECORATIVE.get(),
                     OneironautBlockRegistry.CIRCLE.get(), OneironautBlockRegistry.PSEUDOAMETHYST_CLUSTER.get(), OneironautBlockRegistry.PSEUDOAMETHYST_BUD_LARGE.get(),
                     OneironautBlockRegistry.PSEUDOAMETHYST_BUD_MEDIUM.get(), OneironautBlockRegistry.PSEUDOAMETHYST_BUD_SMALL.get(),
                     OneironautBlockRegistry.RENDER_BUSH.get(), OneironautBlockRegistry.DEEP_NOOSPHERE_FLOOR.get(),
-                    OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE.get()};
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_EMPTY.get(),
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_SUS.get()));
+            for (RegistrySupplier<ConceptDecoratorBlock> supplier : OneironautBlockRegistry.COLORFUL_CONCEPT_MODIFIERS.values()){
+                cutoutBlocks.add(supplier.get());
+            }
             Block[] translucentBlocks = {OneironautBlockRegistry.RAYCAST_BLOCKER_GLASS.get(), OneironautBlockRegistry.MEDIA_GEL.get(),
                     OneironautBlockRegistry.CELL.get()};
 
             BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), ThoughtSlurry.STILL_FLUID, ThoughtSlurry.FLOWING_FLUID);
 
             Oneironaut.LOGGER.info("Applied cutout layer to " + applyBlockRenderLayers(cutoutBlocks, RenderLayer.getCutout()) + " blocks");
-            Oneironaut.LOGGER.info("Applied translucent layer to " + applyBlockRenderLayers(translucentBlocks, RenderLayer.getTranslucent()) + " blocks");
+            Oneironaut.LOGGER.info("Applied translucent layer to " + applyBlockRenderLayers(List.of(translucentBlocks), RenderLayer.getTranslucent()) + " blocks");
 
             Oneironaut.LOGGER.info("Registering client-side hoverlift processor.");
 
@@ -147,9 +161,9 @@ public class OneironautClient {
             });
             DimensionEffectsAccessor.getIdentifierMap().put(Oneironaut.id("noosphere"), new NoosphereDimensionEffects());
             DimensionEffectsAccessor.getIdentifierMap().put(Oneironaut.id("deep_noosphere"), new DeepNoosphereDimensionEffects());
-        } else {
+        /*} else {
             Oneironaut.LOGGER.info("oh no, forge, aaaaaaaaaaaa");
-        }
+        }*/
 
         ItemPackagedHex[] castingItems = {OneironautItemRegistry.REVERBERATION_ROD.get(), OneironautItemRegistry.BOTTOMLESS_CASTING_ITEM.get()/*, OneironautItemRegistry.INSULATED_TRINKET.get()*/};
         for (ItemPackagedHex item : castingItems){

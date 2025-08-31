@@ -11,13 +11,18 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import kotlin.math.MathKt;
 import net.beholderface.oneironaut.Oneironaut;
+import net.beholderface.oneironaut.block.ConceptDecoratorBlock;
 import net.beholderface.oneironaut.item.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Rarity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class OneironautItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Oneironaut.MOD_ID, RegistryKeys.ITEM);
@@ -35,6 +40,7 @@ public class OneironautItemRegistry {
             Text.translatable("itemGroup.oneironaut.oneironaut"), ()->OneironautItemRegistry.PSUEDOAMETHYST_SHARD.get().getDefaultStack()));
 
     private static final Item.Settings ONEIRONAUT_STACKABLE64 = new Item.Settings().maxCount(64).arch$tab(ONEIRONAUT_GROUP);
+    private static final Item.Settings ONEIRONAUT_STACKABLE64_NOTAB = new Item.Settings().maxCount(64);
     private static final Item.Settings ONEIRONAUT_STACKABLE16 = new Item.Settings().maxCount(16).arch$tab(ONEIRONAUT_GROUP);
     private static final Item.Settings ONEIRONAUT_UNSTACKABLE = new Item.Settings().maxCount(1).arch$tab(ONEIRONAUT_GROUP);
 
@@ -84,6 +90,17 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<BlockItem> SPACE_BOMB_ITEM = ITEMS.register("spacebomb", ()->new BlockItem(OneironautBlockRegistry.SPACE_BOMB.get(), ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<BlockItem> SLIPWAY_SUPPRESSOR_ITEM = ITEMS.register("slipwaysuppressor", ()->new BlockItem(OneironautBlockRegistry.SLIPWAY_SUPPRESSOR.get(), ONEIRONAUT_STACKABLE64));
     public static final RegistrySupplier<BlockItem> EXTRADIM_LOCUS_ITEM = ITEMS.register("extradimensional_border", ()->new BlockItem(OneironautBlockRegistry.EXTRADIM_LOCUS.get(), ONEIRONAUT_STACKABLE64));
+
+    public static final RegistrySupplier<BlockItem> CONCEPT_MODIFIER_EMPTY = ITEMS.register("concept_modifier_empty", ()->new BlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_EMPTY.get(), ONEIRONAUT_STACKABLE64));
+    public static final RegistrySupplier<BlockItem> CONCEPT_MODIFIER_SUS = ITEMS.register("concept_modifier_sus", ()->new BlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_EMPTY.get(), ONEIRONAUT_STACKABLE64_NOTAB));
+
+    public static final Map<DyeColor, RegistrySupplier<BlockItem>> COLORFUL_CONCEPT_MODIFIERS = new HashMap<>();
+    static {
+        for (DyeColor color : DyeColor.values()){
+            RegistrySupplier<BlockItem> supplier = ITEMS.register("concept_decorator_color/" + color.getName(), ()->new BlockItem(OneironautBlockRegistry.COLORFUL_CONCEPT_MODIFIERS.get(color).get(), ONEIRONAUT_STACKABLE64));
+            COLORFUL_CONCEPT_MODIFIERS.put(color, supplier);
+        }
+    }
 
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_GRIDSIZE = ITEMS.register("concept_modifier_gridsize", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE.get(),
             ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof DoubleIota && Math.abs(((DoubleIota) iota).getDouble()) <= 2.0));

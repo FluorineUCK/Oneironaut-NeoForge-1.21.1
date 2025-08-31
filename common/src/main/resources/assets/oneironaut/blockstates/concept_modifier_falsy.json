@@ -1,29 +1,29 @@
 {
   "variants": {
     "facing=down": {
-      "model": "oneironaut:block/conceptmodifier_falsy",
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_falsy",
       "x": 180
     },
     "facing=up": {
-      "model": "oneironaut:block/conceptmodifier_falsy",
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_falsy",
       "x": 0
     },
     "facing=east": {
-      "model": "oneironaut:block/conceptmodifier_falsy",
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_falsy",
       "x": 90,
       "y": 90
     },
     "facing=west": {
-      "model": "oneironaut:block/conceptmodifier_falsy",
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_falsy",
       "x": 90,
       "y": 270
     },
     "facing=north": {
-      "model": "oneironaut:block/conceptmodifier_falsy",
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_falsy",
       "x": 90
     },
     "facing=south": {
-      "model": "oneironaut:block/conceptmodifier_falsy",
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_falsy",
       "x": 270
     }
   }

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_generic",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_generic",
+      "x": 0
+    },
+    "facing=east": {
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_generic",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_generic",
+      "x": 90,
+      "y": 270
+    },
+    "facing=north": {
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_generic",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "oneironaut:block/conceptmodifiers/conceptmodifier_generic",
+      "x": 270
+    }
+  }
+}
