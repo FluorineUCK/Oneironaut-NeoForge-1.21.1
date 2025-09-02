@@ -26,7 +26,7 @@ public interface IConceptSocketed {
                 alreadyChecked.add(checkedPos);
                 BlockState checkedState = world.getBlockState(checkedPos);
                 if (checkedState.getBlock() instanceof IConceptSocketed socketed){
-                    modifiers.addAll(socketed.getConnectedModifiers(state, pos, world, alreadyChecked));
+                    modifiers.addAll(socketed.getConnectedModifiers(checkedState, checkedPos, world, alreadyChecked));
                 }
                 if (checkedState.getBlock() instanceof ConceptModifierBlock modifierBlock){
                     modifiers.add((ConceptModifierBlockEntity) world.getBlockEntity(checkedPos));

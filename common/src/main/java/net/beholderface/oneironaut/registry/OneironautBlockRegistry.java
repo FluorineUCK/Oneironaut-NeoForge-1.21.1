@@ -116,6 +116,8 @@ public class OneironautBlockRegistry {
     public static RegistrySupplier<ConceptCoreBlock> CONCEPT_CORE = BLOCKS.register("concept_core", ()->new ConceptCoreBlock(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK)));
     public static RegistrySupplier<BlockEntityType<ConceptCoreBlockEntity>> CONCEPT_CORE_ENTITY = BLOCK_ENTITIES.register("concept_core_entity", ()->BlockEntityType.Builder.create(ConceptCoreBlockEntity::new, CONCEPT_CORE.get()).build(null));
 
+    public static RegistrySupplier<ConceptConnectorBlock> CONCEPT_CONNECTOR = BLOCKS.register("concept_connector", ()->new ConceptConnectorBlock(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK)));
+
     public static Supplier<AbstractBlock.Settings> CONCEPT_MODIFIER_SETTINGS = ()->AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK).luminance((state)->15);
 
     public static RegistrySupplier<ConceptDecoratorBlock> CONCEPT_MODIFIER_EMPTY = BLOCKS.register("concept_modifier_empty", ()->new ConceptDecoratorBlock(CONCEPT_MODIFIER_SETTINGS.get()));

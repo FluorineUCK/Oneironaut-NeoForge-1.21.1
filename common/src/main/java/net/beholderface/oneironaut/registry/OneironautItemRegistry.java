@@ -118,6 +118,8 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_CORE = ITEMS.register("concept_core", ()->new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_CORE.get(), ONEIRONAUT_UNSTACKABLE,
             (iota)-> iota instanceof EntityIota && ((EntityIota) iota).getEntity() instanceof PlayerEntity));
 
+    public static final RegistrySupplier<BlockItem> CONCEPT_CONNECTOR = ITEMS.register("concept_connector", ()->new BlockItem(OneironautBlockRegistry.CONCEPT_CONNECTOR.get(), ONEIRONAUT_STACKABLE64));
+
     public static final FoodComponent MONKFRUIT_FOOD = (new FoodComponent.Builder()).hunger(4).saturationModifier(0.6F).snack().alwaysEdible().build();
     public static final FoodComponent MONKFRUIT_FOOD_COOKED = (new FoodComponent.Builder()).hunger(6).saturationModifier(0.8F).alwaysEdible().build();
     public static final FoodComponent MONKFRUIT_FOOD_JAM = (new FoodComponent.Builder()).hunger(6).saturationModifier(1.0F).alwaysEdible().build();
