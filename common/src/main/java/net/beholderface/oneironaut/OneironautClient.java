@@ -11,6 +11,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.beholderface.oneironaut.block.ConceptDecoratorBlock;
 import net.beholderface.oneironaut.block.ConceptModifierBlock;
 import net.beholderface.oneironaut.block.ThoughtSlurry;
+import net.beholderface.oneironaut.block.blockentity.ConceptCoreBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.ConceptModifierBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.WispBatteryEntity;
@@ -111,11 +112,13 @@ public class OneironautClient {
                     );
 
             List<RegistrySupplier<ConceptModifierBlock>> conceptModifiers = List.of(OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE,
-                    OneironautBlockRegistry.CONCEPT_MODIFIER_ANTIEROSION, OneironautBlockRegistry.CONCEPT_MODIFIER_MAXHEALTH,
-                    OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_COMPARISON, OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY);
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_ANTIEROSION, OneironautBlockRegistry.CONCEPT_MODIFIER_MAXHEALTH, OneironautBlockRegistry.CONCEPT_MODIFIER_GTP_DROP,
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_COMPARISON, OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY
+            );
             for (RegistrySupplier<ConceptModifierBlock> supplier : conceptModifiers){
                 ScryingLensOverlayRegistry.addDisplayer(supplier.get(), ConceptModifierBlockEntity::applyScryingLensOverlay);
             }
+            ScryingLensOverlayRegistry.addDisplayer(OneironautBlockRegistry.CONCEPT_CORE.get(), ConceptCoreBlockEntity::applyScryingLensOverlay);
 
             List<Block> cutoutBlocks = new ArrayList<>(List.of(OneironautBlockRegistry.WISP_LANTERN.get(), OneironautBlockRegistry.WISP_LANTERN_TINTED.get(),
                     OneironautBlockRegistry.WISP_BATTERY.get(), OneironautBlockRegistry.WISP_BATTERY_DECORATIVE.get(),
@@ -123,7 +126,8 @@ public class OneironautClient {
                     OneironautBlockRegistry.PSEUDOAMETHYST_BUD_MEDIUM.get(), OneironautBlockRegistry.PSEUDOAMETHYST_BUD_SMALL.get(),
                     OneironautBlockRegistry.RENDER_BUSH.get(), OneironautBlockRegistry.DEEP_NOOSPHERE_FLOOR.get(),
                     OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_EMPTY.get(),
-                    OneironautBlockRegistry.CONCEPT_MODIFIER_SUS.get()));
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_SUS.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_ANTIEROSION.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_MAXHEALTH.get(),
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_GTP_DROP.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_COMPARISON.get()));
             for (RegistrySupplier<ConceptDecoratorBlock> supplier : OneironautBlockRegistry.COLORFUL_CONCEPT_MODIFIERS.values()){
                 cutoutBlocks.add(supplier.get());
             }

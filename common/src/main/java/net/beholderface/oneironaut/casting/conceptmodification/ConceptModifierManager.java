@@ -114,9 +114,12 @@ public class ConceptModifierManager extends PersistentState {
         Map<BlockPos, ConceptModifier> map = this.modifierMap.get(playerID);
         if (map != null){
             Iterator<ConceptModifier> iterator = map.values().iterator();
+            Set<ConceptModifier> toRemove = new HashSet<>();
             while (iterator.hasNext()){
-                ConceptModifier entry = iterator.next();
-                this.removeModifier(playerID, entry);
+                toRemove.add(iterator.next());
+            }
+            for (ConceptModifier modifier : toRemove){
+                this.removeModifier(playerID, modifier);
             }
             return map.size();
         }

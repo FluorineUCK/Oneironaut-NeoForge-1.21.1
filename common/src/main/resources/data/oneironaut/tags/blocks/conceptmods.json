@@ -5,6 +5,7 @@
     "oneironaut:concept_modifier_maxhealth",
     "oneironaut:concept_modifier_antierosion",
     "oneironaut:concept_modifier_falsy",
-    "oneironaut:concept_modifier_comparison"
+    "oneironaut:concept_modifier_comparison",
+    "oneironaut:concept_modifier_gtp_drop"
   ]
 }

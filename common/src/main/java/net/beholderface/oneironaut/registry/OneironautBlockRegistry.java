@@ -143,9 +143,10 @@ public class OneironautBlockRegistry {
     public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_ANTIEROSION = BLOCKS.register("concept_modifier_antierosion", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.ANTIEROSION, (nbt)->10000.0));
     public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_REFERENCE_FALSY = BLOCKS.register("concept_modifier_falsy", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.FALSY_REFERENCE, (nbt)->1000.0));
     public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_REFERENCE_COMPARISON = BLOCKS.register("concept_modifier_comparison", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.REFERENCE_COMPARISON, (nbt)->1000.0));
+    public static RegistrySupplier<ConceptModifierBlock> CONCEPT_MODIFIER_GTP_DROP = BLOCKS.register("concept_modifier_gtp_drop", ()->new ConceptModifierBlock(CONCEPT_MODIFIER_SETTINGS.get(), ConceptModifier.ModifierType.GTP_DROPREDUCTION, (nbt)->1000.0));
 
     public static RegistrySupplier<BlockEntityType<ConceptModifierBlockEntity>> CONCEPT_MODIFIER_ENTITY = BLOCK_ENTITIES.register("concept_modifier_entity", ()->BlockEntityType.Builder.create(ConceptModifierBlockEntity::new,
-            CONCEPT_MODIFIER_GRIDSIZE.get(), CONCEPT_MODIFIER_MAXHEALTH.get(),
+            CONCEPT_MODIFIER_GRIDSIZE.get(), CONCEPT_MODIFIER_MAXHEALTH.get(), CONCEPT_MODIFIER_GTP_DROP.get(),
             CONCEPT_MODIFIER_ANTIEROSION.get(), CONCEPT_MODIFIER_REFERENCE_FALSY.get(), CONCEPT_MODIFIER_REFERENCE_COMPARISON.get()
     ).build(null));
 

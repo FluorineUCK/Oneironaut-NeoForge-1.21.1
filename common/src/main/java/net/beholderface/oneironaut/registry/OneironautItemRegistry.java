@@ -43,6 +43,7 @@ public class OneironautItemRegistry {
     private static final Item.Settings ONEIRONAUT_STACKABLE64_NOTAB = new Item.Settings().maxCount(64);
     private static final Item.Settings ONEIRONAUT_STACKABLE16 = new Item.Settings().maxCount(16).arch$tab(ONEIRONAUT_GROUP);
     private static final Item.Settings ONEIRONAUT_UNSTACKABLE = new Item.Settings().maxCount(1).arch$tab(ONEIRONAUT_GROUP);
+    private static final Item.Settings ONEIRONAUT_UNSTACKABLE_1024 = new Item.Settings().maxCount(1).arch$tab(ONEIRONAUT_GROUP).maxDamage(1024);
 
 
     public static final RegistrySupplier<ItemStolenMediaProvider> PSUEDOAMETHYST_SHARD = ITEMS.register("pseudoamethyst_shard", () -> new
@@ -54,7 +55,7 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<BottomlessCastingItem> BOTTOMLESS_CASTING_ITEM = ITEMS.register("bottomless_trinket", () -> new BottomlessCastingItem(ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<ItemStaff> ECHO_STAFF = ITEMS.register("echo_staff", () -> new GeneralNoisyStaff(ONEIRONAUT_UNSTACKABLE, SoundEvents.BLOCK_SCULK_SENSOR_CLICKING, SoundEvents.BLOCK_SCULK_SHRIEKER_SHRIEK, null));
     public static final RegistrySupplier<ItemStaff> BEACON_STAFF = ITEMS.register("beacon_staff", () -> new GeneralNoisyStaff(ONEIRONAUT_UNSTACKABLE, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundEvents.BLOCK_BEACON_DEACTIVATE, null));
-    public static final RegistrySupplier<ShovelItem> SPOON_STAFF = ITEMS.register("spoon_staff", () -> new ShovelItem(ToolMaterials.IRON, 1.5F, -3.0F, ONEIRONAUT_UNSTACKABLE.maxDamage(1024)));
+    public static final RegistrySupplier<ShovelItem> SPOON_STAFF = ITEMS.register("spoon_staff", () -> new ShovelItem(ToolMaterials.IRON, 1.5F, -3.0F, ONEIRONAUT_UNSTACKABLE_1024));
     public static final RegistrySupplier<GeneralPigmentItem> PIGMENT_NOOSPHERE = ITEMS.register("pigment_noosphere", () -> new GeneralPigmentItem(ONEIRONAUT_STACKABLE64, GeneralPigmentItem.colors_noosphere));
     public static final RegistrySupplier<GeneralPigmentItem> PIGMENT_FLAME = ITEMS.register("pigment_flame", () -> new GeneralPigmentItem(ONEIRONAUT_STACKABLE64, GeneralPigmentItem.colors_flame));
     public static final RegistrySupplier<GeneralPigmentItem> PIGMENT_ECHO = ITEMS.register("pigment_echo", () -> new GeneralPigmentItem(ONEIRONAUT_STACKABLE64, GeneralPigmentItem.colors_echo));
@@ -106,6 +107,8 @@ public class OneironautItemRegistry {
             ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof DoubleIota && Math.abs(((DoubleIota) iota).getDouble()) <= 2.0));
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_MAXHEALTH = ITEMS.register("concept_modifier_maxhealth", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_MAXHEALTH.get(),
             ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof DoubleIota && Math.abs(((DoubleIota) iota).getDouble()) <= 10.0));
+    public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_GTP_DROP = ITEMS.register("concept_modifier_gtp_drop", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_GTP_DROP.get(),
+            ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof DoubleIota));
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_ANTIEROSION = ITEMS.register("concept_modifier_antierosion", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_ANTIEROSION.get(),
             ONEIRONAUT_UNSTACKABLE, (iota)-> false));
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_REFERENCE_FALSY = ITEMS.register("concept_modifier_falsy", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY.get(),

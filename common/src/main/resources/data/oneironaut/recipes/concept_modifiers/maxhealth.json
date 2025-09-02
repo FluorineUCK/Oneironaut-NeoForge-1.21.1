@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": {
+      "item": "oneironaut:concept_modifier_empty"
+    },
+    "P": {
+      "item": "oneironaut:shifting_pseudoamethyst"
+    },
+    "A": {
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
+  "pattern": [
+    " A ",
+    "PMP",
+    "NAN"
+  ],
+  "result": {
+    "item": "oneironaut:concept_modifier_maxhealth"
+  }
+}

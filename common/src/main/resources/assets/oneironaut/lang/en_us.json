@@ -352,9 +352,20 @@
   "oneironaut.tooltip.lich_media_amount": "Reservoir contains: %s/%s (%s)",
 
   "oneironaut.conceptmodifier.falsy": "Player Reference Modifier: Falsy",
+  "oneironaut.conceptmodifier.ref_comparison": "Player Reference Modifier: Comparison",
+  "oneironaut.conceptmodifier.gtp_splat": "GTP Drop Reduction",
+  "oneironaut.conceptmodifier.antierosion": "Erosion Protection",
+  "oneironaut.conceptmodifier.nobloodcast": "Bloodcast Protection",
+  "oneironaut.conceptmodifier.keepinv": "KeepInventory",
+  "oneironaut.conceptmodifier.totem": "Undying",
   "oneironaut.conceptmodifier.attribute": "Attribute Modifier",
+
   "oneironaut.conceptmodifier.attribute.overlay1.positive": "Increases ",
   "oneironaut.conceptmodifier.attribute.overlay1.negative": "Reduces ",
   "oneironaut.conceptmodifier.attribute.overlay2": " by %s%%.",
-  "oneironaut.conceptmodifier.nocore": "No concept core detected. Modifier will be nonfunctional until broken and replaced on a core."
+
+  "oneironaut.conceptmodifier.nocore": "No concept core detected. Modifier will be nonfunctional until broken and replaced on a core.",
+  "oneironaut.conceptmodifier.nomodifier": "Concept modifier could not be initialized.",
+  "oneironaut.conceptmodifier.lens.potency": "Potency: ",
+  "oneironaut.conceptmodifier.lens.comparison": "Compares as: "
 }

@@ -29,6 +29,7 @@ public class ConceptModifier {
     public static final String TAG_ATTRIBUTE_DATA = "attribute";
     public static final String TAG_ATTRIBUTE_MODIFIER = "modifier";
     public static final String TAG_COMPARISON_OVERRIDE = "comparison";
+    public static final String TAG_POTENCY = "potency";
 
     public final BlockPos corePos;
     public final BlockPos hostPos;
@@ -135,15 +136,15 @@ public class ConceptModifier {
     }
 
     public enum ModifierType {
-        ANTIEROSION(false, "antierosion"),
-        ATTRIBUTE(true, "attribute"),
-        FALSY_REFERENCE(false, "falsy"),
-        GTP_DROPREDUCTION(true, "gtp_splat"),
+        ANTIEROSION(false, "antierosion"), //implemented
+        ATTRIBUTE(true, "attribute"), //implemented
+        FALSY_REFERENCE(false, "falsy"), //implemented
+        GTP_DROPREDUCTION(true, "gtp_splat"), //implemented
         KEEPINVENTORY(false, "keepinv"),
         LITTERBUG_REFERENCE(false, "litterbug"),
         NO_OVERCAST(false, "nobloodcast"),
         NONE(false, "none"),
-        REFERENCE_COMPARISON(true, "ref_comparison"),
+        REFERENCE_COMPARISON(true, "ref_comparison"), //implemented
         TOTEM(false, "totem"),
         XL_REFERENCE(true, "ref_size");
 

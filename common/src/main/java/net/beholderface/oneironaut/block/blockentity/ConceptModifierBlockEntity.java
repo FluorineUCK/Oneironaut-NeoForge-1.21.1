@@ -63,27 +63,33 @@ public class ConceptModifierBlockEntity extends HexBlockEntity {
             BlockState state = this.world.getBlockState(this.pos);
             Block block = state.getBlock();
             if (block instanceof ConceptModifierBlock conceptBlock){
-                boolean requiresIota = conceptBlock.type.requiresIota;
+                ConceptModifier.ModifierType type = conceptBlock.type;
+                boolean requiresIota = type.requiresIota;
                 ConceptModifier modifierToSet = null;
                 if ((!requiresIota || tag.contains(WriteableBlockItem.TAG_IOTA))){
                     ConceptCoreBlockEntity core = conceptBlock.getCore(state, this.pos, this.world, null);
                     BlockPos corePos = core != null ? core.getPos() : null;
                     if (requiresIota){
                         Iota iota = IotaType.deserialize(tag.getCompound(WriteableBlockItem.TAG_IOTA), null);
-                        if (conceptBlock.type == ConceptModifier.ModifierType.ATTRIBUTE){
+                        if (type == ConceptModifier.ModifierType.ATTRIBUTE){
                             double attributeValue = ((DoubleIota)iota).getDouble();
-                            ConceptModifier modifier = new ConceptModifier(corePos, this.pos, null, conceptBlock.type);
+                            ConceptModifier modifier = new ConceptModifier(corePos, this.pos, null, type);
                             modifier.setAttributeData(conceptBlock.getAttribute(), new EntityAttributeModifier(modifier.id, modifier.id.toString(),
                                     attributeValue, EntityAttributeModifier.Operation.MULTIPLY_BASE));
                             modifierToSet = modifier;
-                        } else if (conceptBlock.type == ConceptModifier.ModifierType.REFERENCE_COMPARISON){
+                        } else if (type == ConceptModifier.ModifierType.REFERENCE_COMPARISON){
                             boolean overrideValue = ((BooleanIota)iota).getBool();
                             NbtCompound parameter = new NbtCompound();
                             parameter.putBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE, overrideValue);
-                            modifierToSet = new ConceptModifier(corePos, this.pos, parameter, conceptBlock.type);
+                            modifierToSet = new ConceptModifier(corePos, this.pos, parameter, type);
+                        } else if (type == ConceptModifier.ModifierType.GTP_DROPREDUCTION){
+                            double reductionValue = ((DoubleIota)iota).getDouble();
+                            NbtCompound parameter = new NbtCompound();
+                            parameter.putDouble(ConceptModifier.TAG_POTENCY, reductionValue);
+                            modifierToSet = (new ConceptModifier(corePos, this.pos, parameter, type));
                         }
                     } else {
-                        modifierToSet = new ConceptModifier(corePos, this.pos, null, conceptBlock.type);
+                        modifierToSet = new ConceptModifier(corePos, this.pos, null, type);
                     }
                 }
                 this.setConceptModifier(modifierToSet);
@@ -139,11 +145,21 @@ public class ConceptModifierBlockEntity extends HexBlockEntity {
                             .append(Text.translatable(modifier.getAttributeType().getTranslationKey()))
                             .append(Text.translatable("oneironaut.conceptmodifier.attribute.overlay2", Math.abs(modifierValue) * 100))));
                 } else if (type.requiresIota){
-                    lines.add(Pair.of(HexItems.ABACUS.getDefaultStack(), Text.literal(modifier.parameters.asString())));
+                    NbtCompound parameters = modifier.parameters;
+                    if (parameters.contains(ConceptModifier.TAG_POTENCY)){
+                        Text value = Text.literal(String.valueOf(parameters.getDouble(ConceptModifier.TAG_POTENCY)));
+                        lines.add(Pair.of(HexItems.ABACUS.getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.lens.potency").append(value)));
+                    }
+                    if (parameters.contains(ConceptModifier.TAG_COMPARISON_OVERRIDE)){
+                        Text value = Text.literal(String.valueOf(parameters.getBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE)));
+                        lines.add(Pair.of(Items.LEVER.getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.lens.comparison").append(value)));
+                    }
                 }
                 if (modifier.corePos == null){
                     lines.add(Pair.of(OneironautItemRegistry.CONCEPT_CORE.get().getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.nocore")));
                 }
+            } else {
+                lines.add(Pair.of(Items.BARRIER.getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.nomodifier")));
             }
         }
     }
