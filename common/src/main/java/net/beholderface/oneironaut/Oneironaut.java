@@ -142,7 +142,6 @@ public class Oneironaut {
             for (ConceptModifier modifier : conceptModifierManager.getAllModifiers(player)){
                 modifier.onApply(player);
             }
-            Oneironaut.LOGGER.info(player.getActiveStatusEffects());
         });
 
         ItemStack fakeStaffStack = HexItems.STAFF_OAK.getDefaultStack();

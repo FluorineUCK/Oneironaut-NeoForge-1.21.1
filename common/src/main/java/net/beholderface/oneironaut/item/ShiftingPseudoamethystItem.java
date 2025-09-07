@@ -4,6 +4,7 @@ import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.IotaType;
 import at.petrak.hexcasting.api.item.IotaHolderItem;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
+import dev.architectury.platform.Platform;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.OneironautClient;
 import net.beholderface.oneironaut.casting.iotatypes.DimIota;
@@ -48,7 +49,11 @@ public class ShiftingPseudoamethystItem extends Item implements IotaHolderItem {
     @Override
     public @Nullable NbtCompound readIotaTag(ItemStack stack) {
         if (Oneironaut.getDeepNoosphere() != null){
-            return IotaType.serialize(new DimIota(Oneironaut.getDeepNoosphere()));
+            if (Platform.isDevelopmentEnvironment()){
+                return IotaType.serialize(new DimIota(Oneironaut.getDeepNoosphere()));
+            } else {
+                Oneironaut.LOGGER.info("Attempted to read shifting pseudoamethyst outside of dev environment, which is currently disabled.");
+            }
         }
         return null;
     }

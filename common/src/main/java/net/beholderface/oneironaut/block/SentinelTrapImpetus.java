@@ -33,7 +33,7 @@ public class SentinelTrapImpetus extends BlockAbstractImpetus {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient ? (_world, _pos, _state, _be) -> ((SentinelTrapImpetusEntity)_be).tick(_world, _pos, _state) : null;
+        return world.isClient ? null : (_world, _pos, _state, _be) -> ((SentinelTrapImpetusEntity)_be).tick(_world, _pos, _state);
     }
 
     @Override

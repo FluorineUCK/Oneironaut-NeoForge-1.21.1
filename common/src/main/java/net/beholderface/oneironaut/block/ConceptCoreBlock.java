@@ -91,7 +91,7 @@ public class ConceptCoreBlock extends BlockWithEntity implements IConceptSockete
                                     }
                                 }
                             }
-                            long finalCost = Math.max(positiveTotal / 10, positiveTotal - negativeTotal);
+                            long finalCost = (long) (Math.max(positiveTotal / 10, positiveTotal - negativeTotal) * ((((double) (modifiersToApply.size() - 1)) / 2.0) + 1));
                             if ((finalCost > 0 && be.getStoredMedia() >= finalCost) || player.isCreative()){
                                 be.extractMedia(finalCost);
                                 for (ConceptModifier modifier : modifiersToApply){
