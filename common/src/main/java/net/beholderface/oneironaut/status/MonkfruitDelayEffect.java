@@ -39,6 +39,13 @@ public class MonkfruitDelayEffect extends StatusEffect {
                     }
                 }
             }
+            for (ItemStack checkedStack : player.getInventory().armor){
+                if (checkedStack.getItem() instanceof MediaHolderItem battery){
+                    if (battery.canRecharge(checkedStack) && battery.getMaxMedia(checkedStack) != battery.getMedia(checkedStack)){
+                        mediaHolders.add(checkedStack);
+                    }
+                }
+            }
             if (player.getStackInHand(Hand.OFF_HAND).getItem() instanceof MediaHolderItem battery){
                 if (battery.canRecharge(player.getStackInHand(Hand.OFF_HAND))){
                     mediaHolders.add(player.getStackInHand(Hand.OFF_HAND));
