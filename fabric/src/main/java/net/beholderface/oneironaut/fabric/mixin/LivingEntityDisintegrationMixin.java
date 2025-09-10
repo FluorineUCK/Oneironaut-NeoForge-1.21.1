@@ -27,7 +27,7 @@ public class LivingEntityDisintegrationMixin {
     @Unique private static boolean hasCaughtError = false;
 
 
-    @Inject(method = "tick", at = @At(value = "TAIL"))
+    @Inject(method = "tick", at = @At(value = "TAIL", remap = false), remap = true)
     public void disintegrate(CallbackInfo ci){
         boolean shouldDisintegrate = false;
         if (entity.getWorld().isClient){

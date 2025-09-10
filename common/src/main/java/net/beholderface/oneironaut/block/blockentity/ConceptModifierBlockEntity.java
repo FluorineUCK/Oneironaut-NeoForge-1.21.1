@@ -147,12 +147,12 @@ public class ConceptModifierBlockEntity extends HexBlockEntity {
                 } else if (type.requiresIota){
                     NbtCompound parameters = modifier.parameters;
                     if (parameters.contains(ConceptModifier.TAG_POTENCY)){
-                        Text value = Text.literal(String.valueOf(parameters.getDouble(ConceptModifier.TAG_POTENCY)));
-                        lines.add(Pair.of(HexItems.ABACUS.getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.lens.potency").append(value)));
+                        lines.add(Pair.of(HexItems.ABACUS.getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.lens.potency",
+                                String.valueOf(parameters.getDouble(ConceptModifier.TAG_POTENCY)))));
                     }
                     if (parameters.contains(ConceptModifier.TAG_COMPARISON_OVERRIDE)){
-                        Text value = Text.literal(String.valueOf(parameters.getBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE)));
-                        lines.add(Pair.of(Items.LEVER.getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.lens.comparison").append(value)));
+                        lines.add(Pair.of(Items.LEVER.getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.lens.comparison",
+                                String.valueOf(parameters.getBoolean(ConceptModifier.TAG_COMPARISON_OVERRIDE)))));
                     }
                 }
                 if (modifier.corePos == null){

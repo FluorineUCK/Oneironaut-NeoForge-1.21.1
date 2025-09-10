@@ -366,6 +366,6 @@
 
   "oneironaut.conceptmodifier.nocore": "No concept core detected. Modifier will be nonfunctional until broken and replaced on a core.",
   "oneironaut.conceptmodifier.nomodifier": "Concept modifier could not be initialized.",
-  "oneironaut.conceptmodifier.lens.potency": "Potency: ",
-  "oneironaut.conceptmodifier.lens.comparison": "Compares as: "
+  "oneironaut.conceptmodifier.lens.potency": "Potency: %s",
+  "oneironaut.conceptmodifier.lens.comparison": "Compares as: %s"
 }
