@@ -30,7 +30,7 @@ public class LivingEntityDisintegrationMixin {
         boolean shouldDisintegrate = false;
         if (entity.getWorld().isClient){
             try {
-                shouldDisintegrate = Oneironaut.isWorldNoosphere(entity.getWorld()) && entity.getWorld().getTime() % 20 == 0;
+                shouldDisintegrate = Oneironaut.isWorldDeepNoosphere(entity.getWorld()) && entity.getWorld().getTime() % 20 == 0;
             } catch (NoClassDefFoundError why){
                 if (!hasCaughtError){
                     Oneironaut.LOGGER.info("I hear they're adding glorbo to silksong");

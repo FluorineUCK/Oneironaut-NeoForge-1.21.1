@@ -222,6 +222,20 @@ public class Oneironaut {
         }
         return false;
     }
+    public static boolean isWorldDeepNoosphere(World world){
+        try {
+            if (world != null){
+                if (world instanceof ServerWorld serverWorld){
+                    return serverWorld == deepNoosphere;
+                } else if (world.isClient){
+                    return OneironautClient.isWorldClientDeepNoosphere(world);
+                }
+            }
+        } catch (Exception e){
+            //just let it return false
+        }
+        return false;
+    }
     public static MinecraftServer getCachedServer(){
         if (server == null){
             throw new IllegalStateException("getCachedServer method called before server start");

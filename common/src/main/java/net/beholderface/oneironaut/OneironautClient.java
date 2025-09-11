@@ -221,5 +221,11 @@ public class OneironautClient {
         }
         return false;
     }
+    public static boolean isWorldClientDeepNoosphere(World world){
+        if (world instanceof ClientWorld clientWorld){
+            return clientWorld.getDimensionEffects().getClass() == DeepNoosphereDimensionEffects.class;
+        }
+        return false;
+    }
 
 }
