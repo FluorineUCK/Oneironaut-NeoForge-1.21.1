@@ -97,7 +97,7 @@ public class SentinelTrapImpetusEntity extends BlockEntityAbstractImpetus {
 
     public @Nullable PlayerEntity getTargetPlayer(){
         assert this.world != null;
-        if (this.storedPlayer != null){
+        if (this.targetPlayer != null){
             return this.world.getPlayerByUuid(this.targetPlayer);
         } else {
             return null;
@@ -105,7 +105,7 @@ public class SentinelTrapImpetusEntity extends BlockEntityAbstractImpetus {
     }
 
     public void setTargetPlayer(UUID player) {
-        Oneironaut.LOGGER.info("Setting impetus target player");
+        //Oneironaut.LOGGER.info("Setting impetus target player to " + player);
         this.targetPlayer = player;
         this.markDirty();
     }
@@ -188,6 +188,7 @@ public class SentinelTrapImpetusEntity extends BlockEntityAbstractImpetus {
     public void startExecution(@Nullable ServerPlayerEntity player) {
         super.startExecution(player);
         if (this.executionState != null && this.getTargetPlayer() != null){
+            //Oneironaut.LOGGER.info("Attempting to set target player");
             CastingImage oldImage = this.executionState.currentImage;
             this.executionState.currentImage = oldImage.copy(CollectionsKt.listOf(new EntityIota(this.getTargetPlayer())), 0, CollectionsKt.emptyList(), false, 0L, new NbtCompound());
             this.executionState.save();

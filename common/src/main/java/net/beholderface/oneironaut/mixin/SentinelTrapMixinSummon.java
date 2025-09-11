@@ -33,6 +33,9 @@ public abstract class SentinelTrapMixinSummon {
 
     @Inject(method = "cast(Lat/petrak/hexcasting/api/casting/eval/CastingEnvironment;)V", at = @At("HEAD"), remap = false)
     public void triggerTrap(CastingEnvironment env, CallbackInfo ci){
+        if (env.getCastingEntity() == null){
+            return;
+        }
         World world = env.getWorld();
         RegistryKey<World> worldKey = world.getRegistryKey();
         if (oneironaut$trapMap.containsKey(worldKey)){
@@ -46,20 +49,12 @@ public abstract class SentinelTrapMixinSummon {
                     BlockPos pos = currentEntry.getKey();
                     if (world.getBlockState(pos).getBlock() == OneironautBlockRegistry.SENTINEL_TRAP.get()){
                         SentinelTrapImpetusEntity be = (SentinelTrapImpetusEntity) world.getBlockEntity(pos);
-                        Iterator<ServerPlayerEntity> playerEntityIterator = world.getServer().getPlayerManager().getPlayerList().iterator();
-                        ServerPlayerEntity currentPlayer = null;
                         ServerPlayerEntity foundPlayer = null;
-                        while (playerEntityIterator.hasNext() && (be.getStoredPlayer() != null)){
-                            currentPlayer = playerEntityIterator.next();
-                            if(currentPlayer.getUuid().equals(be.getStoredPlayer().getUuid()) && currentPlayer.getWorld().getRegistryKey().equals(worldKey)){
-                                foundPlayer = currentPlayer;
-                                break;
-                            }
+                        if (be.getStoredPlayer() != null){
+                            foundPlayer = (ServerPlayerEntity) world.getPlayerByUuid(be.getStoredPlayer().getUuid());
                         }
-                        if (foundPlayer != null ){
-                            be.setTargetPlayer(env.getCaster().getUuid());
-                            be.startExecution(foundPlayer);
-                        }
+                        be.setTargetPlayer(env.getCastingEntity().getUuid());
+                        be.startExecution(foundPlayer);
                     } else {
                         expiredKeys.add(currentEntry.getKey());
                     }
