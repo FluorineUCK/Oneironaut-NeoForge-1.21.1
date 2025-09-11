@@ -7,8 +7,10 @@ import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.eval.env.CircleCastEnv
 import at.petrak.hexcasting.api.casting.getBlockPos
 import at.petrak.hexcasting.api.casting.iota.Iota
+import at.petrak.hexcasting.api.casting.mishaps.MishapDisallowedSpell
 import at.petrak.hexcasting.api.casting.mishaps.circle.MishapNoSpellCircle
 import at.petrak.hexcasting.api.misc.MediaConstants
+import dev.architectury.platform.Platform
 import net.beholderface.oneironaut.Oneironaut
 import net.beholderface.oneironaut.casting.DisintegrationProtectionManager
 import net.beholderface.oneironaut.casting.DisintegrationProtectionManager.DisintegrationProtectionEntry
@@ -22,6 +24,9 @@ import ram.talia.hexal.api.getStrictlyPositiveLong
 class OpErosionShield : SpellAction {
     override val argc = 3
     override fun execute(args: List<Iota>, env: CastingEnvironment): SpellAction.Result {
+        if (!Platform.isDevelopmentEnvironment()){
+            throw MishapDisallowedSpell()
+        }
         if (env !is CircleCastEnv){
             throw MishapNoSpellCircle()
         }

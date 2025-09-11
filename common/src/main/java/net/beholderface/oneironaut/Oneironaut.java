@@ -35,6 +35,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ram.talia.hexal.common.entities.WanderingWisp;
@@ -207,9 +208,17 @@ public class Oneironaut {
         }
         return deepNoosphere;
     }
-    public static boolean isWorldNoosphere(ServerWorld world){
-        if (world != null){
-            return world == noosphere || world == deepNoosphere;
+    public static boolean isWorldNoosphere(World world){
+        try {
+            if (world != null){
+                if (world instanceof ServerWorld serverWorld){
+                    return serverWorld == noosphere || serverWorld == deepNoosphere;
+                } else if (world.isClient){
+                    return OneironautClient.isWorldClientNoosphere(world);
+                }
+            }
+        } catch (Exception e){
+            //just let it return false
         }
         return false;
     }

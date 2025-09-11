@@ -5,7 +5,6 @@ import at.petrak.hexcasting.common.items.ItemStaff;
 import at.petrak.hexcasting.common.items.magic.ItemPackagedHex;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.platform.Platform;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.beholderface.oneironaut.block.ConceptDecoratorBlock;
@@ -30,12 +29,12 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 import java.util.*;
 
@@ -214,4 +213,13 @@ public class OneironautClient {
             });
         }
     }
+
+    public static boolean isWorldClientNoosphere(World world){
+        if (world instanceof ClientWorld clientWorld){
+            return clientWorld.getDimensionEffects().getClass() == NoosphereDimensionEffects.class
+                    || clientWorld.getDimensionEffects().getClass() == DeepNoosphereDimensionEffects.class;
+        }
+        return false;
+    }
+
 }

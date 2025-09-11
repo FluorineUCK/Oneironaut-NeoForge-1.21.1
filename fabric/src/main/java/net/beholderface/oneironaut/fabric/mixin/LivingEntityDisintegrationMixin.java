@@ -1,12 +1,10 @@
 package net.beholderface.oneironaut.fabric.mixin;
 
-import net.beholderface.oneironaut.DeepNoosphereDimensionEffects;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager;
 import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,8 +30,7 @@ public class LivingEntityDisintegrationMixin {
         boolean shouldDisintegrate = false;
         if (entity.getWorld().isClient){
             try {
-                ClientWorld world = (ClientWorld) entity.getWorld();
-                shouldDisintegrate = world.getDimensionEffects().getClass() == DeepNoosphereDimensionEffects.class && world.getTime() % 20 == 0;
+                shouldDisintegrate = Oneironaut.isWorldNoosphere(entity.getWorld()) && entity.getWorld().getTime() % 20 == 0;
             } catch (NoClassDefFoundError why){
                 if (!hasCaughtError){
                     Oneironaut.LOGGER.info("I hear they're adding glorbo to silksong");
