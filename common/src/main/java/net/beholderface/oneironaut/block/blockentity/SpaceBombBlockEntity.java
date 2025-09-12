@@ -150,7 +150,7 @@ public class SpaceBombBlockEntity extends BlockEntity {
     public void explode(List<Entity> living){
         assert this.world != null;
         Vec3d doublePos = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-        BlockState createdBlockstate = Oneironaut.isWorldNoosphere((ServerWorld) this.world) ? HexalBlocks.SLIPWAY.getDefaultState() : OneironautBlockRegistry.NOOSPHERE_GATE.get().getDefaultState();
+        BlockState createdBlockstate = !Oneironaut.isWorldNoosphere((ServerWorld) this.world) ? HexalBlocks.SLIPWAY.getDefaultState() : OneironautBlockRegistry.NOOSPHERE_GATE.get().getDefaultState();
         this.world.setBlockState(this.pos, Blocks.AIR.getDefaultState());
         this.world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 5.0f, World.ExplosionSourceType.BLOCK);
         for (Entity entity : living){
