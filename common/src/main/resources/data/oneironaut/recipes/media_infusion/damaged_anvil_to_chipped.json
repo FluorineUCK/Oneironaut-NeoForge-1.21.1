@@ -1,0 +1,11 @@
+{
+  "type": "oneironaut:infuse",
+  "blockIn": {
+    "type": "block",
+    "block": "minecraft:damaged_anvil"
+  },
+  "resultType": {
+    "name": "minecraft:chipped_anvil"
+  },
+  "mediaCost": 1000000
+}
