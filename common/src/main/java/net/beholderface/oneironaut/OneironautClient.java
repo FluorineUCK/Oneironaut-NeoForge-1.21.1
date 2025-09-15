@@ -9,6 +9,7 @@ import dev.architectury.registry.item.ItemPropertiesRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.beholderface.oneironaut.block.ConceptDecoratorBlock;
 import net.beholderface.oneironaut.block.ConceptModifierBlock;
+import net.beholderface.oneironaut.block.InactiveSlipwayBlock;
 import net.beholderface.oneironaut.block.ThoughtSlurry;
 import net.beholderface.oneironaut.block.blockentity.ConceptCoreBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.ConceptModifierBlockEntity;
@@ -161,6 +162,7 @@ public class OneironautClient {
                 } else {
                     Oneironaut.LOGGER.info("Could not cache client object.");
                 }
+                InactiveSlipwayBlock.init();
             });
             DimensionEffectsAccessor.getIdentifierMap().put(Oneironaut.id("noosphere"), new NoosphereDimensionEffects());
             DimensionEffectsAccessor.getIdentifierMap().put(Oneironaut.id("deep_noosphere"), new DeepNoosphereDimensionEffects());
