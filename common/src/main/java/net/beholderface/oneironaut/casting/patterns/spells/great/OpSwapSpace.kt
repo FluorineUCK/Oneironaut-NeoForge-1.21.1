@@ -200,14 +200,14 @@ class OpSwapSpace : SpellAction {
                                 destBEData = destBE.createNbt()
                                 originDim.removeBlockEntity(originDimPos)
                                 //pretty sure using void air instead of normal air doesn't actually change anything, but it seems thematic
-                                originDim.setBlockState(originDimPos, Blocks.VOID_AIR.defaultState, flags)
+                                originDim.setBlockState(originDimPos, Blocks.VOID_AIR.defaultState, flags, maxdepth)
                                 originDim.setBlockState(originDimPos, state, flags, maxdepth)
                                 newBE = originDim.getBlockEntity(originDimPos)
                                 newBE?.readNbt(destBEData)
                                 newBE?.markDirty()
                             } else {
                                 originDim.removeBlockEntity(originDimPos)
-                                originDim.setBlockState(originDimPos, Blocks.VOID_AIR.defaultState, flags)
+                                originDim.setBlockState(originDimPos, Blocks.VOID_AIR.defaultState, flags, maxdepth)
                                 originDim.setBlockState(originDimPos, destPointState, flags, maxdepth)
                             }
                             if (originBE != null){
@@ -217,14 +217,14 @@ class OpSwapSpace : SpellAction {
                                 }
                                 originBEData = originBE.createNbt()
                                 destDim.removeBlockEntity(destDimPos)
-                                destDim.setBlockState(destDimPos, Blocks.VOID_AIR.defaultState, flags)
+                                destDim.setBlockState(destDimPos, Blocks.VOID_AIR.defaultState, flags, maxdepth)
                                 destDim.setBlockState(destDimPos, state, flags, maxdepth)
                                 newBE = destDim.getBlockEntity(destDimPos)
                                 newBE?.readNbt(originBEData)
                                 newBE?.markDirty()
                             } else {
                                 destDim.removeBlockEntity(destDimPos)
-                                destDim.setBlockState(destDimPos, Blocks.VOID_AIR.defaultState, flags)
+                                destDim.setBlockState(destDimPos, Blocks.VOID_AIR.defaultState, flags, maxdepth)
                                 destDim.setBlockState(destDimPos, originPointState, flags, maxdepth)
                             }
                         }
