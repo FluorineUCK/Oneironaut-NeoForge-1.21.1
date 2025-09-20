@@ -141,9 +141,8 @@ public class ConceptModifierBlockEntity extends HexBlockEntity {
                 if (type == ConceptModifier.ModifierType.ATTRIBUTE){
                     assert modifier.getAttributeType() != null;
                     double modifierValue = modifier.getAttributeModifier().getValue();
-                    lines.add(Pair.of(HexItems.ABACUS.getDefaultStack(), Text.translatable("oneironaut.conceptmodifier.attribute.overlay1." + (modifierValue > 0 ? "positive" : "negative"))
-                            .append(Text.translatable(modifier.getAttributeType().getTranslationKey()))
-                            .append(Text.translatable("oneironaut.conceptmodifier.attribute.overlay2", Math.abs(modifierValue) * 100))));
+                    lines.add(Pair.of(HexItems.ABACUS.getDefaultStack(), Text.translatable(("oneironaut.conceptmodifier.attribute.overlay." + (modifierValue > 0 ? "positive" : "negative")),
+                                    Text.translatable(modifier.getAttributeType().getTranslationKey()), Math.abs(modifierValue) * 100)));
                 } else if (type.requiresIota){
                     NbtCompound parameters = modifier.parameters;
                     if (parameters.contains(ConceptModifier.TAG_POTENCY)){
