@@ -37,6 +37,7 @@ import net.minecraft.state.property.Properties
 import net.minecraft.state.property.Property
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.*
+import net.minecraft.village.VillagerDataContainer
 import net.minecraft.village.VillagerProfession
 import net.minecraft.world.StructureWorldAccess
 import net.minecraft.world.World
@@ -333,7 +334,7 @@ fun MobEntity.unbrainsweep(){
     patient.goalSelector = GoalSelector(patient.world.profilerSupplier)
     brain.resetPossibleActivities()
     brain.refreshActivities(patient.world.timeOfDay, patient.world.time)
-    if (patient is VillagerEntity){
+    if (patient is VillagerDataContainer){
         val newData = patient.villagerData.withLevel(0).withProfession(VillagerProfession.NITWIT)
         patient.villagerData = newData
     }

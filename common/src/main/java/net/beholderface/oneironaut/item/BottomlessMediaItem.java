@@ -71,7 +71,7 @@ public class BottomlessMediaItem extends ItemMediaHolder {
         //int media = foundItems > 0 ? (int) (((arbitraryLog(6.0, foundItems) + 0.75) / foundItems) * (MediaConstants.DUST_UNIT / 10)) : 0;
         //Oneironaut.LOGGER.info("Media in each of the "+ lastPhialCount + " endless phials in inventory: "+media);
         //Oneironaut.LOGGER.info(media);
-        return (long) Math.max(media * mediaMultiplier, 1);
+        return (long) Math.max(media * mediaMultiplier, 0);
     }
 
     private void resetLists(Pair<List<UUID>, Long> pair, UUID uuid, Entity entity){

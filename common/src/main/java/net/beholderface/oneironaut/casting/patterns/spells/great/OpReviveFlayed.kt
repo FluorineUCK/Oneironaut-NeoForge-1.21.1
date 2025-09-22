@@ -17,6 +17,7 @@ import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import net.minecraft.village.VillagerDataContainer
 
 class OpReviveFlayed : SpellAction {
     override val argc = 1
@@ -38,7 +39,7 @@ class OpReviveFlayed : SpellAction {
     private data class Spell(val patient : MobEntity) : RenderedSpell {
         override fun cast(env: CastingEnvironment) {
             patient.unbrainsweep()
-            if (patient is VillagerEntity && env.castingEntity != null && env.castingEntity is ServerPlayerEntity){
+            if (patient is VillagerDataContainer && env.castingEntity != null && env.castingEntity is ServerPlayerEntity){
                 val tracker = (env.castingEntity as ServerPlayerEntity).advancementTracker
                 val loader = env.world.server.advancementLoader
                 val recyclingAdvancement = loader.get(Identifier.of("oneironaut", "unflay"))
