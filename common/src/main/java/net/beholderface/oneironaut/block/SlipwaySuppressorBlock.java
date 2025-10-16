@@ -1,5 +1,6 @@
 package net.beholderface.oneironaut.block;
 
+import at.petrak.hexcasting.api.block.HexBlockEntity;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.block.blockentity.WispBatteryEntity;
 import net.beholderface.oneironaut.registry.OneironautBlockRegistry;
@@ -24,6 +25,7 @@ import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import ram.talia.hexal.common.blocks.BlockSlipway;
 import ram.talia.hexal.common.blocks.entity.BlockEntitySlipway;
+import ram.talia.hexal.common.lib.HexalBlockEntities;
 import ram.talia.hexal.common.lib.HexalBlocks;
 
 public class SlipwaySuppressorBlock extends Block {
@@ -89,10 +91,15 @@ public class SlipwaySuppressorBlock extends Block {
 
     public static void reactivateSlipway(World world, BlockPos target){
         world.setBlockState(target, HexalBlocks.SLIPWAY.getDefaultState());
-        BlockEntitySlipway slipwayEntity = new BlockEntitySlipway(target, HexalBlocks.SLIPWAY.getDefaultState());
-        world.addBlockEntity(slipwayEntity);
-        NbtCompound nbt = slipwayEntity.createNbt();
+        NbtCompound nbt = new NbtCompound();
         nbt.putBoolean(BlockEntitySlipway.TAG_IS_ACTIVE, true);
+        nbt.putLong(BlockEntitySlipway.TAG_NEXT_SPAWN_TICK, world.getTime() + 100L);
+        BlockEntitySlipway.writeIdToNbt(nbt, HexalBlockEntities.SLIPWAY);
+        BlockEntitySlipway slipwayEntity = (BlockEntitySlipway) BlockEntitySlipway.createFromNbt(target, HexalBlocks.SLIPWAY.getDefaultState(), nbt);
+        if (slipwayEntity == null){
+            return;
+        }
+        world.addBlockEntity(slipwayEntity);
         slipwayEntity.markDirty();
     }
 
