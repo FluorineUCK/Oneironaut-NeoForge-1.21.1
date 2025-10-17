@@ -152,6 +152,10 @@ public class OneironautBlockRegistry {
             CONCEPT_MODIFIER_ANTIEROSION.get(), CONCEPT_MODIFIER_REFERENCE_FALSY.get(), CONCEPT_MODIFIER_REFERENCE_COMPARISON.get()
     ).build(null));
 
+    public static RegistrySupplier<TranformingSkullBlock> TRANFORMING_SKULL = BLOCKS.register("transformingskull", ()->new TranformingSkullBlock(AbstractBlock.Settings.copy(Blocks.ZOMBIE_HEAD)));
+    public static RegistrySupplier<TranformingWallSkullBlock> TRANFORMING_WALL_SKULL = BLOCKS.register("transformingskull_wall", ()->new TranformingWallSkullBlock(AbstractBlock.Settings.copy(Blocks.ZOMBIE_HEAD)));
+    public static RegistrySupplier<BlockEntityType<TransformingSkullBlockEntity>> TRANFORMING_SKULL_ENTITY = BLOCK_ENTITIES.register("transformingskull_entity", ()-> BlockEntityType.Builder.create(TransformingSkullBlockEntity::new, TRANFORMING_SKULL.get(), TRANFORMING_WALL_SKULL.get()).build(null));
+
     //mostly just stolen from the vanilla class since it's private in there
     protected static ToIntFunction<BlockState> createLightLevelFromBoolBlockState(BooleanProperty property, int litLevel) {
         return state -> state.get(property) ? litLevel : 0;
