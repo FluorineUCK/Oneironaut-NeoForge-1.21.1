@@ -108,7 +108,7 @@ public class OneironautPatternRegistry {
         itemDependentPatternRegisterers.put(OneironautItemRegistry.REVERBERATION_ROD, () -> {
             Registry.register(HexActions.REGISTRY, new Identifier(Oneironaut.MOD_ID, "craftrod"),
                     new ActionRegistryEntry(HexPattern.fromAngles("eqqqqqawweqqqqqawweqqqqqawwdeqewwwwweqeeeqewwwwweqe", HexDir.EAST),
-                            new OpMakePackagedSpell<>(OneironautItemRegistry.REVERBERATION_ROD.get(), MediaConstants.CRYSTAL_UNIT * 10)));});
+                            new OpMakePackagedSpell(OneironautItemRegistry.REVERBERATION_ROD.get(), MediaConstants.CRYSTAL_UNIT * 10)));});
         itemDependentPatternRegisterers.put(OneironautItemRegistry.BOTTOMLESS_CASTING_ITEM, () -> {
             Registry.register(HexActions.REGISTRY, new Identifier(Oneironaut.MOD_ID, "craftbottomlesstrinket"),
                     new ActionRegistryEntry(HexPattern.fromAngles("wwqeeeeewqqqqqewwaqeqwqeqqqeqwqeq", HexDir.EAST), new OpWriteBottomlessTrinket()));});

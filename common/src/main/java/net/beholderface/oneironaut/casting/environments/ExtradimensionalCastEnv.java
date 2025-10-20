@@ -8,6 +8,7 @@ import at.petrak.hexcasting.api.casting.eval.env.PlayerBasedCastEnv;
 import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
+import at.petrak.hexcasting.common.lib.HexAttributes;
 import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker;
 import net.beholderface.oneironaut.mixin.PlayerCastEnvInvoker;
 import net.minecraft.entity.LivingEntity;
@@ -81,11 +82,12 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
             return parentEnv.isVecInRangeEnvironment(vec);
         }
         var sentinel = HexAPI.instance().getSentinel(this.caster);
+        double sentinelRadius = this.caster.getAttributeValue(HexAttributes.SENTINEL_RADIUS);
         return sentinel != null
                 && sentinel.extendsRange()
                 && this.world.getRegistryKey() == sentinel.dimension()
                 // adding 0.00000000001 to avoid machine precision errors at specific angles
-                && vec.squaredDistanceTo(sentinel.position()) <= SENTINEL_RADIUS * SENTINEL_RADIUS + 0.00000000001;
+                && vec.squaredDistanceTo(sentinel.position()) <= sentinelRadius * sentinelRadius + 0.00000000001;
     }
 
     @Override
