@@ -9,6 +9,7 @@ import at.petrak.hexcasting.api.casting.eval.MishapEnvironment;
 import at.petrak.hexcasting.api.casting.eval.env.CircleCastEnv;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
+import at.petrak.hexcasting.common.lib.HexAttributes;
 import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.block.ExtradimensionalBoundaryLocus;
 import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker;
@@ -28,8 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-
-import static at.petrak.hexcasting.api.casting.eval.env.PlayerBasedCastEnv.SENTINEL_RADIUS;
 
 public class ExtradimensionalCircleCastEnv extends CircleCastEnv {
 
@@ -143,12 +142,13 @@ public class ExtradimensionalCircleCastEnv extends CircleCastEnv {
         }
         boolean withinSentinel = false;
         if (caster != null){
+            double sentinelRadius = caster.getAttributeValue(HexAttributes.SENTINEL_RADIUS);
             var sentinel = HexAPI.instance().getSentinel(caster);
             withinSentinel = sentinel != null
                     && sentinel.extendsRange()
                     && this.world.getRegistryKey() == sentinel.dimension()
                     // adding 0.00000000001 to avoid machine precision errors at specific angles
-                    && vec.squaredDistanceTo(sentinel.position()) <= SENTINEL_RADIUS * SENTINEL_RADIUS + 0.00000000001;
+                    && vec.squaredDistanceTo(sentinel.position()) <= sentinelRadius * sentinelRadius + 0.00000000001;
         }
         return withinSentinel || this.targetDimBounds.contains(vec);
     }
