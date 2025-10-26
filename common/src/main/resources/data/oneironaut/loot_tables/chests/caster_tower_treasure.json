@@ -11,14 +11,14 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 7.0,
-                "min": 2.0
+                "max": 4.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:diamond",
-          "weight": 5
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -34,7 +34,7 @@
             }
           ],
           "name": "minecraft:iron_ingot",
-          "weight": 10
+          "weight": 15
         },
         {
           "type": "minecraft:item",
@@ -50,7 +50,7 @@
             }
           ],
           "name": "minecraft:gold_ingot",
-          "weight": 15
+          "weight": 10
         },
         {
           "type": "minecraft:item",
@@ -66,7 +66,7 @@
             }
           ],
           "name": "minecraft:emerald",
-          "weight": 2
+          "weight": 4
         },
         {
           "type": "minecraft:item",
@@ -78,15 +78,15 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.5
               },
               "treasure": true
             }
           ],
           "name": "minecraft:diamond_sword",
-          "weight": 3
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -94,15 +94,15 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.5
               },
               "treasure": true
             }
           ],
           "name": "minecraft:diamond_boots",
-          "weight": 3
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -110,15 +110,15 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.5
               },
               "treasure": true
             }
           ],
           "name": "minecraft:diamond_chestplate",
-          "weight": 3
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -126,15 +126,15 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.5
               },
               "treasure": true
             }
           ],
           "name": "minecraft:diamond_leggings",
-          "weight": 3
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -142,15 +142,15 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.5
               },
               "treasure": true
             }
           ],
           "name": "minecraft:diamond_helmet",
-          "weight": 3
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -158,15 +158,15 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.5
               },
               "treasure": true
             }
           ],
           "name": "minecraft:diamond_pickaxe",
-          "weight": 3
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -174,15 +174,15 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.5
               },
               "treasure": true
             }
           ],
           "name": "minecraft:diamond_shovel",
-          "weight": 3
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -190,9 +190,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.7
               },
               "treasure": true
             }
@@ -206,9 +206,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.7
               },
               "treasure": true
             }
@@ -222,9 +222,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.7
               },
               "treasure": true
             }
@@ -238,9 +238,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.7
               },
               "treasure": true
             }
@@ -254,9 +254,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.7
               },
               "treasure": true
             }
@@ -270,9 +270,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.7
               },
               "treasure": true
             }
@@ -286,9 +286,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
-                "type": "minecraft:uniform",
-                "max": 39.0,
-                "min": 20.0
+                "type": "minecraft:binomial",
+                "n": 40,
+                "p": 0.7
               },
               "treasure": true
             }
