@@ -3,13 +3,12 @@ package net.beholderface.oneironaut.casting.iotatypes;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.IotaType;
 import at.petrak.hexcasting.api.utils.HexUtils;
-import net.beholderface.oneironaut.Oneironaut;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
+import net.beholderface.oneironaut.MiscClientAPIKt;
 import net.beholderface.oneironaut.registry.OneironautIotaTypeRegistry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
@@ -92,12 +91,8 @@ public class DimIota extends Iota {
         }
 
         private static Style randomizedFormatting(Style original){
-            try {
-                //do not randomize it server-side
-                assert MinecraftClient.getInstance() != null;
-                assert MinecraftClient.getInstance().world != null;
-                ClientWorld world = MinecraftClient.getInstance().world;
-                Random random = Random.create(world.getTime() / 5);
+            if (Platform.getEnvironment() == Env.CLIENT){
+                Random random = Random.create(MiscClientAPIKt.getClientTime() / 5);
                 if (random.nextInt(3) == 0){
                     original = original.withBold(true);
                 }
@@ -124,10 +119,10 @@ public class DimIota extends Iota {
                         original = original.withFont(new Identifier(fontID));
                     }
                 }
-            } catch (AssertionError error){
-                original = original.withBold(true);
+                return original;
+            } else {
+                return original.withBold(true);
             }
-            return original;
         }
 
         @Override
