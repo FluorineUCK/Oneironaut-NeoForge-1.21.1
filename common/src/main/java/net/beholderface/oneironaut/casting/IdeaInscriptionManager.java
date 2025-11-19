@@ -53,8 +53,6 @@ public class IdeaInscriptionManager extends PersistentState {
 
     public static IdeaInscriptionManager getServerState(MinecraftServer server){
         PersistentStateManager stateManager = server.getOverworld().getPersistentStateManager();
-        //allow old idea entries to be carried over to the new ID
-        PersistentState oldIdeas = stateManager.readFromFile(IdeaInscriptionManager::createFromNbt, Oneironaut.MOD_ID);
         IdeaInscriptionManager ideas = stateManager.getOrCreate(IdeaInscriptionManager::createFromNbt, IdeaInscriptionManager::new, ID);
         ideas.markDirty();
         return ideas;
