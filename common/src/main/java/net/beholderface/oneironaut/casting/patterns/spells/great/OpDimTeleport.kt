@@ -4,11 +4,11 @@ import at.petrak.hexcasting.api.casting.ParticleSpray
 import at.petrak.hexcasting.api.casting.RenderedSpell
 import at.petrak.hexcasting.api.casting.castables.SpellAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
-import at.petrak.hexcasting.api.casting.getEntity
-import at.petrak.hexcasting.api.casting.getLivingEntityButNotArmorStand
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.NullIota
-import at.petrak.hexcasting.api.casting.mishaps.*
+import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
+import at.petrak.hexcasting.api.casting.mishaps.MishapImmuneEntity
+import at.petrak.hexcasting.api.casting.mishaps.MishapLocationInWrongDimension
 import at.petrak.hexcasting.api.misc.MediaConstants
 import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.api.mod.HexTags
@@ -17,25 +17,21 @@ import at.petrak.hexcasting.common.blocks.BlockConjured
 import at.petrak.hexcasting.common.lib.HexBlocks
 import at.petrak.hexcasting.xplat.IXplatAbstractions
 import net.beholderface.oneironaut.*
+import net.beholderface.oneironaut.casting.DepartureEntry
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions
+import net.minecraft.block.Blocks
+import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.text.Text
-import net.minecraft.util.math.Vec3d
-import net.minecraft.block.Blocks
-import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.math.BlockPos
-import net.minecraft.world.TeleportTarget
-import net.beholderface.oneironaut.casting.DepartureEntry
-import net.minecraft.entity.Entity
+import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
-import ram.talia.hexal.api.div
-//import net.oneironaut.registry.OneironautThingRegistry
+import net.minecraft.world.TeleportTarget
 import kotlin.math.floor
-
-
 
 
 class OpDimTeleport : SpellAction {
@@ -148,20 +144,20 @@ class OpDimTeleport : SpellAction {
                 z = border.boundNorth + 2
             }
             //actually put you on the floor if possible
-            var scanPoint = BlockPos(Vec3d(x, y+1, z).toVec3i())
+            var scanPoint = BlockPos.Mutable(x, y+1, z)
             if (!isFlying){
                 while(!isSolid(destination, scanPoint)){
-                    scanPoint = BlockPos(Vec3d(x, scanPoint.y.toDouble() - 1, z).toVec3i())
+                    scanPoint.setY(scanPoint.y - 1)
                     //check for void
                     if (scanPoint.y < destination.bottomY || isUnsafe(destination, scanPoint, false)){
-                        scanPoint = BlockPos(Vec3d(x, y+1, z).toVec3i())
+                        scanPoint.set(x, y+1, z)
                         break
                     }
                 }
             }
             //try to avoid putting your head in solid rock or something
             while(isUnsafe(destination, scanPoint, true) || isSolid(destination, scanPoint)){
-                scanPoint = BlockPos(Vec3d(x, scanPoint.y.toDouble() + 1, z).toVec3i())
+                scanPoint.setY(scanPoint.y + 1)
                 //check for ceiling
                 if (destination.getBlockState(scanPoint).block.equals(Blocks.BEDROCK)){
                     break
