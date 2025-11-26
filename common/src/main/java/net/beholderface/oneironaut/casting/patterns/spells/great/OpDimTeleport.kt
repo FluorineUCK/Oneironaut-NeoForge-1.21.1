@@ -52,10 +52,8 @@ class OpDimTeleport : SpellAction {
         } else {
             args.getDimension(1, argc, env.world.server)
         }
-        val worldKey = destination.registryKey
         //do not do the bad thing
-        if (!HexConfig.server().canTeleportInThisDimension(worldKey))
-            throw MishapLocationInWrongDimension(worldKey.value)
+        destination.assertTeleportationAllowed()
         if (!target.canUsePortals() || target.type.isIn(HexTags.Entities.CANNOT_TELEPORT))
             throw MishapImmuneEntity(target)
         if (target.isPlayer && target != env.caster as LivingEntity && !OneironautConfig.server.planeShiftOtherPlayers){

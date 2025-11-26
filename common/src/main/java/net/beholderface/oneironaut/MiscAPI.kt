@@ -5,7 +5,9 @@ import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.iota.EntityIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
+import at.petrak.hexcasting.api.casting.mishaps.MishapLocationInWrongDimension
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
+import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.api.pigment.FrozenPigment
 import at.petrak.hexcasting.fabric.cc.HexCardinalComponents
 import at.petrak.hexcasting.xplat.IXplatAbstractions
@@ -64,6 +66,13 @@ fun List<Iota>.getDimension(idx: Int, argc: Int = 0, server : MinecraftServer): 
     }
 
     throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "oneironaut:imprint")
+}
+
+fun ServerWorld.assertTeleportationAllowed(){
+    val worldKey = this.registryKey
+    if (!HexConfig.server().canTeleportInThisDimension(worldKey)){
+        throw MishapLocationInWrongDimension(worldKey.value)
+    }
 }
 
 fun List<Iota>.getSoulprint(idx: Int, argc: Int = 0) : UUID {

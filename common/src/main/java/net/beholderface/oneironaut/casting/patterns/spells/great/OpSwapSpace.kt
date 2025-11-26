@@ -36,8 +36,10 @@ class OpSwapSpace : SpellAction {
     override val argc = 3
     override fun execute(args: List<Iota>, env: CastingEnvironment): SpellAction.Result {
         val destWorld = args.getDimension(2, argc, env.world.server)
+        destWorld.assertTeleportationAllowed()
         val destWorldKey = destWorld.registryKey
         val originWorld = env.world
+        originWorld.assertTeleportationAllowed()
         val originWorldKey = originWorld.registryKey
         val originWorldCuboid = args.getList(0, argc)
         if (originWorldCuboid.size() != 2){

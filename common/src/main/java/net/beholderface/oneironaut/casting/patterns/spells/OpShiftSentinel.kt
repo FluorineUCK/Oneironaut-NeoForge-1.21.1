@@ -11,6 +11,7 @@ import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.api.player.Sentinel
 import at.petrak.hexcasting.xplat.IXplatAbstractions
 import net.beholderface.oneironaut.Oneironaut
+import net.beholderface.oneironaut.assertTeleportationAllowed
 import net.beholderface.oneironaut.casting.mishaps.MishapNoSentinel
 import net.beholderface.oneironaut.getDimension
 import net.minecraft.util.math.Vec3d
@@ -27,10 +28,7 @@ class OpShiftSentinel : ConstMediaAction {
         } else {
             args.getDimension(0, argc, env.world.server)
         }
-        val worldKey = destDim.registryKey
-        if (!HexConfig.server().canTeleportInThisDimension(worldKey)){
-            throw MishapLocationInWrongDimension(worldKey.value)
-        }
+        destDim.assertTeleportationAllowed()
         val sentinel = IXplatAbstractions.INSTANCE.getSentinel(env.caster) ?: throw MishapNoSentinel() //placeholder
         val originDim = env.world.server.getWorld(sentinel.dimension)
         if (originDim == destDim){
