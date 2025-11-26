@@ -45,6 +45,7 @@ import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.floor
 
+//this one isn't used anymore but I'm keeping it just in case
 fun List<Iota>.getDimIota(idx: Int, argc: Int = 0): DimIota {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
     if (x is DimIota) {
@@ -54,18 +55,16 @@ fun List<Iota>.getDimIota(idx: Int, argc: Int = 0): DimIota {
     throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "oneironaut:imprint")
 }
 
-/*fun List<Iota>.getStatusEffect(idx: Int, argc: Int = 0, allowShroud : Boolean) : StatusEffect{
+fun List<Iota>.getDimension(idx: Int, argc: Int = 0, server : MinecraftServer): ServerWorld {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is PotionIota) {
-        if (!allowShroud && (x as PotionIota).getEffect().equals(
-                OneironautMiscRegistry.DETECTION_RESISTANCE.get())){
-            throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "oneironaut:visiblestatus")
-        }
-        return (x as PotionIota).effect
+    if (x is DimIota) {
+        val world = x.toWorld(server)
+        assert(world != null)
+        return world
     }
 
-    throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "oneironaut:status")
-}*/
+    throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "oneironaut:imprint")
+}
 
 fun List<Iota>.getSoulprint(idx: Int, argc: Int = 0) : UUID {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }

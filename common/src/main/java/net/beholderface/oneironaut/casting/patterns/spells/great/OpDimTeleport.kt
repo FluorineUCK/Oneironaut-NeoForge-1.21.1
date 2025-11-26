@@ -50,7 +50,7 @@ class OpDimTeleport : SpellAction {
             noosphere = true
             Oneironaut.getNoosphere()
         } else {
-            args.getDimIota(1, argc).toWorld(env.world.server)
+            args.getDimension(1, argc, env.world.server)
         }
         val worldKey = destination.registryKey
         //do not do the bad thing

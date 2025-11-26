@@ -15,7 +15,6 @@ import at.petrak.hexcasting.api.misc.MediaConstants
 import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.xplat.IXplatAbstractions
 import net.beholderface.oneironaut.*
-//import net.beholderface.oneironaut.*
 import net.beholderface.oneironaut.casting.mishaps.MishapBadCuboid
 import net.beholderface.oneironaut.casting.mishaps.MishapNoNoosphere
 import net.beholderface.oneironaut.item.BottomlessMediaItem
@@ -31,14 +30,12 @@ import net.minecraft.util.math.*
 import net.minecraft.world.TeleportTarget
 import java.lang.Exception
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.pow
 
 class OpSwapSpace : SpellAction {
     override val argc = 3
     override fun execute(args: List<Iota>, env: CastingEnvironment): SpellAction.Result {
-        val destWorld = args.getDimIota(2, argc).toWorld(env.world.server)
+        val destWorld = args.getDimension(2, argc, env.world.server)
         val destWorldKey = destWorld.registryKey
         val originWorld = env.world
         val originWorldKey = originWorld.registryKey
