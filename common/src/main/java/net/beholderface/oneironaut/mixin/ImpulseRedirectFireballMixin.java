@@ -68,7 +68,7 @@ public abstract class ImpulseRedirectFireballMixin {
             explosive.powerZ = explosive.powerZ + deltaZ;
             Vec3d newPower = new Vec3d(explosive.powerX, explosive.powerY, explosive.powerZ);
             if (!immune){
-                explosive.setOwner(env.getCaster());
+                explosive.setOwner(env.getCastingEntity());
             }
             tracker.set(POWER_X, (float) (explosive.powerX + deltaX));
             tracker.set(POWER_Y, (float) (explosive.powerX + deltaY));
