@@ -73,6 +73,7 @@ allprojects {
             url "https://maven.jamieswhiteshirt.com/libs-release/"
         }
         maven { url "https://mvn.devos.one/snapshots/" }
+        maven { url "https://maven.hexxy.media" }
         maven {
             name = 'Ladysnake Mods'
             url = 'https://maven.ladysnake.org/releases'

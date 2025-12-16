@@ -55,8 +55,8 @@ dependencies {
     //modImplementation "com.jamieswhiteshirt:reach-entity-attributes:${entityReachVersion}"
     //include "com.jamieswhiteshirt:reach-entity-attributes:${entityReachVersion}"
 
-    modImplementation "localModLibs:serialization-hooks:${serializationHooksVersion}"
-    include "localModLibs:serialization-hooks:${serializationHooksVersion}"
+    modImplementation "io.github.tropheusj:serialization-hooks:${serializationHooksVersion}"
+    include "io.github.tropheusj:serialization-hooks:${serializationHooksVersion}"
 
     modImplementation "dev.emi:trinkets:${trinketsVersion}"
 
@@ -67,8 +67,8 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modImplementation "localModLibs:hexal-fabric-${minecraftVersion}-${hexalVersion}"
-    modImplementation "localModLibs:moreiotas-fabric-${minecraftVersion}-${moreiotasVersion}"
+    modImplementation("ram.talia.hexal:hexal-fabric-${minecraftVersion}:${hexalVersion}") { transitive false}
+    modImplementation("ram.talia.moreiotas:moreiotas-fabric-${minecraftVersion}:${moreiotasVersion}") { transitive false}
     implementation group: "org.jblas", name: "jblas", version: "1.2.5"
     //modCompileOnly "maven.modrinth:geckolib:${geckolibVersion}"
     /*modCompileOnly "maven.modrinth:hexal:${hexalVersion}"
