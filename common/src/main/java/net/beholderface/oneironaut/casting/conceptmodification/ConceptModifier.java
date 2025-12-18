@@ -146,7 +146,8 @@ public class ConceptModifier {
         NONE(false, "none"),
         REFERENCE_COMPARISON(true, "ref_comparison"), //implemented
         TOTEM(false, "totem"),
-        XL_REFERENCE(true, "ref_size");
+        XL_REFERENCE(true, "ref_size"),
+        STACK_LIMIT(false, "stack_limit");
 
         public final boolean requiresIota;
         public final String translationKey;

@@ -116,6 +116,8 @@ public class OneironautItemRegistry {
             ONEIRONAUT_UNSTACKABLE, (iota)-> false));
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_REFERENCE_COMPARISON = ITEMS.register("concept_modifier_comparison", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_COMPARISON.get(),
             ONEIRONAUT_UNSTACKABLE, (iota)-> iota instanceof BooleanIota));
+    public static final RegistrySupplier<WriteableBlockItem> CONCEPT_MODIFIER_STACK_SIZE = ITEMS.register("concept_modifier_stack_size", ()-> new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_STACK_SIZE.get(),
+            ONEIRONAUT_UNSTACKABLE, (iota)-> false));
     public static final RegistrySupplier<WriteableBlockItem> CONCEPT_CORE = ITEMS.register("concept_core", ()->new WriteableBlockItem(OneironautBlockRegistry.CONCEPT_CORE.get(), ONEIRONAUT_UNSTACKABLE,
             (iota)-> iota instanceof EntityIota && ((EntityIota) iota).getEntity() instanceof PlayerEntity));
 

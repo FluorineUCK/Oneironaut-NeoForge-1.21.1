@@ -2,6 +2,7 @@ package net.beholderface.oneironaut
 
 import at.petrak.hexcasting.api.HexAPI
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
+import at.petrak.hexcasting.api.casting.eval.vm.CastingImage
 import at.petrak.hexcasting.api.casting.iota.EntityIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
@@ -9,11 +10,17 @@ import at.petrak.hexcasting.api.casting.mishaps.MishapLocationInWrongDimension
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
 import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.api.pigment.FrozenPigment
+import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
 import at.petrak.hexcasting.fabric.cc.HexCardinalComponents
 import at.petrak.hexcasting.xplat.IXplatAbstractions
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation
+import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier
+import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager
 import net.beholderface.oneironaut.casting.environments.ReverbRodCastEnv
 import net.beholderface.oneironaut.casting.iotatypes.DimIota
 import net.beholderface.oneironaut.casting.iotatypes.SoulprintIota
+import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker
+import net.beholderface.oneironaut.mixin.IotaTypeInvoker
 import net.beholderface.oneironaut.network.UnBrainsweepPacket
 import net.beholderface.oneironaut.recipe.OneironautRecipeTypes
 import net.minecraft.block.Block
@@ -25,7 +32,6 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.GoalSelector
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.MobEntity
-import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.item.Item
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.recipe.RecipeManager
@@ -411,4 +417,44 @@ fun BlockPos.toUUID() : UUID{
 
 fun UUID.toBlockPos() : BlockPos{
     return BlockPos.fromLong(this.leastSignificantBits)
+}
+
+fun handleIncreasedStackLimit(env : CastingEnvironment, img : CastingImage, examinee : Iterable<Iota>, original : Operation<Boolean>) : Boolean {
+    if (env.castingEntity is ServerPlayerEntity) {
+        val player = env.castingEntity as ServerPlayerEntity
+        val manager = ConceptModifierManager.getServerState(Oneironaut.getCachedServer())
+        if (manager.hasModifierType(player, ConceptModifier.ModifierType.STACK_LIMIT)) {
+            var totalSize = 0
+            val modifiedMaximum = HexIotaTypes.MAX_SERIALIZATION_TOTAL * 2
+            for (iota in examinee) {
+                if (IotaTypeInvoker.`oneironaut$isTooLarge`(listOf(iota), 0)) {
+                    img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, false)
+                    return true
+                }
+                totalSize += iota.size()
+            }
+            if (totalSize > modifiedMaximum) { //still too large
+                img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, false)
+                return true
+            } else if (totalSize > HexIotaTypes.MAX_SERIALIZATION_TOTAL) { //large enough to incur media costs (can still fail if there is not enough media)
+                val remainingCost = (env as GeneralCastEnvInvoker).`oneironaut$extractMediaEnvironment`(
+                    (totalSize - HexIotaTypes.MAX_SERIALIZATION_TOTAL).toLong(),
+                    false
+                )
+                if (remainingCost <= 0) {
+                    img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, true)
+                    return false
+                }
+            }
+            img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, true)
+            return false
+        }
+    }
+    val originalResult = original.call(examinee)
+    img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, originalResult)
+    return originalResult
+}
+
+object MiscStaticData {
+    const val TAG_ALLOW_SERIALIZE = "serializeAnyway"
 }

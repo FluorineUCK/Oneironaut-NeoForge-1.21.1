@@ -11,10 +11,10 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(CastingEnvironment.class)
 public interface GeneralCastEnvInvoker {
     @Invoker("extractMediaEnvironment")
-    long extractFromEnv(long cost, boolean simulate);
+    long oneironaut$extractMediaEnvironment(long cost, boolean simulate);
 
     @Final
     @Mutable
     @Accessor("world")
-    void setWorld(ServerWorld world);
+    void oneironaut$setWorld(ServerWorld world);
 }

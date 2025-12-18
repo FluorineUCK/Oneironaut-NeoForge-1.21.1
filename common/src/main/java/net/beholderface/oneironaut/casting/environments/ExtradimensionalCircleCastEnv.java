@@ -42,7 +42,7 @@ public class ExtradimensionalCircleCastEnv extends CircleCastEnv {
                                          CircleExecutionState existingState, Set<BlockPos> visitedLoci) {
         super(parent.getWorld(), existingState);
         this.parentEnv = parent;
-        ((GeneralCastEnvInvoker)this).setWorld(target);
+        ((GeneralCastEnvInvoker)this).oneironaut$setWorld(target);
         if (parentEnv instanceof ExtradimensionalCircleCastEnv extradimensionalCastEnv){
             this.depth = extradimensionalCastEnv.depth + 1;
             this.originalWorld = extradimensionalCastEnv.originalWorld;
@@ -103,7 +103,7 @@ public class ExtradimensionalCircleCastEnv extends CircleCastEnv {
     @Override
     public long extractMediaEnvironment(long cost, boolean simulate) {
         double multiplier = 1.25;
-        return ((GeneralCastEnvInvoker)parentEnv).extractFromEnv((long) (cost * multiplier), simulate);
+        return ((GeneralCastEnvInvoker)parentEnv).oneironaut$extractMediaEnvironment((long) (cost * multiplier), simulate);
     }
 
     @Override
@@ -176,7 +176,7 @@ public class ExtradimensionalCircleCastEnv extends CircleCastEnv {
     @Override
     protected boolean isCreativeMode() {
         // not sure what the diff between this and isCreative() is
-        return ((PlayerCastEnvInvoker)parentEnv).isCreative();
+        return ((PlayerCastEnvInvoker)parentEnv).oneironaut$isCreativeMode();
     }
 
     @Override

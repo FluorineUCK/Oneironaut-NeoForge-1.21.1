@@ -31,7 +31,7 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
     public ExtradimensionalCastEnv(ServerPlayerEntity caster, PlayerBasedCastEnv parent, ServerWorld target, @Nullable CastingVM existingVM) {
         super(caster, parent.getCastingHand());
         this.parentEnv = parent;
-        ((GeneralCastEnvInvoker)this).setWorld(target);
+        ((GeneralCastEnvInvoker)this).oneironaut$setWorld(target);
         if (parentEnv instanceof ExtradimensionalCastEnv extradimensionalCastEnv){
             this.depth = extradimensionalCastEnv.depth + 1;
         } else {
@@ -53,7 +53,7 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
     @Override
     protected long extractMediaEnvironment(long cost, boolean simulate) {
         double multiplier = 1.25;
-        return ((GeneralCastEnvInvoker)parentEnv).extractFromEnv((long) (cost * multiplier), simulate);
+        return ((GeneralCastEnvInvoker)parentEnv).oneironaut$extractMediaEnvironment((long) (cost * multiplier), simulate);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
 
     @Override
     protected boolean canOvercast() {
-        return ((PlayerCastEnvInvoker)parentEnv).canItOvercast();
+        return ((PlayerCastEnvInvoker)parentEnv).oneironaut$canOvercast();
     }
 
     @Override
@@ -116,13 +116,13 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
     }
 
     protected void sendMishapMsgToPlayer(OperatorSideEffect.DoMishap mishap) {
-        ((PlayerCastEnvInvoker)parentEnv).sendMishapMsgPlayer(mishap);
+        ((PlayerCastEnvInvoker)parentEnv).oneironaut$sendMishapMsgToPlayer(mishap);
     }
 
     @Override
     protected boolean isCreativeMode() {
         // not sure what the diff between this and isCreative() is
-        return ((PlayerCastEnvInvoker)parentEnv).isCreative();
+        return ((PlayerCastEnvInvoker)parentEnv).oneironaut$isCreativeMode();
     }
 
     @Override
