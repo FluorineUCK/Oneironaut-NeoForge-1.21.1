@@ -18,7 +18,6 @@
     "IllegalIotasMixin",
     "ImpulseRedirectFireballMixin",
     "IotaTypeInvoker",
-    "MaxStackSizeMixinImage",
     "MaxStackSizeMixinVM",
     "MiscWispMixin",
     "OpBreakBlockImmunityMixin",

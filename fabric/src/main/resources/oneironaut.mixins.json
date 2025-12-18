@@ -20,7 +20,8 @@
     "LivingEntityDisintegrationMixin",
     "MixinHonorLibraryCardReads",
     "OneResetSoundMixin",
-    "SlurryFrostWalkerMixin"
+    "SlurryFrostWalkerMixin",
+    "MaxStackSizeMixinImage"
   ],
   "injectors": {
     "defaultRequire": 1
