@@ -444,6 +444,9 @@ fun handleIncreasedStackLimit(env : CastingEnvironment, img : CastingImage, exam
                 if (remainingCost <= 0) {
                     img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, true)
                     return false
+                } else {
+                    img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, false)
+                    return true
                 }
             }
             img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, true)
