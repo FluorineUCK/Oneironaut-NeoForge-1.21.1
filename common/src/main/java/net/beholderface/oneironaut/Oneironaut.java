@@ -238,7 +238,7 @@ public class Oneironaut {
     }
     public static MinecraftServer getCachedServer(){
         if (server == null){
-            throw new IllegalStateException("getCachedServer method called before server start");
+            throw new IllegalStateException("getCachedServer method called before server start. or on client. or something else, idfk");
         }
         return server;
     }

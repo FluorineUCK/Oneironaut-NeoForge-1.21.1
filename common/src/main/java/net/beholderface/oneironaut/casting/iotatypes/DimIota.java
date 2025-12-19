@@ -120,10 +120,14 @@ public class DimIota extends Iota {
             for (TextTransformer transformer : styleTransformers.values()){
                 text = transformer.transform(text, worldKey);
             }
-            //don't let people change the actual string of the text server-side, it might break hexes that rely on stuff like Scrivener's
-            if (Oneironaut.getCachedServer() != null && Thread.currentThread() == Oneironaut.getCachedServer().getThread()
-                    && !text.getString().equals(originalString)){
-                text = Text.of(worldKey).copy().setStyle(text.getStyle());
+            try {
+                //don't let people change the actual string of the text server-side, it might break hexes that rely on stuff like Scrivener's
+                if (Oneironaut.getCachedServer() != null && Thread.currentThread() == Oneironaut.getCachedServer().getThread()
+                        && !text.getString().equals(originalString)){
+                    text = Text.of(worldKey).copy().setStyle(text.getStyle());
+                }
+            } catch (IllegalStateException e){
+                //do nothing
             }
 
             return text;
