@@ -243,6 +243,13 @@ public class Oneironaut {
         return server;
     }
 
+    public static boolean isServerThread(){
+        if (server != null){
+            return Thread.currentThread() == server.getThread();
+        }
+        return false;
+    }
+
     public static void processDisintegration(LivingEntity entity){
         /*if (entity instanceof ServerPlayerEntity player){
             if (ConceptModifierManager.getServerState(player.server).hasModifierType(player, ConceptModifier.ModifierType.ANTIEROSION)){
