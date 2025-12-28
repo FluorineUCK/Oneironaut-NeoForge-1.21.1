@@ -12,7 +12,7 @@ import net.beholderface.oneironaut.block.InactiveSlipwayBlock;
 import net.beholderface.oneironaut.block.blockentity.HoverElevatorBlockEntity;
 import net.beholderface.oneironaut.casting.DepartureEntry;
 import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
-import net.beholderface.oneironaut.casting.IdeaInscriptionManager;
+import net.beholderface.oneironaut.casting.idea.IdeaInscriptionManager;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager;
 import net.beholderface.oneironaut.item.BottomlessMediaItem;

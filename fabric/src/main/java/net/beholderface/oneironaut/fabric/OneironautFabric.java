@@ -2,17 +2,12 @@ package net.beholderface.oneironaut.fabric;
 
 import at.petrak.hexcasting.common.items.ItemLens;
 import at.petrak.hexcasting.common.lib.HexItems;
-import at.petrak.hexcasting.fabric.FabricHexInitializer;
-import at.petrak.hexcasting.fabric.interop.trinkets.TrinketsApiInterop;
-import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
-import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.beholderface.oneironaut.Oneironaut;
-import net.beholderface.oneironaut.casting.IdeaInscriptionManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 

@@ -17,6 +17,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager
 import net.beholderface.oneironaut.casting.environments.ReverbRodCastEnv
+import net.beholderface.oneironaut.casting.idea.IdeaKeyable
 import net.beholderface.oneironaut.casting.iotatypes.DimIota
 import net.beholderface.oneironaut.casting.iotatypes.SoulprintIota
 import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker
@@ -409,6 +410,16 @@ fun List<Iota>.getNonlivingIfAllowed(idx: Int, argc: Int = 0): Entity {
         "entity.living"
     }
     throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), stub)
+}
+
+fun List<Iota>.getIdeaKey(idx : Int, argc: Int = 0, env : CastingEnvironment) : IdeaKeyable {
+    val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
+    if (x is IdeaKeyable){
+        if (x.isValidKey(env)){
+            return x
+        }
+    }
+    throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "oneironaut:invalidkey")
 }
 
 fun BlockPos.toUUID() : UUID{

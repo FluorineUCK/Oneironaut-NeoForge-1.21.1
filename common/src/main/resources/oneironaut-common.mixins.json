@@ -23,7 +23,9 @@
     "OpBreakBlockImmunityMixin",
     "PlayerCastEnvInvoker",
     "SentinelTrapMixinSummon",
-    "ZoneDistImmunityMixin"
+    "ZoneDistImmunityMixin",
+    "IotaKeyableMixins.EntityIotaKeyableMixin",
+    "IotaKeyableMixins.Vec3IotaKeyableMixin"
   ],
   "injectors": {
     "defaultRequire": 1

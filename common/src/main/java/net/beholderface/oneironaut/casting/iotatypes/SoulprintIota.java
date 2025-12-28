@@ -1,11 +1,13 @@
 package net.beholderface.oneironaut.casting.iotatypes;
 
+import at.petrak.hexcasting.api.casting.eval.CastingEnvironment;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.IotaType;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.api.utils.HexUtils;
 import at.petrak.hexcasting.common.lib.HexItems;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
+import net.beholderface.oneironaut.casting.idea.IdeaKeyable;
 import net.beholderface.oneironaut.registry.OneironautIotaTypeRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -21,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 
-public class SoulprintIota extends Iota {
+public class SoulprintIota extends Iota implements IdeaKeyable {
     public SoulprintIota(@NotNull Pair<UUID, String> payload){
         super(OneironautIotaTypeRegistry.UUID, payload);
     }
@@ -75,4 +77,14 @@ public class SoulprintIota extends Iota {
             return 0xff_7a63bc;
         }
     };
+
+    @Override
+    public String getKey() {
+        return this.getEntity().toString() + "soul";
+    }
+
+    @Override
+    public boolean isValidKey(CastingEnvironment env) {
+        return true;
+    }
 }
