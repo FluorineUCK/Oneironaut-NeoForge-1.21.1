@@ -3,7 +3,6 @@ package net.beholderface.oneironaut.casting.idea;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.IotaType;
 import at.petrak.hexcasting.api.utils.NBTHelper;
-import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.OneironautConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
