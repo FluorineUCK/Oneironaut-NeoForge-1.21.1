@@ -9,7 +9,7 @@ import net.beholderface.oneironaut.casting.idea.IdeaEntry
 import net.beholderface.oneironaut.casting.idea.IdeaInscriptionManager
 import net.beholderface.oneironaut.getIdeaKey
 
-class OpWriteIdea : ConstMediaAction {
+class OpStoreIota : ConstMediaAction {
     override val argc = 2
     override val mediaCost = MediaConstants.DUST_UNIT / 4
     override fun execute(args: List<Iota>, env: CastingEnvironment): List<Iota> {

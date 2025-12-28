@@ -11,6 +11,7 @@ import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.block.HoverElevatorBlock;
 import net.beholderface.oneironaut.network.HoverliftAntiDesyncPacket;
 import net.beholderface.oneironaut.registry.OneironautBlockRegistry;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -138,8 +139,6 @@ public class HoverElevatorBlockEntity extends BlockEntity {
         for (; i <= adjustedRange; i++){
             current = pos.add(dirVec.multiply(i));
             BlockState checkedState = world.getBlockState(current);
-            TagKey<Block> breakImmune = MiscAPIKt.getBlockTagKey(Identifier.tryParse("oneironaut:hexbreakimmune"));
-            TagKey<Block> rayImmune = MiscAPIKt.getBlockTagKey(Identifier.tryParse("oneironaut:blocksraycast"));
             if (checkedState.getBlock() == OneironautBlockRegistry.HOVER_ELEVATOR.get()){
                 if (checkedState.get(HoverElevatorBlock.POWERED)){
                     if(checkedState.get(FACING).getOpposite().equals(dir)){
@@ -153,7 +152,7 @@ public class HoverElevatorBlockEntity extends BlockEntity {
             } else if (checkedState.getBlock() == OneironautBlockRegistry.HOVER_REPEATER.get() && repeaters < 3){
                 adjustedRange = i + (initialRange - 1);
                 repeaters++;
-            } else if (checkedState.isIn(breakImmune) || checkedState.isIn(rayImmune)){
+            } else if (checkedState.isIn(OneironautTags.Blocks.breakImmune) || checkedState.isIn(OneironautTags.Blocks.blocksRaycast)){
                 break;
             }
         }

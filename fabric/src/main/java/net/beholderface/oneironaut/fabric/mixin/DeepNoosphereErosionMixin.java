@@ -5,6 +5,7 @@ import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.DisintegrationProtectionManager;
 import net.beholderface.oneironaut.registry.OneironautBlockRegistry;
 import net.beholderface.oneironaut.registry.OneironautItemRegistry;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -32,7 +33,7 @@ public class DeepNoosphereErosionMixin {
 
     @Shadow @Final private MinecraftServer server;
     @Unique ServerWorld world = (ServerWorld)(Object) this;
-    @Unique private static final TagKey<Block> immunityKey = MiscAPIKt.getBlockTagKey(new Identifier("oneironaut:deeperosionimmune"));
+    @Unique private static final TagKey<Block> immunityKey = OneironautTags.Blocks.erosionImmune;
     @Unique private static final TagKey<Block> realityKey = MiscAPIKt.getBlockTagKey(new Identifier("oneironaut:candropreality"));
     @Unique private static DisintegrationProtectionManager.DisintegrationProtectionEntry latestFoundEntry = null;
 

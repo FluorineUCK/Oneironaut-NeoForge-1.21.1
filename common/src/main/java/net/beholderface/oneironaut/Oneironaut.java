@@ -1,5 +1,6 @@
 package net.beholderface.oneironaut;
 
+import at.petrak.hexcasting.api.mod.HexTags;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.common.items.ItemStaff;
 import at.petrak.hexcasting.common.lib.HexItems;
@@ -146,12 +147,10 @@ public class Oneironaut {
         });
 
         ItemStack fakeStaffStack = HexItems.STAFF_OAK.getDefaultStack();
-        TagKey<Item> realStaffTag = getItemTagKey(new Identifier("hexcasting:staves"));
-        TagKey<Item> fakeStaffTag = getItemTagKey(new Identifier("oneironaut:datapack_staves"));
         InteractionEvent.RIGHT_CLICK_ITEM.register((player, hand) -> {
             ItemStack heldStack = player.getStackInHand(hand);
-            if (heldStack.isIn(fakeStaffTag) && !(heldStack.getItem() instanceof ItemStaff)){
-                if (heldStack.isIn(realStaffTag)){
+            if (heldStack.isIn(OneironautTags.Items.datapackStaves) && !(heldStack.getItem() instanceof ItemStaff)){
+                if (heldStack.isIn(HexTags.Items.STAVES)){
                     fakeStaffStack.use(player.getWorld(), player, hand);
                     player.swingHand(hand);
                 } else {

@@ -6,6 +6,7 @@ import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
 import net.beholderface.oneironaut.registry.OneironautBlockRegistry;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -170,7 +171,7 @@ public class SpaceBombBlockEntity extends BlockEntity {
                 LivingEntity livingEntity = (LivingEntity) entity;
                 OvercastDamageEnchant.applyMindDamage(null, livingEntity,
                         (int)Math.floor(16 - entityPos.distanceTo(doublePos)) * 2,
-                        livingEntity.getType().isIn(MiscAPIKt.getEntityTagKey(Oneironaut.id("render_autospare"))));
+                        livingEntity.getType().isIn(OneironautTags.Entities.mindRenderAutospare));
             }
         }
         this.world.playSound(null, this.pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 2.0f, 0.75f);

@@ -7,6 +7,7 @@ import at.petrak.hexcasting.common.lib.HexItems;
 import at.petrak.hexcasting.ktxt.AccessorWrappers;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import net.beholderface.oneironaut.network.ParticleBurstPacket;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.enchantment.DamageEnchantment;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
@@ -64,7 +65,7 @@ public class OvercastDamageEnchant extends Enchantment {
 
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-        applyMindDamage(user, target, level, target.getType().isIn(MiscAPIKt.getEntityTagKey(Oneironaut.id("render_autospare"))));
+        applyMindDamage(user, target, level, target.getType().isIn(OneironautTags.Entities.mindRenderAutospare));
     }
 
     public boolean canAccept(Enchantment other){
@@ -107,8 +108,8 @@ public class OvercastDamageEnchant extends Enchantment {
                 }
                 AccessorWrappers.markHurt(livingTarget);
                 if (livingTarget.isAlive() && livingTarget.getHealth() <= 1f && target instanceof MobEntity mob){
-                    boolean whitelisted = mob.getType().isIn(MiscAPIKt.getEntityTagKey(new Identifier(Oneironaut.MOD_ID, "render_flay_whitelist")));
-                    boolean blacklisted = mob.getType().isIn(MiscAPIKt.getEntityTagKey(new Identifier(Oneironaut.MOD_ID, "render_flay_blacklist")));
+                    boolean whitelisted = mob.getType().isIn(OneironautTags.Entities.mindRenderFlayWhitelist);
+                    boolean blacklisted = mob.getType().isIn(OneironautTags.Entities.mindRenderFlayBlacklist);
                     //if it has more than 100 max health, it's probably a boss, and I'm not letting people get flayed dragons
                     if ((mob.getMaxHealth() <= 100.0f || whitelisted) /* but I am letting people get flayed wardens :) */ && !blacklisted){
                         //Brainsweeping.brainsweep(mob);

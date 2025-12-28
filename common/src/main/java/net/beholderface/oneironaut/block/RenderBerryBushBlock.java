@@ -5,6 +5,7 @@ import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
 import net.beholderface.oneironaut.registry.OneironautItemRegistry;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -89,7 +90,7 @@ public class RenderBerryBushBlock extends PlantBlock implements Fertilizable {
         boolean foundSlurry = false;
         //same cuboid as if the block below it was farmland getting hydrated
         for (BlockState state2 : world.getStatesInBox(new Box(pos).expand(4, 2, 4)).toList()){
-            if (state2.isIn(MiscAPIKt.getBlockTagKey(Identifier.of("oneironaut","growsmonkfruit")))){
+            if (state2.isIn(OneironautTags.Blocks.growsMonkfruit)){
                 foundSlurry = true;
                 break;
             }
@@ -146,11 +147,8 @@ public class RenderBerryBushBlock extends PlantBlock implements Fertilizable {
             DamageSource berryDamage = target.getDamageSources().sweetBerryBush();
             target.damage(berryDamage, target.isPlayer() ? 0.001f : 0f);
             OvercastDamageEnchant.applyMindDamage(null, target, 2,
-                    target.getType().isIn(MiscAPIKt.getEntityTagKey(Oneironaut.id("render_autospare"))));
-            Identifier blacklistTagID = Identifier.of(Oneironaut.MOD_ID, "monkfruit_blacklist");
-            assert blacklistTagID != null;
-            var blacklistTag = MiscAPIKt.getEntityTagKey(blacklistTagID);
-            if (target.getType().isIn(blacklistTag)){
+                    target.getType().isIn(OneironautTags.Entities.mindRenderAutospare));
+            if (target.getType().isIn(OneironautTags.Entities.monkfruitBlacklist)){
                 return;
             }
             //did that damage flay the target?

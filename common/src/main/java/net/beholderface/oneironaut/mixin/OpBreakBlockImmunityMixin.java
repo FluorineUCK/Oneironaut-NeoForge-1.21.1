@@ -1,6 +1,7 @@
 package net.beholderface.oneironaut.mixin;
 
 import at.petrak.hexcasting.fabric.xplat.FabricXplatImpl;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,12 +22,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FabricXplatImpl.class)
 public abstract class OpBreakBlockImmunityMixin {
 
-    @Unique
-    private static final TagKey<Block> oneironaut$tag = MiscAPIKt.getBlockTagKey(new Identifier(Oneironaut.MOD_ID, "hexbreakimmune"));
-
     @Inject(method = "isBreakingAllowed", at = @At(value = "HEAD", remap = false), remap = false, cancellable = true)
     public void dontBreakIfImmune(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfoReturnable<Boolean> cir){
-        if (state.isIn(oneironaut$tag)){
+        if (state.isIn(OneironautTags.Blocks.breakImmune)){
             cir.setReturnValue(false);
         }
     }

@@ -15,10 +15,7 @@ import net.beholderface.oneironaut.casting.patterns.*;
 import net.beholderface.oneironaut.casting.patterns.rod.*;
 import net.beholderface.oneironaut.casting.patterns.spells.*;
 import net.beholderface.oneironaut.casting.patterns.spells.great.*;
-import net.beholderface.oneironaut.casting.patterns.spells.idea.OpGetIdeaTimestamp;
-import net.beholderface.oneironaut.casting.patterns.spells.idea.OpGetIdeaWriter;
-import net.beholderface.oneironaut.casting.patterns.spells.idea.OpReadIdea;
-import net.beholderface.oneironaut.casting.patterns.spells.idea.OpWriteIdea;
+import net.beholderface.oneironaut.casting.patterns.spells.idea.*;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -47,9 +44,10 @@ public class OneironautPatternRegistry {
     public static HexPattern ROD_RAM_READ_REMOTE = register(HexPattern.fromAngles("qwaqawewewaqawewddw", HexDir.NORTH_EAST), "readrodramremote", new OpAccessRAMRemote(false));
     public static HexPattern ROD_RAM_WRITE_REMOTE = register(HexPattern.fromAngles("ewdedwqwqwdedwqwaaw", HexDir.NORTH_WEST), "writerodramremote", new OpAccessRAMRemote(true));
 
-    public static HexPattern READ_IDEA = register(HexPattern.fromAngles("qwqwqwqwqwqqqwedewq", HexDir.WEST), "readidea", new OpReadIdea());
+    public static HexPattern READ_IDEA = register(HexPattern.fromAngles("qwqwqwqwqwqqqwedewq", HexDir.WEST), "readidea", new OpGetIdea());
     public static HexPattern READ_IDEA_TIME = register(HexPattern.fromAngles("qwqwqwqwqwqqqeqaqeq", HexDir.WEST), "readideatime", new OpGetIdeaTimestamp());
     public static HexPattern COMPARE_IDEA_WRITER = register(HexPattern.fromAngles("qwqwqwqwqwqaeqedeqe", HexDir.WEST), "readideawriter", new OpGetIdeaWriter());
+    public static HexPattern READ_IDEA_TYPE = register(HexPattern.fromAngles("qwqwqqqaqqqwqwqqqaq", HexDir.WEST), "readideatype", new OpGetIdeaType());
     public static HexPattern READ_SENTINEL = register(HexPattern.fromAngles("waeawaeddwwd", HexDir.EAST), "readsentinel", new OpReadSentinel());
     public static HexPattern DETECT_SHROUDED = register(HexPattern.fromAngles("qqqqqwwaawewaawdww", HexDir.SOUTH_EAST), "detectshroud", new OpDetectShrouded());
     //normal spells
@@ -58,7 +56,7 @@ public class OneironautPatternRegistry {
     public static HexPattern RESET_ROD = register(HexPattern.fromAngles("deaqqwqqqw", HexDir.SOUTH_EAST), "resetrod", new OpHaltRod(1));
     public static HexPattern QUERY_ROD = register(HexPattern.fromAngles("qwqqqwqaeaqa", HexDir.SOUTH_EAST), "queryrod", new OpCheckForRod());
     public static HexPattern ROD_LOOP_ACTIVE = register(HexPattern.fromAngles("qwqqqwqaqded", HexDir.SOUTH_EAST), "rodloopactive", new OpCheckForRodOther());
-    public static HexPattern WRITE_IDEA = register(HexPattern.fromAngles("eweweweweweeewqaqwe", HexDir.EAST), "writeidea", new OpWriteIdea());
+    public static HexPattern WRITE_IDEA_IOTA = register(HexPattern.fromAngles("eweweweweweeewqaqwe", HexDir.EAST), "writeidea", new OpStoreIota());
     public static HexPattern GET_SOULPRINT = register(HexPattern.fromAngles("qqaqwedee", HexDir.EAST), "getsoulprint", new OpGetSoulprint());
     public static HexPattern SIGN_ITEM = register(HexPattern.fromAngles("qqaqwedeea", HexDir.EAST), "signitem", new OpSignItem());
     public static HexPattern CHECK_SIGNATURE = register(HexPattern.fromAngles("qqaqwedeed", HexDir.EAST), "checksignature", new OpCompareSignature());
@@ -80,6 +78,9 @@ public class OneironautPatternRegistry {
     public static HexPattern APPLY_NOT_MISSING = registerPerWorld(HexPattern.fromAngles("qdaeqeawaeqeadqqdeed", HexDir.SOUTH_WEST), "applynotmissing", new OpMarkEntity());
     public static HexPattern APPLY_MIND_RENDER = registerPerWorld(HexPattern.fromAngles("qweqadeqadeqadqqqwdaqedaqedaqeqaqdwawdwawdwaqawdwawdwawddwwwwwqdeddw", HexDir.EAST), "applymindrender", new OpApplyOvercastDamage());
     public static HexPattern REVIVE_FLAYED = registerPerWorld(HexPattern.fromAngles("qeqwqqedeeeeeaqwqeqaqedqde", HexDir.NORTH_EAST), "reviveflayed", new OpReviveFlayed());
+
+    public static HexPattern WRITE_IDEA_ENTITY = register(HexPattern.fromAngles("weweeedeeewewdqqaw", HexDir.SOUTH_EAST), "writeidea_entity", new OpStoreEntity());
+    public static HexPattern RELEASE_ENTITY = register(HexPattern.fromAngles("wqwqdqaqdqwqwaeedw", HexDir.SOUTH_WEST), "releaseidea_entity", new OpReleaseEntity());
 
     public static HexPattern EVAL_EXTRADIMENSIONAL = register(HexPattern.fromAngles("wqwqwqwqwqwaqdeaqqe", HexDir.WEST), "extradimensionaleval", new OpEvalExtradimensional());
     public static HexPattern SHIFT_SENTINEL = register(HexPattern.fromAngles("wwaeawwaeqqwqwqwqwqwq", HexDir.EAST), "shiftsentinel", new OpShiftSentinel());

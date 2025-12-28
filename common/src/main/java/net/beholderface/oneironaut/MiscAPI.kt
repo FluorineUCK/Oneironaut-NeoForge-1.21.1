@@ -10,6 +10,7 @@ import at.petrak.hexcasting.api.casting.mishaps.MishapLocationInWrongDimension
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
 import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.api.pigment.FrozenPigment
+import at.petrak.hexcasting.common.lib.HexItems
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
 import at.petrak.hexcasting.fabric.cc.HexCardinalComponents
 import at.petrak.hexcasting.xplat.IXplatAbstractions
@@ -44,7 +45,9 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.state.property.Properties
 import net.minecraft.state.property.Property
+import net.minecraft.util.DyeColor
 import net.minecraft.util.Identifier
+import net.minecraft.util.Util
 import net.minecraft.util.math.*
 import net.minecraft.village.VillagerDataContainer
 import net.minecraft.village.VillagerProfession
@@ -91,17 +94,23 @@ fun List<Iota>.getSoulprint(idx: Int, argc: Int = 0) : UUID {
     throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "oneironaut:soulprint")
 }
 
-fun getBlockTagKey(id : Identifier?) : TagKey<Block>?{
-    if (id != null){
-        return TagKey.of(RegistryKeys.BLOCK, id)
-    }
-    return null
+fun Identifier.getBlockTagKey() : TagKey<Block>{
+    return TagKey.of(RegistryKeys.BLOCK, this)
 }
-fun getEntityTagKey(id : Identifier) : TagKey<EntityType<*>>{
-    return TagKey.of(RegistryKeys.ENTITY_TYPE, id)
+fun String.getBlockTagKey() : TagKey<Block>{
+    return Identifier(this).getBlockTagKey()
 }
-fun getItemTagKey(id : Identifier) : TagKey<Item> {
-    return TagKey.of(RegistryKeys.ITEM, id)
+fun Identifier.getEntityTagKey() : TagKey<EntityType<*>>{
+    return TagKey.of(RegistryKeys.ENTITY_TYPE, this)
+}
+fun String.getEntityTagKey() : TagKey<EntityType<*>>{
+    return Identifier(this).getEntityTagKey()
+}
+fun Identifier.getItemTagKey() : TagKey<Item> {
+    return TagKey.of(RegistryKeys.ITEM, this)
+}
+fun String.getItemTagKey() : TagKey<Item>{
+    return Identifier(this).getItemTagKey()
 }
 
 
@@ -467,6 +476,35 @@ fun handleIncreasedStackLimit(env : CastingEnvironment, img : CastingImage, exam
     val originalResult = original.call(examinee)
     img.userData.putBoolean(MiscStaticData.TAG_ALLOW_SERIALIZE, originalResult)
     return originalResult
+}
+
+fun DyeColor.toVec3d() : Vec3d{
+    return Vec3d(
+        this.colorComponents[0].toDouble(),
+        this.colorComponents[1].toDouble(),
+        this.colorComponents[2].toDouble()
+    )
+}
+
+fun colorToClosestPigment(color : Int) : FrozenPigment{
+    //conversion code taken from vanilla DyeColor stuff
+    val j = (color and 16711680) shr 16
+    val k = (color and '\uff00'.code) shr 8
+    val l = (color and 255) shr 0
+    return colorToClosestPigment(Vec3d(j.toDouble() / 255.0f, k.toDouble() / 255.0f, l.toDouble() / 255.0f))
+}
+
+fun colorToClosestPigment(color : Vec3d) : FrozenPigment{
+    var distance = Double.MAX_VALUE
+    var dye = DyeColor.RED
+    for (checked in DyeColor.values()){
+        val current = checked.toVec3d().distanceTo(color)
+        if (current < distance){
+            distance = current
+            dye = checked
+        }
+    }
+    return FrozenPigment(HexItems.DYE_PIGMENTS[dye]!!.defaultStack, Util.NIL_UUID)
 }
 
 object MiscStaticData {

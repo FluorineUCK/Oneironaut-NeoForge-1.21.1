@@ -3,6 +3,7 @@ package net.beholderface.oneironaut.mixin;
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -35,8 +36,6 @@ public abstract class ImpulseRedirectFireballMixin {
     private Entity target;
 
     @Unique
-    private static final Identifier oneironaut$immuneTag = new Identifier(Oneironaut.MOD_ID, "impulse_redirect_blacklist");
-    @Unique
     private static final boolean oneironaut$redirectionEnabled = OneironautConfig.getServer().getImpulseRedirectsFireball();
     @Inject(method = "cast(Lat/petrak/hexcasting/api/casting/eval/CastingEnvironment;)V", at = @At(value = "RETURN", remap = false), remap = false)
     public void redirectFireball(CastingEnvironment env, CallbackInfo ci/*, @Local(ordinal = 0) Entity target*/){
@@ -51,7 +50,7 @@ public abstract class ImpulseRedirectFireballMixin {
                     immune = true;
                 }
             }
-            if (target.getType().isIn(MiscAPIKt.getEntityTagKey(oneironaut$immuneTag))){
+            if (target.getType().isIn(OneironautTags.Entities.impulseRedirectBlacklist)){
                 immune = true;
             }
             double deltaDelta = immune ? 0 : 1;

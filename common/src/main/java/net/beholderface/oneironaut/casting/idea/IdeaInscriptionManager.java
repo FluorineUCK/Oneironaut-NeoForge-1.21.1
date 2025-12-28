@@ -17,7 +17,6 @@ public class IdeaInscriptionManager extends PersistentState {
 
     public static final String ID = Oneironaut.MOD_ID + "_ideainscription";
     //setup for Idea Inscription
-    private static Map<String, NbtCompound> iotaMap = new HashMap<>();
     private static Map<String, IdeaEntry<?>> entryMap = new HashMap<>();
     private static final int minuteInTicks = 20 * 60;
     private static final int hourInTicks = minuteInTicks * 60;
@@ -45,7 +44,7 @@ public class IdeaInscriptionManager extends PersistentState {
             NbtCompound currentNbt = nbt.getCompound(currentIdeaKey);
             if (currentNbt.contains(IdeaEntry.TAG_ENTRY_TYPE)){
                 IdeaEntry.EntryType type = IdeaEntry.EntryType.valueOf(currentNbt.getString(IdeaEntry.TAG_ENTRY_TYPE));
-                reconstructedIotaMap.put(currentIdeaKey, type.deserializer.apply(currentNbt, Oneironaut.getCachedServer().getOverworld()));
+                reconstructedIotaMap.put(currentIdeaKey, IdeaEntry.deserialize(currentNbt, Oneironaut.getCachedServer().getOverworld()));
             } else {
                 reconstructedIotaMap.put(currentIdeaKey, IdeaEntry.deserializeLegacyEntry(currentNbt, Oneironaut.getCachedServer().getOverworld()));
             }
@@ -99,21 +98,23 @@ public class IdeaInscriptionManager extends PersistentState {
             if (!(iota.getType().equals(GarbageIota.TYPE))){
                 entryMap.put(key.getKey(), entry);
             } else {
-                eraseIota(key);
+                eraseEntry(key);
             }
+        } else {
+            entryMap.put(key.getKey(), entry);
         }
     }
 
-    public static void eraseIota(IdeaKeyable key){
+    public static void eraseEntry(IdeaKeyable key){
         if (key.getKey().equals("everything")){
-            iotaMap.clear();
+            entryMap.clear();
         } else {
-            iotaMap.remove(key.getKey());
+            entryMap.remove(key.getKey());
         }
     }
 
     @Nullable
-    public static IdeaEntry<?> readEntry(IdeaKeyable key, ServerWorld world, @Nullable IdeaEntry.EntryType type){
+    public static IdeaEntry<?> getEntry(IdeaKeyable key, ServerWorld world, @Nullable IdeaEntry.EntryType type){
         String keyString = key.getKey();
         IdeaEntry<?> entry = getValidEntry(keyString, world);
         if (entry != null){
@@ -125,8 +126,8 @@ public class IdeaInscriptionManager extends PersistentState {
     }
 
     @Nullable
-    public static IdeaEntry<?> readEntry(IdeaKeyable key, ServerWorld world){
-        return readEntry(key, world, null);
+    public static IdeaEntry<?> getEntry(IdeaKeyable key, ServerWorld world){
+        return getEntry(key, world, null);
     }
 
     public static double getEntryTimestamp(IdeaKeyable key, ServerWorld world){

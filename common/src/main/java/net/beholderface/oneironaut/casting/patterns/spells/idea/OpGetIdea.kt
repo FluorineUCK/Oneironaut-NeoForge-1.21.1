@@ -11,12 +11,12 @@ import net.beholderface.oneironaut.getIdeaKey
 import net.minecraft.entity.Entity
 import ram.talia.moreiotas.api.casting.iota.EntityTypeIota
 
-class OpReadIdea : ConstMediaAction {
+class OpGetIdea : ConstMediaAction {
     override val argc = 1
     override val mediaCost = MediaConstants.DUST_UNIT / 8
     override fun execute(args: List<Iota>, env: CastingEnvironment): List<Iota> {
         val keyIota = args.getIdeaKey(0, argc, env)
-        val entry = IdeaInscriptionManager.readEntry(keyIota, env.world)
+        val entry = IdeaInscriptionManager.getEntry(keyIota, env.world)
         if (entry != null){
             if (entry.type == IdeaEntry.EntryType.IOTA){
                 return listOf(entry.payload as Iota)

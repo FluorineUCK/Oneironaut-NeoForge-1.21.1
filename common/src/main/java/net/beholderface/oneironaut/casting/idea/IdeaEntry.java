@@ -3,8 +3,11 @@ package net.beholderface.oneironaut.casting.idea;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.IotaType;
 import at.petrak.hexcasting.api.utils.NBTHelper;
+import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.OneironautConfig;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
@@ -37,6 +40,13 @@ public class IdeaEntry<T> {
 
     public IdeaEntry(T payload, long timestamp, @Nullable Entity writer){
         assert payload != null;
+        if (payload instanceof Entity original){
+            Entity copied = original.getType().create(original.getWorld());
+            if (copied != null){
+                copied.copyFrom(original);
+            }
+            payload = (T) copied;
+        }
         this.payload = payload;
         EntryType type = EntryType.getTypeFromObject(payload);
         if (type == null){
@@ -91,7 +101,8 @@ public class IdeaEntry<T> {
 
     public enum EntryType {
         IOTA(IdeaEntry::deserializeIotaEntry, IdeaEntry::serializeIotaEntry, (checked)->checked instanceof Iota, 1.0),
-        ENTITY(IdeaEntry::deserializeEntityEntry, IdeaEntry::serializeEntityEntry, (checked)->checked instanceof Entity, 1.0);
+        ENTITY(IdeaEntry::deserializeEntityEntry, IdeaEntry::serializeEntityEntry, (checked)->checked instanceof Entity
+                && !(checked instanceof PlayerEntity), 1.0);
 
         public final BiFunction<NbtCompound, ServerWorld, IdeaEntry<?>> deserializer;
         public final Function<IdeaEntry<?>, NbtCompound> serializer;
@@ -153,7 +164,8 @@ public class IdeaEntry<T> {
 
     protected static IdeaEntry<Entity> deserializeEntityEntry(NbtCompound nbt, ServerWorld world){
         NbtCompound inner = nbt.getCompound(TAG_ENTRY_DATA);
-        Entity entity = Registries.ENTITY_TYPE.get(new Identifier(inner.getString(TAG_ENTITY_TYPE))).create(world);
+        EntityType<?> entityType = Registries.ENTITY_TYPE.get(new Identifier(inner.getString(TAG_ENTITY_TYPE)));
+        Entity entity = entityType.create(world);
         if (entity == null){
             return null;
         } else {
@@ -167,7 +179,12 @@ public class IdeaEntry<T> {
             NbtCompound entityData = payload.writeNbt(new NbtCompound());
             NbtCompound out = new NbtCompound();
             NBTHelper.putCompound(out, TAG_ENTITY_DATA, entityData);
-            out.putString(TAG_ENTRY_TYPE, payload.getType().toString());
+            var maybeType = Registries.ENTITY_TYPE.getKey(payload.getType());
+            if (maybeType.isPresent()){
+                out.putString(TAG_ENTITY_TYPE, maybeType.get().getValue().toString());
+            } else {
+                return null;
+            }
             return out;
         } else {
             return null;

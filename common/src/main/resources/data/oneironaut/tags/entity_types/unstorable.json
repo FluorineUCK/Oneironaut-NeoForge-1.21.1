@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "#hexcasting:cannot_teleport",
+    "minecraft:player",
+    "minecraft:marker",
+    "minecraft:evoker_fangs",
+    "minecraft:eye_of_ender",
+    "minecraft:interaction",
+    "minecraft:block_display",
+    "minecraft:item_display",
+    "minecraft:text_display",
+    "minecraft:item_frame",
+    "minecraft:leash_knot",
+    "minecraft:painting",
+    "minecraft:fishing_bobber",
+    "minecraft:ender_dragon"
+  ]
+}

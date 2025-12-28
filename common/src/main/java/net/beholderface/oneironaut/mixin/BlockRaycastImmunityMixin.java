@@ -9,6 +9,7 @@ import at.petrak.hexcasting.common.casting.actions.raycast.OpBlockRaycast;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import kotlin.collections.CollectionsKt;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -33,7 +34,7 @@ public abstract class BlockRaycastImmunityMixin {
         if (original.get(0) instanceof Vec3Iota vec3){
             BlockPos pos = hit.getBlockPos();
             //BlockPos pos = new BlockPos(vec3.getVec3());
-            if (env.getWorld().getBlockState(pos).isIn(MiscAPIKt.getBlockTagKey(new Identifier(Oneironaut.MOD_ID, "blocksraycast")))){
+            if (env.getWorld().getBlockState(pos).isIn(OneironautTags.Blocks.blocksRaycast)){
                 return CollectionsKt.listOf(new NullIota());
             }
         }

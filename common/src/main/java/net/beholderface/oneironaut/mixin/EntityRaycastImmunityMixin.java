@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
+import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
@@ -31,9 +32,8 @@ public abstract class EntityRaycastImmunityMixin {
         if (value != null){
             int stepResolution = 64;
             Vec3d step = look.multiply(1.0 / stepResolution);
-            Identifier blockerTag = new Identifier(Oneironaut.MOD_ID, "blocksraycast");
             for(int i = 0; i < origin.distanceTo(value.getPos()) * stepResolution; i++){
-                if (env.getWorld().getBlockState(new BlockPos(MiscAPIKt.toVec3i(origin.add(step.multiply(i))))).isIn(MiscAPIKt.getBlockTagKey(blockerTag))){
+                if (env.getWorld().getBlockState(new BlockPos(MiscAPIKt.toVec3i(origin.add(step.multiply(i))))).isIn(OneironautTags.Blocks.blocksRaycast)){
                     return null;
                 }
             }
