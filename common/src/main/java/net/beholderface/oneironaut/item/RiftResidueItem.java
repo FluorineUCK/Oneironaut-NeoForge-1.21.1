@@ -1,18 +1,14 @@
 package net.beholderface.oneironaut.item;
 
-import at.petrak.hexcasting.api.addldata.ADPigment;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.IotaType;
 import at.petrak.hexcasting.api.item.IotaHolderItem;
-import at.petrak.hexcasting.api.item.PigmentItem;
-import at.petrak.hexcasting.api.pigment.ColorProvider;
 import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.iotatypes.DimIota;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
@@ -26,11 +22,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.UUID;
+import java.util.function.Supplier;
 
-public class RiftResidueItem extends Item implements IotaHolderItem, PigmentItem {
-    public RiftResidueItem(Settings settings) {
-        super(settings);
+public class RiftResidueItem extends ArbitaryDeltaPigmentItem implements IotaHolderItem {
+    public RiftResidueItem(Settings settings, int[] colors, Supplier<Double> deltaGetter) {
+        super(settings, colors, deltaGetter);
     }
 
     public int getMaxUseTime(ItemStack stack) {
@@ -90,20 +86,5 @@ public class RiftResidueItem extends Item implements IotaHolderItem, PigmentItem
     public void appendTooltip(ItemStack pStack, @Nullable World pLevel, List<Text> pTooltipComponents,
                               TooltipContext pIsAdvanced) {
         IotaHolderItem.appendHoverText(this, pStack, pTooltipComponents, pIsAdvanced);
-    }
-
-    protected static class SystemTimeColorProvider extends ColorProvider {
-        private static final int[] colors = {0x080085, 0xff4c00, 0x8bd4ff, 0x8bd4ff, 0x8bd4ff, 0xce3d00, 0x080085, 0x090092};
-        protected static final Vec3d vec = new Vec3d(1, 1, 1);
-        @Override
-        protected int getRawColor(float time, Vec3d position) {
-            return ADPigment.morphBetweenColors(colors, vec, (float) ((System.currentTimeMillis() % 10000) / 10000.0) /*((System.currentTimeMillis() % 86400000.0) / 86400000.0)*/, Vec3d.ZERO);
-        }
-    }
-    protected static SystemTimeColorProvider provider = new SystemTimeColorProvider();
-
-    @Override
-    public ColorProvider provideColor(ItemStack stack, UUID owner) {
-        return provider;
     }
 }

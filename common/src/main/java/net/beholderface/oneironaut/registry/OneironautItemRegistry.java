@@ -9,9 +9,8 @@ import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import kotlin.math.MathKt;
+import net.beholderface.oneironaut.MiscClientAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
-import net.beholderface.oneironaut.block.ConceptDecoratorBlock;
 import net.beholderface.oneironaut.item.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -60,13 +59,17 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<GeneralPigmentItem> PIGMENT_FLAME = ITEMS.register("pigment_flame", () -> new GeneralPigmentItem(ONEIRONAUT_STACKABLE64, GeneralPigmentItem.colors_flame));
     public static final RegistrySupplier<GeneralPigmentItem> PIGMENT_ECHO = ITEMS.register("pigment_echo", () -> new GeneralPigmentItem(ONEIRONAUT_STACKABLE64, GeneralPigmentItem.colors_echo));
     public static final RegistrySupplier<GeneralPigmentItem> PIGMENT_FRENZY = ITEMS.register("pigment_frenzyflame", () -> new GeneralPigmentItem(ONEIRONAUT_STACKABLE64, GeneralPigmentItem.colors_frenzy));
+    public static final RegistrySupplier<Item> PIGMENT_CLOCK = ITEMS.register("pigment_clock", ()->new ArbitaryDeltaPigmentItem(ONEIRONAUT_STACKABLE64, ArbitaryDeltaPigmentItem.skyColors,
+            ()-> {if (!Oneironaut.isServerThread()) {return (MiscClientAPIKt.getClientDayTime() + 3000) / ArbitaryDeltaPigmentItem.twentyMinutesInTicks;}
+            else {return 12000.0;}}));
     public static final RegistrySupplier<MemoryFragmentItem> MEMORY_FRAGMENT = ITEMS.register("memory_fragment", () -> new MemoryFragmentItem(ONEIRONAUT_UNSTACKABLE.rarity(Rarity.RARE), MemoryFragmentItem.NAMES_TOWER));
     public static final RegistrySupplier<WispCaptureItem> WISP_CAPTURE_ITEM = ITEMS.register("wisp_capture_device", ()-> new WispCaptureItem(ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<MindScalpelItem> MIND_SCALPEL = ITEMS.register("mind_scalpel", ()->new MindScalpelItem(ONEIRONAUT_UNSTACKABLE.rarity(Rarity.RARE)));
     public static final RegistrySupplier<RenderThorns> RENDER_THORNS = ITEMS.register("rending_thorns", ()->new RenderThorns(ONEIRONAUT_STACKABLE64.rarity(Rarity.UNCOMMON)));
     public static final RegistrySupplier<ItemLibraryCard> LIBRARY_CARD = ITEMS.register("library_card", ()->new ItemLibraryCard(ONEIRONAUT_UNSTACKABLE));
-    public static final RegistrySupplier<Item> REALITY_SHARD = ITEMS.register("reality_shard", ()->new Item(ONEIRONAUT_STACKABLE64));
-    public static final RegistrySupplier<Item> RIFT_RESIDUE = ITEMS.register("rift_residue", ()->new RiftResidueItem(ONEIRONAUT_STACKABLE64));
+    public static final RegistrySupplier<Item> RIFT_RESIDUE = ITEMS.register("rift_residue", ()->new RiftResidueItem(ONEIRONAUT_STACKABLE64, ArbitaryDeltaPigmentItem.skyColors,
+            ()-> (System.currentTimeMillis() % ArbitaryDeltaPigmentItem.irlDayInMilliseconds) / ArbitaryDeltaPigmentItem.irlDayInMilliseconds));
+
 
     public static final RegistrySupplier<BlockItem> PSUEDOAMETHYST_BLOCK_ITEM = ITEMS.register("pseudoamethyst_block", () -> new BlockItem(OneironautBlockRegistry.PSUEDOAMETHYST_BLOCK.get(), ONEIRONAUT_STACKABLE64));
     public static final RegistrySupplier<BlockItem> SUPER_BUDDING_ITEM = ITEMS.register("super_budding", () -> new BlockItem(OneironautBlockRegistry.SUPER_BUDDING.get(), ONEIRONAUT_STACKABLE64));
