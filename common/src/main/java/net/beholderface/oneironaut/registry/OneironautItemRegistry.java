@@ -60,7 +60,7 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<GeneralPigmentItem> PIGMENT_ECHO = ITEMS.register("pigment_echo", () -> new GeneralPigmentItem(ONEIRONAUT_STACKABLE64, GeneralPigmentItem.colors_echo));
     public static final RegistrySupplier<GeneralPigmentItem> PIGMENT_FRENZY = ITEMS.register("pigment_frenzyflame", () -> new GeneralPigmentItem(ONEIRONAUT_STACKABLE64, GeneralPigmentItem.colors_frenzy));
     public static final RegistrySupplier<Item> PIGMENT_CLOCK = ITEMS.register("pigment_clock", ()->new ArbitaryDeltaPigmentItem(ONEIRONAUT_STACKABLE64, ArbitaryDeltaPigmentItem.skyColors,
-            ()-> {if (!Oneironaut.isServerThread()) {return (MiscClientAPIKt.getClientDayTime() + 3000) / ArbitaryDeltaPigmentItem.twentyMinutesInTicks;}
+            ()-> {if (!Oneironaut.isServerThread()) {return ((MiscClientAPIKt.getClientDayTime() + 3000) % 24000) / ArbitaryDeltaPigmentItem.twentyMinutesInTicks;}
             else {return 12000.0;}}));
     public static final RegistrySupplier<MemoryFragmentItem> MEMORY_FRAGMENT = ITEMS.register("memory_fragment", () -> new MemoryFragmentItem(ONEIRONAUT_UNSTACKABLE.rarity(Rarity.RARE), MemoryFragmentItem.NAMES_TOWER));
     public static final RegistrySupplier<WispCaptureItem> WISP_CAPTURE_ITEM = ITEMS.register("wisp_capture_device", ()-> new WispCaptureItem(ONEIRONAUT_UNSTACKABLE));
