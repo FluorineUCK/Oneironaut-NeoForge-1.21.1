@@ -8,10 +8,10 @@ HexDoc by [**object-Object**](https://github.com/object-Object)
 
 Ideas by **beholderface**, with some input from the members of [the Petrak@'s Mods discord server](https://discord.gg/4xxHGYteWk).
 
-Textures by **beholderface** and [**Falkory**](https://github.com/Falkory220)
+Textures by **beholderface**, [**Falkory**](https://github.com/Falkory220), and [**samsthenerd**](https://github.com/SamsTheNerd)
 
 Chinese translation by [**ChuijkYahus**](https://github.com/ChuijkYahus)
 
-A few more complex `.json` files created with the generators at [**misode.github.io**](https://misode.github.io)
+Russian translation by [**FRIK42**](https://github.com/FRIK42)
 
-A few passages in book entries condensed by ChatGPT based on text by beholderface
+A few more complex `.json` files created with the generators at [**misode.github.io**](https://misode.github.io)

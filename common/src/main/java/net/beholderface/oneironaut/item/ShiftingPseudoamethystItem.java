@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ShiftingPseudoamethystItem extends Item implements IotaHolderItem {
+public class ShiftingPseudoamethystItem extends Item {
     public ShiftingPseudoamethystItem(Settings settings) {
         super(settings);
     }
@@ -38,38 +38,12 @@ public class ShiftingPseudoamethystItem extends Item implements IotaHolderItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> pTooltipComponents, TooltipContext context){
+        super.appendTooltip(stack, world, pTooltipComponents, context);
         if (world != null && world.isClient){
             OneironautClient.lastShiftingHoverTick = world.getTime();
             if (OneironautClient.lastHoveredShifting != stack){
                 OneironautClient.lastHoveredShifting = stack;
             }
         }
-    }
-
-    @Override
-    public @Nullable NbtCompound readIotaTag(ItemStack stack) {
-        if (Oneironaut.getDeepNoosphere() != null){
-            if (Platform.isDevelopmentEnvironment()){
-                return IotaType.serialize(new DimIota(Oneironaut.getDeepNoosphere()));
-            } else {
-                Oneironaut.LOGGER.info("Attempted to read shifting pseudoamethyst outside of dev environment, which is currently disabled.");
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean writeable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean canWrite(ItemStack stack, @Nullable Iota iota) {
-        return false;
-    }
-
-    @Override
-    public void writeDatum(ItemStack stack, @Nullable Iota iota) {
-
     }
 }

@@ -39,11 +39,11 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<ItemGroup> ONEIRONAUT_GROUP = TABS.register("oneironaut", ()->CreativeTabRegistry.create(
             Text.translatable("itemGroup.oneironaut.oneironaut"), ()->OneironautItemRegistry.PSUEDOAMETHYST_SHARD.get().getDefaultStack()));
 
-    private static final Item.Settings ONEIRONAUT_STACKABLE64 = new Item.Settings().maxCount(64).arch$tab(ONEIRONAUT_GROUP);
-    private static final Item.Settings ONEIRONAUT_STACKABLE64_NOTAB = new Item.Settings().maxCount(64);
-    private static final Item.Settings ONEIRONAUT_STACKABLE16 = new Item.Settings().maxCount(16).arch$tab(ONEIRONAUT_GROUP);
-    private static final Item.Settings ONEIRONAUT_UNSTACKABLE = new Item.Settings().maxCount(1).arch$tab(ONEIRONAUT_GROUP);
-    private static final Item.Settings ONEIRONAUT_UNSTACKABLE_1024 = new Item.Settings().maxCount(1).arch$tab(ONEIRONAUT_GROUP).maxDamage(1024);
+    private static final SortOfImmutableItemSettings ONEIRONAUT_STACKABLE64 = new SortOfImmutableItemSettings().maxCount(64).tab(ONEIRONAUT_GROUP);
+    private static final SortOfImmutableItemSettings ONEIRONAUT_STACKABLE64_NOTAB = new SortOfImmutableItemSettings().maxCount(64);
+    private static final SortOfImmutableItemSettings ONEIRONAUT_STACKABLE16 = ONEIRONAUT_STACKABLE64.maxCount(16);
+    private static final SortOfImmutableItemSettings ONEIRONAUT_UNSTACKABLE = ONEIRONAUT_STACKABLE64.maxCount(1);
+    private static final SortOfImmutableItemSettings ONEIRONAUT_UNSTACKABLE_1024 = ONEIRONAUT_UNSTACKABLE.maxDamage(1024);
 
 
     public static final RegistrySupplier<ItemStolenMediaProvider> PSUEDOAMETHYST_SHARD = ITEMS.register("pseudoamethyst_shard", () -> new
@@ -64,10 +64,11 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<WispCaptureItem> WISP_CAPTURE_ITEM = ITEMS.register("wisp_capture_device", ()-> new WispCaptureItem(ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<MindScalpelItem> MIND_SCALPEL = ITEMS.register("mind_scalpel", ()->new MindScalpelItem(ONEIRONAUT_UNSTACKABLE.rarity(Rarity.RARE)));
     public static final RegistrySupplier<RenderThorns> RENDER_THORNS = ITEMS.register("rending_thorns", ()->new RenderThorns(ONEIRONAUT_STACKABLE64.rarity(Rarity.UNCOMMON)));
-    public static final RegistrySupplier<ItemLibraryCard> LIBRARY_CARD = ITEMS.register("library_card", ()->new ItemLibraryCard(ONEIRONAUT_UNSTACKABLE.rarity(Rarity.COMMON)));
+    public static final RegistrySupplier<ItemLibraryCard> LIBRARY_CARD = ITEMS.register("library_card", ()->new ItemLibraryCard(ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<Item> REALITY_SHARD = ITEMS.register("reality_shard", ()->new Item(ONEIRONAUT_STACKABLE64));
+    public static final RegistrySupplier<Item> RIFT_RESIDUE = ITEMS.register("rift_residue", ()->new RiftResidueItem(ONEIRONAUT_STACKABLE64));
 
-    public static final RegistrySupplier<BlockItem> PSUEDOAMETHYST_BLOCK_ITEM = ITEMS.register("pseudoamethyst_block", () -> new BlockItem(OneironautBlockRegistry.PSUEDOAMETHYST_BLOCK.get(), ONEIRONAUT_STACKABLE64.rarity(Rarity.COMMON)));
+    public static final RegistrySupplier<BlockItem> PSUEDOAMETHYST_BLOCK_ITEM = ITEMS.register("pseudoamethyst_block", () -> new BlockItem(OneironautBlockRegistry.PSUEDOAMETHYST_BLOCK.get(), ONEIRONAUT_STACKABLE64));
     public static final RegistrySupplier<BlockItem> SUPER_BUDDING_ITEM = ITEMS.register("super_budding", () -> new BlockItem(OneironautBlockRegistry.SUPER_BUDDING.get(), ONEIRONAUT_STACKABLE64));
     public static final RegistrySupplier<BlockItem> NOOSPHERE_BASALT_ITEM = ITEMS.register("noosphere_basalt", () -> new BlockItem(OneironautBlockRegistry.NOOSPHERE_BASALT.get(), ONEIRONAUT_STACKABLE64));
     public static final RegistrySupplier<BlockItem> WISP_LANTERN_ITEM = ITEMS.register("wisp_lantern", () -> new BlockItem(OneironautBlockRegistry.WISP_LANTERN.get(), ONEIRONAUT_STACKABLE64));
