@@ -8,6 +8,7 @@
   "server": [
   ],
   "mixins": [
+    "BlockPatternFromLootScrollMixin",
     "BottomlessMediaPriorityMixin",
     "DeepNoosphereErosionMixin",
     "EdifyBushMixinGrower",
@@ -18,10 +19,10 @@
     "GlowAmbitEffectGlowMixin",
     "GTPDropReductionMixin",
     "LivingEntityDisintegrationMixin",
+    "MaxStackSizeMixinImage",
     "MixinHonorLibraryCardReads",
     "OneResetSoundMixin",
-    "SlurryFrostWalkerMixin",
-    "MaxStackSizeMixinImage"
+    "SlurryFrostWalkerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

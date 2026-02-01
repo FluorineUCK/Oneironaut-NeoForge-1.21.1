@@ -53,9 +53,11 @@ import net.minecraft.village.VillagerDataContainer
 import net.minecraft.village.VillagerProfession
 import net.minecraft.world.StructureWorldAccess
 import net.minecraft.world.World
+import net.minecraft.world.border.WorldBorder
 import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.floor
+import kotlin.math.max
 
 //this one isn't used anymore but I'm keeping it just in case
 fun List<Iota>.getDimIota(idx: Int, argc: Int = 0): DimIota {
@@ -505,6 +507,21 @@ fun colorToClosestPigment(color : Vec3d) : FrozenPigment{
         }
     }
     return FrozenPigment(HexItems.DYE_PIGMENTS[dye]!!.defaultStack, Util.NIL_UUID)
+}
+
+fun Vec3d.scaleBetweenDimensions(origin : World, destination : World) : Vec3d{
+    val x = this.x
+    val z = this.z
+    val compression = origin.dimension.coordinateScale / destination.dimension.coordinateScale
+    return Vec3d(x * compression, this.y, z * compression)
+}
+
+fun Vec3d.coerceWithinBorder(border: WorldBorder) : Vec3d{
+    return Vec3d(this.x.coerceIn(border.boundWest, border.boundEast), this.y, this.z.coerceIn(border.boundNorth, border.boundSouth))
+}
+
+fun Vec3d.coerceWithinBorder(world: World) : Vec3d{
+    return this.coerceWithinBorder(world.worldBorder)
 }
 
 object MiscStaticData {

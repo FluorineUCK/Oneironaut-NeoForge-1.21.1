@@ -1,5 +1,7 @@
 package net.beholderface.oneironaut.registry;
 
+import at.petrak.hexcasting.api.casting.ActionRegistryEntry;
+import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import net.beholderface.oneironaut.MiscAPIKt;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
@@ -25,5 +27,9 @@ public class OneironautTags {
     }
     public static class Items {
         public static final TagKey<Item> datapackStaves = MiscAPIKt.getItemTagKey("oneironaut:datapack_staves");
+    }
+    public static class Actions {
+        public static final TagKey<ActionRegistryEntry> noLootScrolls =
+                TagKey.of(IXplatAbstractions.INSTANCE.getActionRegistry().getKey(), new Identifier("oneironaut:nolootscrolls"));
     }
 }

@@ -12,6 +12,7 @@ import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.Instrument;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKeys;
@@ -157,6 +158,11 @@ public class OneironautBlockRegistry {
     public static RegistrySupplier<TranformingSkullBlock> TRANFORMING_SKULL = BLOCKS.register("transformingskull", ()->new TranformingSkullBlock(AbstractBlock.Settings.copy(Blocks.ZOMBIE_HEAD)));
     public static RegistrySupplier<TranformingWallSkullBlock> TRANFORMING_WALL_SKULL = BLOCKS.register("transformingskull_wall", ()->new TranformingWallSkullBlock(AbstractBlock.Settings.copy(Blocks.ZOMBIE_HEAD)));
     public static RegistrySupplier<BlockEntityType<TransformingSkullBlockEntity>> TRANFORMING_SKULL_ENTITY = BLOCK_ENTITIES.register("transformingskull_entity", ()-> BlockEntityType.Builder.create(TransformingSkullBlockEntity::new, TRANFORMING_SKULL.get(), TRANFORMING_WALL_SKULL.get()).build(null));
+
+    public static final AbstractBlock.Settings INSTANT_BREAKER_SETTINGS = AbstractBlock.Settings.create().strength(-1.0F, 3600000.8F).nonOpaque().allowsSpawning(Blocks::never).noBlockBreakParticles().pistonBehavior(PistonBehavior.BLOCK).noCollision().ticksRandomly();
+    public static RegistrySupplier<InstantBreakingBlock> INSTANT_BREAKER_RIFTRESIDUE = BLOCKS.register("rift_residue", ()->new InstantBreakingBlock(INSTANT_BREAKER_SETTINGS));
+    public static RegistrySupplier<BlockEntityType<InstantBreakingBlockEntity>> INSTANT_BREAKER_ENTITY = BLOCK_ENTITIES.register("instant_breaker_entity", ()-> BlockEntityType.Builder.create(InstantBreakingBlockEntity::new, INSTANT_BREAKER_RIFTRESIDUE.get()).build(null));
+
 
     //mostly just stolen from the vanilla class since it's private in there
     protected static ToIntFunction<BlockState> createLightLevelFromBoolBlockState(BooleanProperty property, int litLevel) {
