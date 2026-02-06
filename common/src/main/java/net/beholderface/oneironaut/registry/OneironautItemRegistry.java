@@ -22,6 +22,7 @@ import net.minecraft.util.Rarity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class OneironautItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Oneironaut.MOD_ID, RegistryKeys.ITEM);
@@ -68,7 +69,7 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<RenderThorns> RENDER_THORNS = ITEMS.register("rending_thorns", ()->new RenderThorns(ONEIRONAUT_STACKABLE64.rarity(Rarity.UNCOMMON)));
     public static final RegistrySupplier<ItemLibraryCard> LIBRARY_CARD = ITEMS.register("library_card", ()->new ItemLibraryCard(ONEIRONAUT_UNSTACKABLE));
     public static final RegistrySupplier<Item> RIFT_RESIDUE = ITEMS.register("rift_residue", ()->new RiftResidueItem(ONEIRONAUT_STACKABLE64, ArbitaryDeltaPigmentItem.skyColors,
-            ()-> (System.currentTimeMillis() % ArbitaryDeltaPigmentItem.irlDayInMilliseconds) / ArbitaryDeltaPigmentItem.irlDayInMilliseconds));
+            ()-> ((System.currentTimeMillis() + TimeZone.getDefault().getRawOffset()) % ArbitaryDeltaPigmentItem.irlDayInMilliseconds) / ArbitaryDeltaPigmentItem.irlDayInMilliseconds));
 
 
     public static final RegistrySupplier<BlockItem> PSUEDOAMETHYST_BLOCK_ITEM = ITEMS.register("pseudoamethyst_block", () -> new BlockItem(OneironautBlockRegistry.PSUEDOAMETHYST_BLOCK.get(), ONEIRONAUT_STACKABLE64));

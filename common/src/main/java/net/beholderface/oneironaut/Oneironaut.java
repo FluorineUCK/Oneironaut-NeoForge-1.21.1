@@ -99,6 +99,8 @@ public class Oneironaut {
             randomWispPigments.add(HexItems.UUID_PIGMENT);
             randomWispPigments.add(OneironautItemRegistry.PIGMENT_NOOSPHERE.get());
             randomWispPigments.add(OneironautItemRegistry.PIGMENT_FLAME.get());
+            randomWispPigments.add(OneironautItemRegistry.PIGMENT_FRENZY.get());
+            randomWispPigments.add(OneironautItemRegistry.PIGMENT_CLOCK.get());
             OneironautCastEnvComponents.init();
             InactiveSlipwayBlock.init();
         });
