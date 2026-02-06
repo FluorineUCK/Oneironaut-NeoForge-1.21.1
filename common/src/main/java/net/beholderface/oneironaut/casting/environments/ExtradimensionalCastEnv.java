@@ -9,6 +9,7 @@ import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.common.lib.HexAttributes;
+import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker;
 import net.beholderface.oneironaut.mixin.PlayerCastEnvInvoker;
 import net.minecraft.entity.LivingEntity;
@@ -107,7 +108,7 @@ public class ExtradimensionalCastEnv extends PlayerBasedCastEnv {
 
     @Override
     public Vec3d mishapSprayPos() {
-        return parentEnv.mishapSprayPos();
+        return MiscAPIKt.scaleBetweenDimensions(parentEnv.mishapSprayPos(), parentEnv.getWorld(), this.world);
     }
 
     @Override

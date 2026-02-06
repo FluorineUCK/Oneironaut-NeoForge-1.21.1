@@ -12,7 +12,7 @@
     },
     {
       "type": "hexcasting:brainsweep",
-      "recipe": "oneironaut:super_budding",
+      "recipe": "oneironaut:brainsweep/super_budding",
       "text": "oneironaut.page.super_budding.2"
     },
     {

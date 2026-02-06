@@ -3,15 +3,20 @@ package net.beholderface.oneironaut.item;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.IotaType;
 import at.petrak.hexcasting.api.item.IotaHolderItem;
+import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import net.beholderface.oneironaut.MiscAPIKt;
 import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.casting.iotatypes.DimIota;
+import net.beholderface.oneironaut.network.SpoopyScreamPacket;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -47,7 +52,9 @@ public class RiftResidueItem extends ArbitaryDeltaPigmentItem implements IotaHol
                     Oneironaut.getDeepNoosphere().getWorldBorder());
             user.teleport(Oneironaut.getDeepNoosphere(), newPos.x, 64.0, newPos.z, EnumSet.noneOf(PositionFlag.class), user.getYaw(), user.getPitch());
         }
-        stack.decrement(1);
+        if ((user instanceof PlayerEntity player && !player.isCreative()) || !(user instanceof PlayerEntity)){
+            stack.decrement(1);
+        }
         return stack;
     }
 
@@ -86,5 +93,14 @@ public class RiftResidueItem extends ArbitaryDeltaPigmentItem implements IotaHol
     public void appendTooltip(ItemStack pStack, @Nullable World pLevel, List<Text> pTooltipComponents,
                               TooltipContext pIsAdvanced) {
         IotaHolderItem.appendHoverText(this, pStack, pTooltipComponents, pIsAdvanced);
+    }
+
+    @Override
+    public void onItemEntityDestroyed(ItemEntity entity) {
+        World world = entity.getWorld();
+        if (!world.isClient && world instanceof ServerWorld serverWorld){
+            float pitch = 0.75f + (world.random.nextFloat() / 2);
+            IXplatAbstractions.INSTANCE.sendPacketNear(entity.getPos(), 16.0, serverWorld, new SpoopyScreamPacket(SoundEvents.ENTITY_FOX_SCREECH, pitch));
+        }
     }
 }

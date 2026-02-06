@@ -165,7 +165,7 @@ public class ExtradimensionalCircleCastEnv extends CircleCastEnv {
 
     @Override
     public Vec3d mishapSprayPos() {
-        return parentEnv.mishapSprayPos();
+        return MiscAPIKt.scaleBetweenDimensions(parentEnv.mishapSprayPos(), parentEnv.getWorld(), this.world);
     }
 
     @Override

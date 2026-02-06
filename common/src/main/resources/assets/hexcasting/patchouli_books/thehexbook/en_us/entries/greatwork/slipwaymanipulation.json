@@ -23,6 +23,20 @@
       "type": "patchouli:crafting",
       "recipe": "oneironaut:slipwaysuppressor",
       "text": "oneironaut.page.slipwaymanipulation.4"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "oneironaut.page.slipwaymanipulation.5"
+    },
+    {
+      "type": "hexcasting:brainsweep",
+      "recipe": "oneironaut:brainsweep/collapse_slipway",
+      "text": "oneironaut.page.slipwaymanipulation.6"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "oneironaut:rift_residue",
+      "text": "oneironaut.page.slipwaymanipulation.7"
     }
   ]
 }
