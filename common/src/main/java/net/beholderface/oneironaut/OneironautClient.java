@@ -133,7 +133,7 @@ public class OneironautClient {
                 cutoutBlocks.add(supplier.get());
             }
             Block[] translucentBlocks = {OneironautBlockRegistry.RAYCAST_BLOCKER_GLASS.get(), OneironautBlockRegistry.MEDIA_GEL.get(),
-                    OneironautBlockRegistry.CELL.get()};
+                    OneironautBlockRegistry.CELL.get(), OneironautBlockRegistry.INSTANT_BREAKER_RIFTRESIDUE.get()};
 
             BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), ThoughtSlurry.STILL_FLUID, ThoughtSlurry.FLOWING_FLUID);
 
