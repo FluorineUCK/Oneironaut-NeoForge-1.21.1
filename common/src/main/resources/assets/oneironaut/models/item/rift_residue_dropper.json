@@ -1,3 +1,6 @@
 {
-  "parent": "oneironaut:item/rift_residue"
+  "parent": "oneironaut:item/generated",
+  "textures": {
+    "layer0": "oneironaut:item/rift_residue"
+  }
 }
