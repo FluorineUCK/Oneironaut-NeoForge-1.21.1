@@ -1,5 +1,5 @@
 {
-  "parent": "oneironaut:item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "oneironaut:item/rift_residue"
   }
