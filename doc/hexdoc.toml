@@ -30,6 +30,9 @@ mod_name = "Oneironaut"
 author = "beholderface"
 show_landing_text = false
 
+[textures.override]
+"oneironaut:inactive_slipway" = {texture="oneironaut:textures/block/blank.png"}
+
 [extra.hexcasting]
 # regexes for parsing pattern registry files - try running copier update and picking a different regex if your patterns aren't loading
 # NOTE: "!Raw" means "don't apply variable interpolation to this value"

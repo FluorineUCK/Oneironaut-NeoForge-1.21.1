@@ -46,7 +46,7 @@ public class InactiveSlipwayBlock extends Block {
 
     @Override
     public BlockRenderType getRenderType(BlockState state){
-        return BlockRenderType.INVISIBLE;
+        return BlockRenderType.MODEL;
     }
 
     @Override
