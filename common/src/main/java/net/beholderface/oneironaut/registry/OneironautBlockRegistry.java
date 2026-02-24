@@ -45,6 +45,13 @@ public class OneironautBlockRegistry {
             .resistance(5)
             .luminance(state -> 7)
             ));
+    public static final RegistrySupplier<Block> PSUEDOAMETHYST_BLOCK_INSUBSTANTIAL = BLOCKS.register("insubstantial_pseudoamethyst_block", () -> new Block(AbstractBlock.Settings.copy(Blocks.AMETHYST_BLOCK)
+            .hardness(1f)
+            .sounds(BlockSoundGroup.AMETHYST_BLOCK)
+            .resistance(4)
+            .luminance(state -> 5)
+            .nonOpaque()
+    ));
     public static final RegistrySupplier<Block> NOOSPHERE_BASALT = BLOCKS.register("noosphere_basalt", () -> new Block(AbstractBlock.Settings.copy(Blocks.BASALT)
             .hardness(1f)
             .sounds(BlockSoundGroup.BASALT)
