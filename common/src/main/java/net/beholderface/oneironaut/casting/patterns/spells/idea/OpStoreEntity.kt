@@ -29,7 +29,7 @@ class OpStoreEntity() : SpellAction {
             throw MishapBadEntity(entity, Text.translatable("oneironaut.mishap.unstorable_entity"))
         }
         val cost = if (entity is LivingEntity){
-            (MediaConstants.SHARD_UNIT * entity.maxHealth).toLong()
+            (MediaConstants.SHARD_UNIT * ((entity.maxHealth + entity.health) / 2)).toLong()
         } else {
             MediaConstants.CRYSTAL_UNIT
         }
