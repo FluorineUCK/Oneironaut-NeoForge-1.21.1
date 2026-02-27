@@ -121,12 +121,12 @@ public class OneironautBlockRegistry {
     //yes it acts like an xray thingy, no I don't care, it's not available in survival
     public static RegistrySupplier<DeepNoosphereFloorBlock> DEEP_NOOSPHERE_FLOOR = BLOCKS.register("deep_border", ()->new DeepNoosphereFloorBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().mapColor(MapColor.PALE_PURPLE)));
 
-    public static RegistrySupplier<ConceptCoreBlock> CONCEPT_CORE = BLOCKS.register("concept_core", ()->new ConceptCoreBlock(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK)));
+    public static Supplier<AbstractBlock.Settings> CONCEPT_MODIFIER_SETTINGS = ()->AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK).luminance((state)->15);
+
+    public static RegistrySupplier<ConceptCoreBlock> CONCEPT_CORE = BLOCKS.register("concept_core", ()->new ConceptCoreBlock(CONCEPT_MODIFIER_SETTINGS.get()));
     public static RegistrySupplier<BlockEntityType<ConceptCoreBlockEntity>> CONCEPT_CORE_ENTITY = BLOCK_ENTITIES.register("concept_core_entity", ()->BlockEntityType.Builder.create(ConceptCoreBlockEntity::new, CONCEPT_CORE.get()).build(null));
 
-    public static RegistrySupplier<ConceptConnectorBlock> CONCEPT_CONNECTOR = BLOCKS.register("concept_connector", ()->new ConceptConnectorBlock(AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK)));
-
-    public static Supplier<AbstractBlock.Settings> CONCEPT_MODIFIER_SETTINGS = ()->AbstractBlock.Settings.copy(HexBlocks.SLATE_BLOCK).luminance((state)->15);
+    public static RegistrySupplier<ConceptConnectorBlock> CONCEPT_CONNECTOR = BLOCKS.register("concept_connector", ()->new ConceptConnectorBlock(CONCEPT_MODIFIER_SETTINGS.get()));
 
     public static RegistrySupplier<ConceptDecoratorBlock> CONCEPT_MODIFIER_EMPTY = BLOCKS.register("concept_modifier_empty", ()->new ConceptDecoratorBlock(CONCEPT_MODIFIER_SETTINGS.get()));
     public static RegistrySupplier<ConceptDecoratorBlock> CONCEPT_MODIFIER_SUS = BLOCKS.register("concept_modifier_sus", ()->new ConceptDecoratorBlock(CONCEPT_MODIFIER_SETTINGS.get()));
