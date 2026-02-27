@@ -8,6 +8,7 @@ import at.petrak.hexcasting.api.misc.MediaConstants
 import net.beholderface.oneironaut.casting.idea.IdeaEntry
 import net.beholderface.oneironaut.casting.idea.IdeaInscriptionManager
 import net.beholderface.oneironaut.getIdeaKey
+import net.minecraft.entity.Entity
 
 class OpStoreIota : ConstMediaAction {
     override val argc = 2
@@ -20,6 +21,12 @@ class OpStoreIota : ConstMediaAction {
         }
         val ideaState = IdeaInscriptionManager.getServerState(env.world.server)
         val keyIota = args.getIdeaKey(0, argc, env)
+        val existingEntityEntry = IdeaInscriptionManager.getEntry(keyIota, env.world, IdeaEntry.EntryType.ENTITY)
+        if (existingEntityEntry != null){
+            val entityToRelease = existingEntityEntry.payload as Entity
+            entityToRelease.setPosition(env.mishapSprayPos())
+            env.world.spawnEntity(entityToRelease)
+        }
         IdeaInscriptionManager.writeEntry(keyIota, IdeaEntry(iotaToWrite, env.world.time, env.castingEntity))
         ideaState.markDirty()
         return listOf()
