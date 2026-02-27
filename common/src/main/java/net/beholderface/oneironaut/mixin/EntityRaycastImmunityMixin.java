@@ -4,18 +4,13 @@ import at.petrak.hexcasting.api.casting.eval.CastingEnvironment;
 import at.petrak.hexcasting.common.casting.actions.raycast.OpEntityRaycast;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.beholderface.oneironaut.Oneironaut;
-import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
 import net.beholderface.oneironaut.registry.OneironautTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.beholderface.oneironaut.Oneironaut;
 import net.beholderface.oneironaut.MiscAPIKt;
-import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -45,7 +40,7 @@ public abstract class EntityRaycastImmunityMixin {
     @ModifyReturnValue(method = "execute$lambda$0", at = @At(value = "RETURN", remap = false), remap = false)
     private static boolean skipImmune(boolean original, @Local Entity it){
         if (it instanceof LivingEntity living){
-            return !living.hasStatusEffect(OneironautMiscRegistry.DETECTION_RESISTANCE.get());
+            return MiscAPIKt.hasDetectionResistance(living);
         }
         return true;
     }

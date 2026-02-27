@@ -25,6 +25,7 @@ import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker
 import net.beholderface.oneironaut.mixin.IotaTypeInvoker
 import net.beholderface.oneironaut.network.UnBrainsweepPacket
 import net.beholderface.oneironaut.recipe.OneironautRecipeTypes
+import net.beholderface.oneironaut.registry.OneironautMiscRegistry
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
@@ -522,6 +523,14 @@ fun Vec3d.coerceWithinBorder(border: WorldBorder) : Vec3d{
 
 fun Vec3d.coerceWithinBorder(world: World) : Vec3d{
     return this.coerceWithinBorder(world.worldBorder)
+}
+
+//trying to fix effect registration order issue by moving these checks into a non-mixin class
+fun LivingEntity.hasDetectionResistance() : Boolean{
+    return this.hasStatusEffect(OneironautMiscRegistry.DETECTION_RESISTANCE.get())
+}
+fun LivingEntity.hasResonanceEffect() : Boolean{
+    return this.hasStatusEffect(OneironautMiscRegistry.NOT_MISSING.get())
 }
 
 object MiscStaticData {
