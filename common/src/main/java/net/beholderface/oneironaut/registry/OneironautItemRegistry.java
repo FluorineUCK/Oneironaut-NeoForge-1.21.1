@@ -100,7 +100,7 @@ public class OneironautItemRegistry {
     public static final RegistrySupplier<BlockItem> EXTRADIM_LOCUS_ITEM = ITEMS.register("extradimensional_border", ()->new BlockItem(OneironautBlockRegistry.EXTRADIM_LOCUS.get(), ONEIRONAUT_STACKABLE64));
 
     public static final RegistrySupplier<BlockItem> CONCEPT_MODIFIER_EMPTY = ITEMS.register("concept_modifier_empty", ()->new BlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_EMPTY.get(), ONEIRONAUT_STACKABLE64));
-    public static final RegistrySupplier<BlockItem> CONCEPT_MODIFIER_SUS = ITEMS.register("concept_modifier_sus", ()->new BlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_EMPTY.get(), ONEIRONAUT_STACKABLE64_NOTAB));
+    public static final RegistrySupplier<BlockItem> CONCEPT_MODIFIER_SUS = ITEMS.register("concept_modifier_sus", ()->new BlockItem(OneironautBlockRegistry.CONCEPT_MODIFIER_SUS.get(), ONEIRONAUT_STACKABLE64_NOTAB));
 
     //these only exist to look good in patchouli and satisfy hexdoc
     public static final RegistrySupplier<BlockItem> INACTIVE_SLIPWAY_ITEM = ITEMS.register("inactiveslipway", ()->new BlockItem(OneironautBlockRegistry.INACTIVE_SLIPWAY.get(), new SortOfImmutableItemSettings()));
