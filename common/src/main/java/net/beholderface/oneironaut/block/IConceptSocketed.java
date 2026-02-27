@@ -45,13 +45,17 @@ public interface IConceptSocketed {
             alreadyVisited = new HashSet<>();
         }
         Block blockType = state.getBlock();
+        Direction dir = null;
         while ((!(blockType instanceof ConceptCoreBlock)) && !alreadyVisited.contains(pos)){
             if (blockType instanceof IConceptSocketed socketed){
-                Direction dir = socketed.getRootFace(state);
+                dir = socketed.getRootFace(state);
                 if (dir != null){
                     pos = pos.offset(dir);
                     state = world.getBlockState(pos);
                     blockType = state.getBlock();
+                    if (!canAcceptConnection(pos, dir, world)){
+                        break;
+                    }
                 } else {
                     break;
                 }
@@ -59,9 +63,16 @@ public interface IConceptSocketed {
                 break;
             }
         }
-        if (blockType instanceof ConceptCoreBlock){
+        if (blockType instanceof ConceptCoreBlock && canAcceptConnection(pos, dir, world)){
             return (ConceptCoreBlockEntity) world.getBlockEntity(pos);
         }
         return null;
+    }
+
+    public static boolean canAcceptConnection(BlockPos checked, Direction from, World world){
+        if (from != null && world.getBlockState(checked).getBlock() instanceof IConceptSocketed socketed){
+            return socketed.getSockets(world.getBlockState(checked)).contains(from.getOpposite());
+        }
+        return false;
     }
 }
