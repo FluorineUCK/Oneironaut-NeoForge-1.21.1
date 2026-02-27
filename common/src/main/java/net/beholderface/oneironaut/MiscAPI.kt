@@ -35,6 +35,7 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.GoalSelector
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.MobEntity
+import net.minecraft.fluid.Fluid
 import net.minecraft.item.Item
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.recipe.RecipeManager
@@ -531,6 +532,10 @@ fun LivingEntity.hasDetectionResistance() : Boolean{
 }
 fun LivingEntity.hasResonanceEffect() : Boolean{
     return this.hasStatusEffect(OneironautMiscRegistry.NOT_MISSING.get())
+}
+
+fun Fluid.isThoughtSlurry() : Boolean {
+    return this == OneironautMiscRegistry.THOUGHT_SLURRY.get()
 }
 
 object MiscStaticData {
