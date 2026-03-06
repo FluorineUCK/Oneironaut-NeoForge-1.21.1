@@ -1,0 +1,31 @@
+{
+  "parent": "oneironaut:enter_noosphere",
+  "criteria": {
+    "entered_deep_noosphere": {
+      "conditions": {
+        "to": "oneironaut:deep_noosphere"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "oneironaut.advancements.deep_noosphere.enter.description"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "oneironaut:super_budding"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "oneironaut.advancements.deep_noosphere.enter"
+    }
+  },
+  "requirements": [
+    [
+      "entered_deep_noosphere"
+    ]
+  ]
+}

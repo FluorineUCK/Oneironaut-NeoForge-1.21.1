@@ -3,6 +3,8 @@
   "values": [
     "oneironaut:getdim/nether",
     "oneironaut:writeidea",
+    "oneironaut:writeidea_entity",
+    "oneironaut:releaseidea_entity",
     "oneironaut:dimteleport",
     "oneironaut:infusemedia",
     "oneironaut:swapspace",
