@@ -15,7 +15,7 @@ import kotlin.math.min
 class OpCircle : SpellAction {
     override val argc = 1
     override fun execute(args: List<Iota>, ctx: CastingEnvironment): SpellAction.Result {
-        val quantity = min(args.getInt(0, argc), 64)
+        val quantity = args.getInt(0, argc).coerceIn(1, 64)
         val cost = quantity * MediaConstants.DUST_UNIT
         return SpellAction.Result(Spell(quantity), cost, listOf(ParticleSpray.cloud(ctx.mishapSprayPos(), 2.0)))
     }

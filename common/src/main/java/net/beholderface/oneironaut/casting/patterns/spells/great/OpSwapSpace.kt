@@ -28,7 +28,7 @@ import net.minecraft.server.world.ServerWorld
 import net.minecraft.text.Text
 import net.minecraft.util.math.*
 import net.minecraft.world.TeleportTarget
-import java.lang.Exception
+import kotlin.Exception
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -195,6 +195,8 @@ class OpSwapSpace : SpellAction {
                                 var state = destBE.cachedState
                                 if (destBE is BlockEntityAbstractImpetus){
                                     state = resetImpetus(state, destBE)
+                                } else if (state.block is BlockCircleComponent){
+                                    state = state.with(BlockCircleComponent.ENERGIZED, false)
                                 }
                                 destBEData = destBE.createNbt()
                                 originDim.removeBlockEntity(originDimPos)
@@ -213,6 +215,8 @@ class OpSwapSpace : SpellAction {
                                 var state = originBE.cachedState
                                 if (originBE is BlockEntityAbstractImpetus){
                                     state = resetImpetus(state, originBE)
+                                } else if (state.block is BlockCircleComponent){
+                                    state = state.with(BlockCircleComponent.ENERGIZED, false)
                                 }
                                 originBEData = originBE.createNbt()
                                 destDim.removeBlockEntity(destDimPos)

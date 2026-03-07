@@ -1,8 +1,6 @@
 package net.beholderface.oneironaut.fabric.mixin;
 
 import at.petrak.hexcasting.api.casting.ActionRegistryEntry;
-import at.petrak.hexcasting.api.casting.iota.PatternIota;
-import at.petrak.hexcasting.api.casting.math.HexDir;
 import at.petrak.hexcasting.api.casting.math.HexPattern;
 import at.petrak.hexcasting.api.mod.HexTags;
 import at.petrak.hexcasting.api.utils.HexUtils;
@@ -14,8 +12,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.beholderface.oneironaut.Oneironaut;
-import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
+import net.beholderface.oneironaut.MiscAPIKt;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
@@ -24,7 +21,6 @@ import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,7 +46,7 @@ public class FishUpScrollMixin {
             ServerWorld world = (ServerWorld) entity.getWorld();
             Random rand = world.random;
             Predicate<FluidState> predicate = (state)->{
-                return state.getFluid() == OneironautMiscRegistry.THOUGHT_SLURRY.get();
+                return MiscAPIKt.isThoughtSlurry(state.getFluid());
             };
             //should start off as a 5% chance, adds 2.5% per level of luck (usually just luck of the sea, I think)
             int chance = 20;

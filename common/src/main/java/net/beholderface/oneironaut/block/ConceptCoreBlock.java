@@ -4,10 +4,7 @@ import net.beholderface.oneironaut.block.blockentity.ConceptCoreBlockEntity;
 import net.beholderface.oneironaut.block.blockentity.ConceptModifierBlockEntity;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifier;
 import net.beholderface.oneironaut.casting.conceptmodification.ConceptModifierManager;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +15,9 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -144,5 +144,23 @@ public class ConceptCoreBlock extends BlockWithEntity implements IConceptSockete
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context){
+        return switch (state.get(Properties.AXIS)){
+            case X -> VoxelShapes.cuboid(0.0 / 16, 2.0 / 16, 2.0 / 16, 16.0 / 16, 14.0 / 16, 14.0 / 16);
+            case Y -> VoxelShapes.cuboid(2.0 / 16, 0.0 / 16, 2.0 / 16, 14.0 / 16, 16.0 / 16, 14.0 / 16);
+            case Z -> VoxelShapes.cuboid(2.0 / 16, 2.0 / 16, 0.0 / 16, 14.0 / 16, 14.0 / 16, 16.0 / 16);
+        };
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context){
+        return switch (state.get(Properties.AXIS)){
+            case X -> VoxelShapes.cuboid(0.0 / 16, 2.0 / 16, 2.0 / 16, 16.0 / 16, 14.0 / 16, 14.0 / 16);
+            case Y -> VoxelShapes.cuboid(2.0 / 16, 0.0 / 16, 2.0 / 16, 14.0 / 16, 16.0 / 16, 14.0 / 16);
+            case Z -> VoxelShapes.cuboid(2.0 / 16, 2.0 / 16, 0.0 / 16, 14.0 / 16, 14.0 / 16, 16.0 / 16);
+        };
     }
 }

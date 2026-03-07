@@ -128,12 +128,13 @@ public class OneironautClient {
                     OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_FALSY.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_GRIDSIZE.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_EMPTY.get(),
                     OneironautBlockRegistry.CONCEPT_MODIFIER_SUS.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_ANTIEROSION.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_MAXHEALTH.get(),
                     OneironautBlockRegistry.CONCEPT_MODIFIER_GTP_DROP.get(), OneironautBlockRegistry.CONCEPT_MODIFIER_REFERENCE_COMPARISON.get(),
-                    OneironautBlockRegistry.CONCEPT_MODIFIER_STACK_SIZE.get()));
+                    OneironautBlockRegistry.CONCEPT_MODIFIER_STACK_SIZE.get(), OneironautBlockRegistry.CONCEPT_CONNECTOR.get(), OneironautBlockRegistry.CONCEPT_CORE.get()));
             for (RegistrySupplier<ConceptDecoratorBlock> supplier : OneironautBlockRegistry.COLORFUL_CONCEPT_MODIFIERS.values()){
                 cutoutBlocks.add(supplier.get());
             }
             Block[] translucentBlocks = {OneironautBlockRegistry.RAYCAST_BLOCKER_GLASS.get(), OneironautBlockRegistry.MEDIA_GEL.get(),
-                    OneironautBlockRegistry.CELL.get(), OneironautBlockRegistry.INSTANT_BREAKER_RIFTRESIDUE.get()};
+                    OneironautBlockRegistry.CELL.get(), OneironautBlockRegistry.INSTANT_BREAKER_RIFTRESIDUE.get(),
+                    OneironautBlockRegistry.PSUEDOAMETHYST_BLOCK_INSUBSTANTIAL.get()};
 
             BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), ThoughtSlurry.STILL_FLUID, ThoughtSlurry.FLOWING_FLUID);
 

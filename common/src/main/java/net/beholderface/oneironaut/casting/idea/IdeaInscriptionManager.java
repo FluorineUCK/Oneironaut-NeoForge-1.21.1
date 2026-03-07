@@ -28,6 +28,9 @@ public class IdeaInscriptionManager extends PersistentState {
         Map.Entry<String, IdeaEntry<?>> nextEntry;
         while (iotaIterator.hasNext()){
             nextEntry = iotaIterator.next();
+            if (nextEntry.getValue() == null){
+                continue;
+            }
             nbt.put(nextEntry.getKey(), nextEntry.getValue().serialize());
         }
         return nbt;
@@ -73,6 +76,9 @@ public class IdeaInscriptionManager extends PersistentState {
             //Oneironaut.LOGGER.info("About to iterate key");
             currentKey = keys.next();
             currentData = entryMap.get(currentKey);
+            if (currentData == null){
+                continue;
+            }
             timestamp = currentData.creationTimestamp;
             //Oneironaut.LOGGER.info("Key " + currentKey + " iterated");
             if (currentData.isExpired(overworldTime)){

@@ -3,12 +3,10 @@ package net.beholderface.oneironaut.fabric.mixin;
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.beholderface.oneironaut.MiscAPIKt;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -23,7 +21,7 @@ public abstract class GlowAmbitEffectAmbitMixin {
         if (!original){
             //not sure if the dimension check is strictly necessary, but it can't hurt
             if (oneironaut$ctx.getWorld() == entity.getWorld() && entity instanceof LivingEntity living){
-                return living.hasStatusEffect(OneironautMiscRegistry.NOT_MISSING.get());
+                return MiscAPIKt.hasResonanceEffect(living);
             }
         }
         return original;

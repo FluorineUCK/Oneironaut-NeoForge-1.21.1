@@ -5,7 +5,7 @@ import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.common.casting.actions.selectors.OpGetEntitiesBy;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.beholderface.oneironaut.registry.OneironautMiscRegistry;
+import net.beholderface.oneironaut.MiscAPIKt;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +20,7 @@ public abstract class ZoneDistImmunityMixin {
     private boolean ignoreImmune(Collection<Iota> instance, Object o, Operation<Boolean> original){
         EntityIota e = (EntityIota) o;
         if (e.getEntity() instanceof LivingEntity le){
-            if (le.hasStatusEffect(OneironautMiscRegistry.DETECTION_RESISTANCE.get())){
+            if (MiscAPIKt.hasDetectionResistance(le)){
                 return false;
             }
         }

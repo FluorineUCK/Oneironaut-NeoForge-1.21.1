@@ -25,6 +25,7 @@ import net.beholderface.oneironaut.mixin.GeneralCastEnvInvoker
 import net.beholderface.oneironaut.mixin.IotaTypeInvoker
 import net.beholderface.oneironaut.network.UnBrainsweepPacket
 import net.beholderface.oneironaut.recipe.OneironautRecipeTypes
+import net.beholderface.oneironaut.registry.OneironautMiscRegistry
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
@@ -34,6 +35,7 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.GoalSelector
 import net.minecraft.entity.decoration.ArmorStandEntity
 import net.minecraft.entity.mob.MobEntity
+import net.minecraft.fluid.Fluid
 import net.minecraft.item.Item
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.recipe.RecipeManager
@@ -522,6 +524,18 @@ fun Vec3d.coerceWithinBorder(border: WorldBorder) : Vec3d{
 
 fun Vec3d.coerceWithinBorder(world: World) : Vec3d{
     return this.coerceWithinBorder(world.worldBorder)
+}
+
+//trying to fix effect registration order issue by moving these checks into a non-mixin class
+fun LivingEntity.hasDetectionResistance() : Boolean{
+    return this.hasStatusEffect(OneironautMiscRegistry.DETECTION_RESISTANCE.get())
+}
+fun LivingEntity.hasResonanceEffect() : Boolean{
+    return this.hasStatusEffect(OneironautMiscRegistry.NOT_MISSING.get())
+}
+
+fun Fluid.isThoughtSlurry() : Boolean {
+    return this == OneironautMiscRegistry.THOUGHT_SLURRY.get()
 }
 
 object MiscStaticData {

@@ -7,8 +7,6 @@ import net.beholderface.oneironaut.block.ThoughtSlurry;
 import net.beholderface.oneironaut.status.*;
 import net.beholderface.oneironaut.casting.OvercastDamageEnchant;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.RegistryKeys;
