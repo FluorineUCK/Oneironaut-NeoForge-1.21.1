@@ -15,7 +15,6 @@
     "EntityRefConceptMixin",
     "EraseSoulprintSignatureMixin",
     "GeneralCastEnvInvoker",
-    "IllegalIotasMixin",
     "ImpulseRedirectFireballMixin",
     "IotaTypeInvoker",
     "MaxStackSizeMixinVM",
