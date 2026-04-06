@@ -4,13 +4,11 @@ import at.petrak.hexcasting.api.casting.ParticleSpray
 import at.petrak.hexcasting.api.casting.RenderedSpell
 import at.petrak.hexcasting.api.casting.castables.SpellAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
+import at.petrak.hexcasting.api.casting.eval.env.CircleCastEnv
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.NullIota
-import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
 import at.petrak.hexcasting.api.casting.mishaps.MishapImmuneEntity
-import at.petrak.hexcasting.api.casting.mishaps.MishapLocationInWrongDimension
 import at.petrak.hexcasting.api.misc.MediaConstants
-import at.petrak.hexcasting.api.mod.HexConfig
 import at.petrak.hexcasting.api.mod.HexTags
 import at.petrak.hexcasting.api.player.FlightAbility
 import at.petrak.hexcasting.common.blocks.BlockConjured
@@ -38,9 +36,6 @@ class OpDimTeleport : SpellAction {
     override val argc = 2
 
     override fun execute(args: List<Iota>, env: CastingEnvironment): SpellAction.Result {
-        if (env.castingEntity == null){
-            throw MishapBadCaster()
-        }
         val target = args.getNonlivingIfAllowed(0, argc)
         env.assertEntityInRange(target)
         val origin = env.world
@@ -54,14 +49,15 @@ class OpDimTeleport : SpellAction {
         }
         //do not do the bad thing
         destination.assertTeleportationAllowed()
-        if (!target.canUsePortals() || target.type.isIn(HexTags.Entities.CANNOT_TELEPORT))
-            throw MishapImmuneEntity(target)
-        if (target.isPlayer && target != env.caster as LivingEntity && !OneironautConfig.server.planeShiftOtherPlayers){
+        val isImmune = !target.canUsePortals() || target.type.isIn(HexTags.Entities.CANNOT_TELEPORT)
+        val isInCircleBounds = env is CircleCastEnv && env.circleState().bounds.containsPermissive(target.pos)
+        val teleportingOtherPlayer = target.isPlayer && target != env.castingEntity && !OneironautConfig.server.planeShiftOtherPlayers
+        if (isImmune || (!isInCircleBounds && teleportingOtherPlayer)){
             throw MishapImmuneEntity(target)
         }
 
         var departure = false
-        if (target == env.caster){
+        if (target == env.castingEntity){
             val entry = DepartureEntry.getEntry(env, destination)
             if (entry != null){
                 //if (entry.isWithinCylinder(target.pos)){
