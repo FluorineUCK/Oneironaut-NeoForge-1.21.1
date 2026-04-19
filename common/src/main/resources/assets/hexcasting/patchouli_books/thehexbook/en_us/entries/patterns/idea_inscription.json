@@ -46,6 +46,32 @@
       "input": "key, player",
       "output": "bool",
       "text": "oneironaut.page.idea_inscription.6"
+    },
+    {
+      "type": "patchouli:text",
+      "advancement": "oneironaut:enter_deep_noosphere",
+      "text": "oneironaut.page.idea_inscription.7"
+    },
+    {
+      "type": "patchouli:text",
+      "advancement": "oneironaut:enter_deep_noosphere",
+      "text": "oneironaut.page.idea_inscription.8"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "oneironaut:writeidea_entity",
+      "anchor": "oneironaut:writeidea_entity",
+      "input": "key, entity",
+      "output": "",
+      "text": "oneironaut.page.idea_inscription.9"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "oneironaut:releaseidea_entity",
+      "anchor": "oneironaut:releaseidea_entity",
+      "input": "key, vector",
+      "output": "entity | garbage",
+      "text": "oneironaut.page.idea_inscription.10"
     }
   ]
 }

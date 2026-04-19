@@ -13,6 +13,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.beholderface.oneironaut.MiscAPIKt;
+import net.beholderface.oneironaut.Oneironaut;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
@@ -48,10 +49,13 @@ public class FishUpScrollMixin {
             Predicate<FluidState> predicate = (state)->{
                 return MiscAPIKt.isThoughtSlurry(state.getFluid());
             };
-            //should start off as a 5% chance, adds 2.5% per level of luck (usually just luck of the sea, I think)
-            int chance = 20;
-            int roll = rand.nextBetweenExclusive(1, chance + 1);
-            if (roll >= chance - (parameters.getLuck() / 2)){
+            //chance of 5% when in the noosphere, 2.5% in the overworld, and 10% when in the deep noosphere
+            double baseChance = 5;
+            double dimensionModifier = Oneironaut.isWorldNoosphere(world) ? (Oneironaut.isWorldDeepNoosphere(world) ? baseChance : 0) : -2.5;
+            double threshold = 100.0 - (baseChance + dimensionModifier);
+            double roll = rand.nextDouble() * 100;
+            double luckModifier = parameters.getLuck() * 2.5; //additional 2.5% chance per point of luck
+            if (roll + luckModifier >= threshold){
                 if (world.testFluidState(entity.getBlockPos(), predicate) || world.testFluidState(entity.getBlockPos().down(), predicate)){
                     var save = ScrungledPatternsSave.open(world.getServer().getOverworld());
                     ItemScroll scroll = HexItems.SCROLL_LARGE;

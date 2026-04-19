@@ -21,8 +21,9 @@ public abstract class Vec3IotaKeyableMixin implements IdeaKeyable {
 
     @Override
     public boolean isValidKey(CastingEnvironment env) {
+        Oneironaut.LOGGER.info("???");
         BlockPos pos = BlockPos.ofFloored(this.getVec3());
         WorldBorder border = Oneironaut.getCachedServer().getOverworld().getWorldBorder();
-        return pos.getY() < -64 || pos.getY() > 320 || !(border.contains(pos));
+        return pos.getY() >= -64 && pos.getY() <= 320 && border.contains(pos);
     }
 }

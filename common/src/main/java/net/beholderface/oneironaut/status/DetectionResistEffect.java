@@ -36,23 +36,25 @@ public class DetectionResistEffect extends StatusEffect {
                 ((ServerWorld) entity.getWorld()).playSoundFromEntity(
                         null, entity, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, entity.getSoundCategory(), 1.5f, 1f);
             }
-            if (entity.isPlayer()){
-                if ((time % 20) == 0){
-                    ServerPlayerEntity player = (ServerPlayerEntity) entity;
-                    CastingEnvironment env = new ForcedMediaCostEnv(player, Hand.MAIN_HAND);
-                    long deficit = env.extractMedia(MediaConstants.DUST_UNIT / 10, false);
-                    if (deficit > 0 && (time % 40) == 0){
+            if (amplifier < 100){ //lets people like modpack devs and server admins give things the effect without hurting them
+                if (entity.isPlayer()){
+                    if ((time % 20) == 0){
+                        ServerPlayerEntity player = (ServerPlayerEntity) entity;
+                        CastingEnvironment env = new ForcedMediaCostEnv(player, Hand.MAIN_HAND);
+                        long deficit = env.extractMedia(MediaConstants.DUST_UNIT / 10, false);
+                        if (deficit > 0 && (time % 40) == 0){
+                            Mishap.Companion.trulyHurt(entity, entity.getDamageSources().create(HexDamageTypes.OVERCAST), 1f);
+                        }
+                    }
+                } else if (entity instanceof MobEntity){
+                    if (mainStack.getItem() instanceof BottomlessMediaItem || offStack.getItem() instanceof BottomlessMediaItem || IXplatAbstractions.INSTANCE.isBrainswept((MobEntity) entity)){
+                        //do nothing, they are immune
+                    } else if ((time % 40) == 0) {
                         Mishap.Companion.trulyHurt(entity, entity.getDamageSources().create(HexDamageTypes.OVERCAST), 1f);
                     }
-                }
-            } else if (entity instanceof MobEntity){
-                if (mainStack.getItem() instanceof BottomlessMediaItem || offStack.getItem() instanceof BottomlessMediaItem || IXplatAbstractions.INSTANCE.isBrainswept((MobEntity) entity)){
-                    //do nothing, they are immune
-                } else if ((time % 40) == 0) {
+                } else if ((time % 40) == 0){
                     Mishap.Companion.trulyHurt(entity, entity.getDamageSources().create(HexDamageTypes.OVERCAST), 1f);
                 }
-            } else if ((time % 40) == 0){
-                Mishap.Companion.trulyHurt(entity, entity.getDamageSources().create(HexDamageTypes.OVERCAST), 1f);
             }
         }
     }

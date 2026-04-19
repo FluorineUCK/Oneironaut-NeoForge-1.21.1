@@ -24,22 +24,5 @@ public class OneironautFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Oneironaut.init();
-        TickEvent.SERVER_POST.register((server)->{
-            if (Platform.isModLoaded("trinkets")){
-                for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()){
-                    var trinketComponentMaybe = TrinketsApi.getTrinketComponent(player);
-                    if (trinketComponentMaybe.isPresent()){
-                        TrinketComponent component = trinketComponentMaybe.get();
-                        var lenses = component.getEquipped(HexItems.SCRYING_LENS);
-                        for (var lensPair : lenses){
-                            ItemStack stack = lensPair.getRight();
-                            if (stack.getItem() instanceof ItemLens lens){
-                                lens.inventoryTick(stack, player.getWorld(), player, 0, false);
-                            }
-                        }
-                    }
-                }
-            }
-        });
     }
 }
