@@ -40,8 +40,8 @@ public abstract class EntityRaycastImmunityMixin {
     @ModifyReturnValue(method = "execute$lambda$0", at = @At(value = "RETURN", remap = false), remap = false)
     private static boolean skipImmune(boolean original, @Local Entity it){
         if (it instanceof LivingEntity living){
-            return MiscAPIKt.hasDetectionResistance(living);
+            return !MiscAPIKt.hasDetectionResistance(living);
         }
-        return true;
+        return original;
     }
 }
