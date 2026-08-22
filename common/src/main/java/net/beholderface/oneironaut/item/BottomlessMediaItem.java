@@ -49,8 +49,12 @@ public class BottomlessMediaItem extends ItemMediaHolder {
             Oneironaut.LOGGER.info("Inexhaustible phial stack NBT does not contain a UUID tag.");
             return 0;
         }
-        long lastCheckIn = phialOwners.get(uuid).getSecond();
-        int lastPhialCount = playerPhialList.get(phialOwners.get(uuid).getFirst()).getFirst().size();
+        Pair<Entity, Long> ownerPair = phialOwners.get(uuid);
+        if (ownerPair == null){
+            return 0;
+        }
+        long lastCheckIn = ownerPair.getSecond();
+        int lastPhialCount = playerPhialList.get(ownerPair.getFirst()).getFirst().size();
         //dashing your hopes against the rocks
         int base = lastPhialCount <= 36 ? 6 : 12;
         //NbtCompound currentData = playerPhialCounts.get(phialOwners.get(uuid).getFirst());
