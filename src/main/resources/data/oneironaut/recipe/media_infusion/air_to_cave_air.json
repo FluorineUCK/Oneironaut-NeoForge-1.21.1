@@ -1,0 +1,11 @@
+{
+  "type": "oneironaut:infuse",
+  "blockIn": {
+    "type": "hexcasting:block",
+    "block": "minecraft:air"
+  },
+  "resultType": {
+    "Name": "minecraft:cave_air"
+  },
+  "mediaCost": 1000
+}

@@ -1,0 +1,14 @@
+{
+  "type": "oneironaut:infuse",
+  "blockIn": {
+    "type": "hexcasting:block",
+    "block": "minecraft:sculk_shrieker"
+  },
+  "resultType": {
+    "Name": "minecraft:sculk_shrieker",
+    "Properties": {
+      "can_summon": "true"
+    }
+  },
+  "mediaCost": 10000000
+}

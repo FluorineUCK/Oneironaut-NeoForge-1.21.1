@@ -1,0 +1,14 @@
+{
+  "type": "oneironaut:infuse",
+  "blockIn": {
+    "type": "hexcasting:block",
+    "block": "hexcasting:citrine_edified_leaves"
+  },
+  "resultType": {
+    "Name": "hexcasting:aventurine_edified_leaves",
+    "Properties": {
+      "peristent": "true"
+    }
+  },
+  "mediaCost": 10000
+}

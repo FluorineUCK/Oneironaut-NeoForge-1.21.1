@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "oneironaut:noosphere_basalt"
+  },
+  "result": {
+    "id": "hexcasting:slate",
+    "count": 4
+  }
+}

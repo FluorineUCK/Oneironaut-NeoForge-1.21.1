@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "hexcasting:charged_amethyst"
+    },
+    "E": {
+      "item": "minecraft:echo_shard"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "pattern": [
+    " E ",
+    "OCO",
+    " E "
+  ],
+  "result": {
+    "id": "oneironaut:reverberation_rod"
+  }
+}

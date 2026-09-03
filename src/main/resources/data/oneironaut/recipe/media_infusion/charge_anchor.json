@@ -1,0 +1,14 @@
+{
+  "type": "oneironaut:infuse",
+  "blockIn": {
+    "type": "hexcasting:block",
+    "block": "minecraft:respawn_anchor"
+  },
+  "resultType": {
+    "Name": "minecraft:respawn_anchor",
+    "Properties": {
+      "charges": "4"
+    }
+  },
+  "mediaCost": 1000000
+}

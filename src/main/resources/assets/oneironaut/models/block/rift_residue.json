@@ -1,0 +1,7 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "oneironaut:item/rift_residue"
+  },
+  "elements": []
+}

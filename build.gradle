@@ -1,168 +1,183 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id "architectury-plugin" version "3.4.+"
+    id "architectury-plugin" version "3.4.164"
+    id "dev.architectury.loom" version "1.9-SNAPSHOT"
+    id "org.jetbrains.kotlin.jvm" version "2.3.21"
+    id "maven-publish"
+}
 
-    id "dev.architectury.loom" version "1.6.+" apply false
+version = project.mod_version
+group = project.maven_group
 
-    id "org.jetbrains.kotlin.jvm" version "1.8.0" apply false
-
-    // for template.env api keys
-    id "co.uzzu.dotenv.gradle" version "2.0.0"
+base {
+    archivesName = project.archives_base_name
 }
 
 architectury {
-    minecraft = project.minecraftVersion
-}
-
-subprojects {
-    apply plugin: "org.jetbrains.kotlin.jvm"
-    apply plugin: "dev.architectury.loom"
-
-    // Uncomment to silence the mojmap license warning
-    // loom {
-    //     silentMojangMappingsLicense()
-    // }
-
-    dependencies {
-        minecraft "com.mojang:minecraft:${project.minecraftVersion}"
-
-        mappings "net.fabricmc:yarn:${project.yarnMappingsVersion}:v2"
-        // Or feel free to use any other mappings you prefer
-
-        modImplementation "net.fabricmc:fabric-loader:${project.fabricLoaderVersion}"
-        modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricApiVersion}"
-        modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabricKotlinVersion}"
-        annotationProcessor "org.ow2.asm:asm:${project.asmVersion}"
-        annotationProcessor "org.ow2.asm:asm-analysis:${project.asmVersion}"
-        annotationProcessor "org.ow2.asm:asm-commons:${project.asmVersion}"
-        annotationProcessor "org.ow2.asm:asm-tree:${project.asmVersion}"
-        annotationProcessor "org.ow2.asm:asm-util:${project.asmVersion}"
-        implementation group: "org.jblas", name: "jblas", version: "1.2.5"
-    }
-
-    sourceSets.main.kotlin.srcDirs += 'src/main/java'
-    sourceSets.main.resources.srcDirs += "src/generated/resources"
-}
-
-allprojects {
-    apply plugin: "java"
-    apply plugin: "architectury-plugin"
-    apply plugin: "maven-publish"
-
-    version = project.modVersion
-    group = project.mavenGroup
-
-    repositories {
-
-        flatDir {
-            name="localModLibs"
-            dir 'libs'
-        }
-
-        maven { url 'https://jitpack.io' }
-        maven {
-            url "https://squiddev.cc/maven/"
-        }
-        maven { url "https://maven.terraformersmc.com/" }
-        maven { url "https://maven.terraformersmc.com/releases" }
-        maven { url "https://maven.shedaniel.me/" }
-
-        // Hex Casting Dependencies
-        maven { url "https://maven.blamejared.com/" }
-        maven {
-            name "entity reach"
-            url "https://maven.jamieswhiteshirt.com/libs-release/"
-        }
-        maven { url "https://mvn.devos.one/snapshots/" }
-        maven { url "https://maven.hexxy.media" }
-        maven {
-            name = 'Ladysnake Mods'
-            url = 'https://maven.ladysnake.org/releases'
-        }
-        maven {
-            name = 'Kotlin for Forge'
-            url = 'https://thedarkcolour.github.io/KotlinForForge/'
-        }
-        maven {
-            url = "https://maven.theillusivec4.top/"
-        }
-        maven {
-            name = 'GeckoLib'
-            url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        }
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = "Modrinth"
-                    url = "https://api.modrinth.com/maven"
-                }
-            }
-            filter {
-                includeGroup "maven.modrinth"
-            }
-        }
-        maven { url "https://maven.jamieswhiteshirt.com/libs-release/" }
-
-        // Add any other repositories with your cross-platform dependency mods
-    }
-
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
-        options.release = 17
-    }
-
-    java {
-        java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-        java.withSourcesJar()
-        java.withJavadocJar()
-    }
-
-    sourcesJar {
-        duplicatesStrategy 'exclude'
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        it.options.encoding = 'UTF-8'
-        it.options.release = 17
-    }
-
-    // Disables Gradle's custom module metadata from being published to maven. The
-    // metadata includes mapped dependencies which are not reasonably consumable by
-    // other mod developers.
-    tasks.withType(GenerateModuleMetadata) {
-        enabled = false
-    }
-
-    processResources {
-        exclude '.cache'
-    }
-
-    processTestResources {
-        exclude '.cache'
+    minecraft = project.minecraft_version
+    platformSetupLoomIde()
+    neoForge {
+        platformPackage = "neoforge"
     }
 }
 
-ext.getArtifactId = { platform -> return "$modID-$platform-$minecraftVersion" }
-
-ext.getLatestChangelog = {
-    Collection<String> lines = file("$rootDir/CHANGELOG.md").readLines()
-    String changelog = ""
-    Boolean atSegment = false
-    for (String line : lines) {
-        if (line.startsWith("## ")) {
-            if (atSegment) break // hit next segment
-            atSegment = true
+loom {
+    mods {
+        // Architectury creates the development source-set container as
+        // "main". Extending that container keeps Kotlin and Java outputs in
+        // one NeoForge mod file; a second name causes the shared resources
+        // root to be discovered first without the Kotlin classes.
+        main {
+            sourceSet sourceSets.main
         }
-        if (atSegment) changelog += "$line\n"
     }
-    return changelog.trim()
+
+    if (providers.gradleProperty("oneironautClientProbe").isPresent()) {
+        runs.named("client") {
+            vmArg "-Doneironaut.probe.validateRiftResidueTooltip=true"
+        }
+    }
 }
 
-ext.bookPath = "data/oneironaut/patchouli_books/oneironautbook"
+def mainCodeDirs = ["src/main/java", "src/client/java"]
+def mainResourceDirs = ["src/main/resources", "src/main/generated", "src/client/resources"]
 
-tasks.register("viewLatestChangelog") {
-    group "documentation"
-    description "Print the topmost single version section from the full CHANGELOG.md file."
+sourceSets {
+    main {
+        java.srcDirs = mainCodeDirs
+        resources.srcDirs = mainResourceDirs
+    }
+}
+sourceSets.main.kotlin.srcDirs = mainCodeDirs
+
+repositories {
+    mavenCentral()
+    maven { url "https://maven.architectury.dev/" }
+    maven { url "https://maven.neoforged.net/releases/" }
+    maven { url "https://thedarkcolour.github.io/KotlinForForge/" }
+    maven { url "https://maven.kosmx.dev/" }
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.wispforest.io/releases/" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    neoForge "net.neoforged:neoforge:${project.neo_forge_version}"
+
+    // Exact pre-39 compatibility landing zone. These jars are already Mojmap
+    // NeoForge artifacts and must not be fed through Loom's mod remapper.
+    compileOnly files("libs/hexcasting-neoforge-${project.minecraft_version}-${project.hexcasting_version}.jar")
+    runtimeOnly files("libs/hexcasting-neoforge-${project.minecraft_version}-${project.hexcasting_version}.jar")
+    compileOnly files("libs/Patchouli-1.21.1-93-NEOFORGE.jar")
+    runtimeOnly files("libs/Patchouli-1.21.1-93-NEOFORGE.jar")
+    compileOnly files("libs/paucal-${project.paucal_version}+${project.minecraft_version}-neoforge.jar")
+    runtimeOnly files("libs/paucal-${project.paucal_version}+${project.minecraft_version}-neoforge.jar")
+    runtimeOnly files("libs/inline-${project.minecraft_version}-${project.inline_version}-neoforge-devruntime.jar")
+    runtimeOnly files("libs/caelus-neoforge-${project.caelus_version}.jar")
+
+    // Ported Hex addon dependencies. These are the already tested NeoForge
+    // builds from this pre-39 migration set and remain external at runtime.
+    compileOnly files("libs/hexal-0.3.1+1.21.1-neoforge.jar")
+    runtimeOnly files("libs/hexal-0.3.1+1.21.1-neoforge.jar")
+    compileOnly files("libs/moreiotas-0.1.1+1.21.1-neoforge-pre39.jar")
+    runtimeOnly files("libs/moreiotas-0.1.1+1.21.1-neoforge-pre39.jar")
+    runtimeOnly files("libs/geckolib-neoforge-1.21.1-4.9.2.jar")
+
+    modImplementation "dev.architectury:architectury-neoforge:${project.architectury_api_version}"
+    modRuntimeOnly "me.shedaniel.cloth:cloth-config-neoforge:15.0.130"
+    runtimeOnly "thedarkcolour:kotlinforforge-neoforge:${project.kotlin_for_forge_version}"
+
+    implementation "org.jblas:jblas:1.2.5"
+    include "org.jblas:jblas:1.2.5"
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 21
+}
+
+tasks.withType(KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "21"
+        freeCompilerArgs += ["-Xjvm-default=all"]
+    }
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+tasks.register("oneironautRiftResidueProbe") {
+    group = "verification"
+    description = "Verifies rift-residue tooltip reads cannot touch server lifecycle state."
+    dependsOn tasks.named("classes")
     doLast {
-        println(getLatestChangelog())
+        def javap = new File(System.getProperty("java.home"), "bin/javap.exe")
+        if (!javap.isFile()) {
+            throw new GradleException("javap not found at ${javap}")
+        }
+        def output = new ByteArrayOutputStream()
+        exec {
+            commandLine(
+                javap,
+                "-classpath", sourceSets.main.runtimeClasspath.asPath,
+                "-c", "-p",
+                "net.beholderface.oneironaut.item.RiftResidueItem"
+            )
+            standardOutput = output
+        }
+        def bytecode = output.toString("UTF-8")
+        def methodStart = bytecode.indexOf(
+            "public at.petrak.hexcasting.api.casting.iota.Iota readIota"
+        )
+        if (methodStart < 0) {
+            throw new GradleException("RiftResidueItem.readIota bytecode was not found")
+        }
+        def methodEnd = bytecode.indexOf("\n  public ", methodStart + 1)
+        def readIota = methodEnd < 0
+            ? bytecode.substring(methodStart)
+            : bytecode.substring(methodStart, methodEnd)
+        if (readIota.contains("Oneironaut.getDeepNoosphere")) {
+            throw new GradleException(
+                "RiftResidueItem.readIota still reads server-only deepNoosphere state"
+            )
+        }
+        if (!readIota.contains("DimIota.\"<init>\":(Ljava/lang/String;)V")) {
+            throw new GradleException(
+                "RiftResidueItem.readIota no longer constructs its stable dimension identifier"
+            )
+        }
+        println(
+            "[ONEIRONAUT-PROBE] rift_residue_read=PASS "
+                + "no_server_lookup=PASS dimension=oneironaut:deep_noosphere"
+        )
+    }
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+    exclude "net/beholderface/oneironaut/neo/probe/**"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = project.archives_base_name
+            from components.java
+        }
     }
 }

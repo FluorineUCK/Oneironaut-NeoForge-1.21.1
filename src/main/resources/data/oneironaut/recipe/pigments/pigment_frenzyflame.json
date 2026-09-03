@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "item": "hexcasting:amethyst_dust"
+    },
+    "S": {
+      "item": "minecraft:blaze_powder"
+    }
+  },
+  "pattern": [
+    " D ",
+    "DSD",
+    " D "
+  ],
+  "result": {
+    "id": "oneironaut:pigment_frenzyflame"
+  }
+}

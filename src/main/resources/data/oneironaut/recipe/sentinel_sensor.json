@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "hexcasting:slate_block"
+    },
+    "P": {
+      "item": "oneironaut:pseudoamethyst_block"
+    },
+    "S": {
+      "item": "minecraft:sculk_sensor"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "PSP",
+    "BBB"
+  ],
+  "result": {
+    "id": "oneironaut:sentinel_sensor"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "hexcasting:charged_amethyst"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    " IC",
+    " II",
+    "I  "
+  ],
+  "result": {
+    "id": "oneironaut:spoon_staff"
+  }
+}

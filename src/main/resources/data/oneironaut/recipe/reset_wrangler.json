@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "oneironaut:wisp_capture_device"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "oneironaut:wisp_capture_device"
+  }
+}

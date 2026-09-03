@@ -1,0 +1,76 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "oneironaut"
+version = "${version}"
+displayName = "Oneironaut"
+logoFile = "icon.png"
+authors = "beholderface"
+description = '''
+An addon for Hex Casting centered around exploration and use of the noosphere.
+'''
+displayURL = "https://github.com/beholderface/oneironaut"
+
+[[mixins]]
+config = "oneironaut-common.mixins.json"
+
+[[mixins]]
+config = "oneironaut-neo.mixins.json"
+
+[[dependencies.oneironaut]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.234,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.oneironaut]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.oneironaut]]
+modId = "kotlinforforge"
+type = "required"
+versionRange = "[5.12.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.oneironaut]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.8,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.oneironaut]]
+modId = "hexcasting"
+type = "required"
+versionRange = "[0.12.0-devel-pre-35,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.oneironaut]]
+modId = "hexal"
+type = "required"
+versionRange = "[0.3.1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.oneironaut]]
+modId = "moreiotas"
+type = "required"
+versionRange = "[0.1.1+1.21.1-neoforge-pre39]"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.oneironaut]]
+modId = "patchouli"
+type = "required"
+versionRange = "[1.21-90,)"
+ordering = "AFTER"
+side = "BOTH"

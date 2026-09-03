@@ -1,0 +1,33 @@
+{
+  "required": true,
+  "package": "net.beholderface.oneironaut.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "server": [
+  ],
+  "mixins": [
+    "BlockRaycastImmunityMixin",
+    "CubeLoreGrantMixin",
+    "DecorativeWispMixin",
+    "EntityRaycastImmunityMixin",
+    "EntityRefConceptMixin",
+    "EraseSoulprintSignatureMixin",
+    "GeneralCastEnvInvoker",
+    "ImpulseRedirectFireballMixin",
+    "IotaTypeInvoker",
+    "MaxStackSizeMixinVM",
+    "MobGoalSelectorAccessor",
+    "MiscWispMixin",
+    "OpBreakBlockImmunityMixin",
+    "PlayerCastEnvInvoker",
+    "SentinelTrapMixinSummon",
+    "ZoneDistImmunityMixin",
+    "IotaKeyableMixins.EntityIotaKeyableMixin",
+    "IotaKeyableMixins.Vec3IotaKeyableMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

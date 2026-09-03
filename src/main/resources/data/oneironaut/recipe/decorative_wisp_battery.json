@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "hexcasting:battery"
+    },
+    "E": {
+      "item": "hexcasting:edified_planks"
+    },
+    "A": {
+      "item": "oneironaut:pseudoamethyst_block"
+    },
+    "W": {
+      "tag": "oneironaut:wisp_lanterns"
+    }
+  },
+  "pattern": [
+    "AWA",
+    "EPE",
+    "EEE"
+  ],
+  "result": {
+    "id": "oneironaut:decorative_wisp_battery"
+  }
+}

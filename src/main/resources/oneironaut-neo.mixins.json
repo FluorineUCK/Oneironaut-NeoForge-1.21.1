@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "package": "net.beholderface.oneironaut.neo.platform.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "server": [
+  ],
+  "mixins": [
+    "BlockPatternFromLootScrollMixin",
+    "DeepNoosphereErosionMixin",
+    "EdifyBushMixinGrower",
+    "EdifyBushMixinSpell",
+    "EternalChorusMixin",
+    "FishUpScrollMixin",
+    "GlowAmbitEffectAmbitMixin",
+    "GlowAmbitEffectGlowMixin",
+    "GTPDropReductionMixin",
+    "LivingEntityDisintegrationMixin",
+    "MixinHonorLibraryCardReads",
+    "OneResetSoundMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

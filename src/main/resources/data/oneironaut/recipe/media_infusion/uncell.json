@@ -1,0 +1,11 @@
+{
+  "type": "oneironaut:infuse",
+  "blockIn": {
+    "type": "hexcasting:block",
+    "block": "oneironaut:cell"
+  },
+  "resultType": {
+    "Name": "oneironaut:media_gel"
+  },
+  "mediaCost": 10000
+}

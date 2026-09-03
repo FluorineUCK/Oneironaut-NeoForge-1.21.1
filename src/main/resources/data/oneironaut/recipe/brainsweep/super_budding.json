@@ -1,0 +1,15 @@
+{
+  "type": "hexcasting:brainsweep",
+  "blockIn": {
+    "type": "hexcasting:block",
+    "block": "oneironaut:pseudoamethyst_block"
+  },
+  "cost": 1000000,
+  "entityIn": {
+    "type": "hexcasting:villager",
+    "minLevel": 5
+  },
+  "result": {
+    "Name": "oneironaut:super_budding"
+  }
+}

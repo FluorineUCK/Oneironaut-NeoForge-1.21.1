@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "oneironaut:shifting_pseudoamethyst"
+    },
+    {
+      "item": "hexcasting:amethyst_dust"
+    }
+  ],
+  "result": {
+    "count": 31,
+    "id": "hexcasting:amethyst_dust"
+  }
+}

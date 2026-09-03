@@ -1,0 +1,11 @@
+{
+  "type": "oneironaut:infuse",
+  "blockIn": {
+    "type": "hexcasting:block",
+    "block": "minecraft:wither_skeleton_wall_skull"
+  },
+  "resultType": {
+    "Name": "minecraft:skeleton_wall_skull"
+  },
+  "mediaCost": 50000
+}
